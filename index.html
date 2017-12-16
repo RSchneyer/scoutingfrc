@@ -1,8 +1,27 @@
-<!DOCTE hmtl>
+<!DOCTYPE hmtl>
 <head>
-    
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCUCYkr-YZSJAzRDOsgzm5FuMd4uaK2P6U",
+        authDomain: "scoutingfrc-189201.firebaseapp.com",
+        databaseURL: "https://scoutingfrc-189201.firebaseio.com",
+        projectId: "scoutingfrc-189201",
+        storageBucket: "scoutingfrc-189201.appspot.com",
+        messagingSenderId: "458144233871"
+      };
+      firebase.initializeApp(config);
+    </script>
 </head>
 
 <body>
+    <form >
+        First name:<br>
+        <input type="text" name="firstname"><br>
+        Last name:<br>
+        <input type="text" name="lastname"><br>
+        <input type="submit">
+    </form>
     
 </body>
