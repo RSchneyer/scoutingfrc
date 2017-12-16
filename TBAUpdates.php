@@ -3,6 +3,9 @@
 	<?php
 		//Request event match data (schedule)
 		
+		
+		echo "test echo stuffs";
+		
 		//Request team data (numbers, name location, etc)
 		$curl = curl_init();
 		$season = $_POST['season'];
@@ -17,7 +20,6 @@
 		$filename = 'eventData.js';
 		file_put_contents($filename, $result);
 		
-		<br><br>
 		/*
 		//Request team data (numbers, name location, etc)
 		$curl = curl_init();
