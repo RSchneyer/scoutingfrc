@@ -13,6 +13,58 @@
       };
       firebase.initializeApp(config);
     </script>
+	
+	<script>
+		var rootRef = firebase.database().ref().child('test');
+		function save_click(){
+			rootRef.set({
+				season:document.getElementById("Season").value,
+				eventcode:document.getElementById("Eventcode").value
+			});
+			document.getElementById("seasonvalue").innerHTML = document.getElementById("season").value;
+		};
+		function view_click(){
+			document.getElementById("codevalue").innerHTML = document.getElementById("Eventcode").value;
+			document.getElementById("seasonvalue").innerHTML = document.getElementById("Season").value;
+		};
+		/*
+		$.ajax({
+			url: 'https://www.thebluealliance.com/api/v3/event/2017iacf?X-TBA-Auth-Key=IrbGoLNLzpkFoLGIQsd7gf2M6sY5P6v9iWykp0PBTazwdgr4ofWXEvdrOI1Mbo7B',
+			beforeSend: function(xhr) {
+				 xhr.setRequestHeader("accept", "application/json")
+			}, success: function(data){
+				alert(data);
+				//process the JSON data etc
+			}
+		});
+		*/
+		function request_click(){
+			var request = new XMLHttpRequest();
+			request.open('GET', 'https://www.thebluealliance.com/api/v3/event/2017iacf?X-TBA-Auth-Key=IrbGoLNLzpkFoLGIQsd7gf2M6sY5P6v9iWykp0PBTazwdgr4ofWXEvdrOI1Mbo7B', true);
+
+			request.onload = function() {
+				if (request.status >= 200 && request.status < 400) {
+					// Success!
+					var resp = request.responseText;
+					document.getElementById("codevalue").innerHTML = resp;
+			
+				} else {
+					// We reached our target server, but it returned an error
+					document.getElementById("codevalue").innerHTML = "Reached server and got error";
+			
+				}
+			};
+
+			request.onerror = function() {
+				document.getElementById("codevalue").innerHTML = "Error of some kind";
+			
+			  // There was a connection error of some sort
+			};
+
+			request.send();
+		}
+
+	</script>
 </head>
 
 <body>
@@ -25,10 +77,19 @@
     </form> -->
 	<form action="../TBAUpdates.php" method="POST">
 		<label>Season:</label>
-		<input type="text" name="season" id="Season"><br>
+		<input type="number" name="season" id="Season"><br>
 		<label>Event Code:</label>
 		<input type="text" name="eventcode" id="Eventcode"><br>
 		<button type="submit" id="form-button">ClickMe</button>
-	</form>
+	</form><br>
+	<button id="view_button" onClick="view_click()">View</button>
+	<button id="save_button" onclick="save_click()">Save</button><br>
+	<button id="request_button" onclick="request_click()">Request</button><br>
+	<p id="seasonvalue">
+	
+	</p>
+	<p id="codevalue">
+	
+	</p>
     
 </body>

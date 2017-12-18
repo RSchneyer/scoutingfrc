@@ -1,41 +1,32 @@
-[debug] [2017-12-17T05:15:16.626Z] ----------------------------------------------------------------------
-[debug] [2017-12-17T05:15:16.633Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rjrad\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
-[debug] [2017-12-17T05:15:16.633Z] CLI Version:   3.16.0
-[debug] [2017-12-17T05:15:16.633Z] Platform:      win32
-[debug] [2017-12-17T05:15:16.633Z] Node Version:  v8.9.3
-[debug] [2017-12-17T05:15:16.634Z] Time:          Sat Dec 16 2017 23:15:16 GMT-0600 (Central Standard Time)
-[debug] [2017-12-17T05:15:16.635Z] ----------------------------------------------------------------------
+[debug] [2017-12-17T22:53:16.416Z] ----------------------------------------------------------------------
+[debug] [2017-12-17T22:53:16.418Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rjrad\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2017-12-17T22:53:16.419Z] CLI Version:   3.16.0
+[debug] [2017-12-17T22:53:16.419Z] Platform:      win32
+[debug] [2017-12-17T22:53:16.419Z] Node Version:  v8.9.3
+[debug] [2017-12-17T22:53:16.419Z] Time:          Sun Dec 17 2017 16:53:16 GMT-0600 (Central Standard Time)
+[debug] [2017-12-17T22:53:16.419Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2017-12-17T05:15:16.683Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2017-12-17T05:15:16.684Z] > authorizing via signed-in user
-[debug] [2017-12-17T05:15:16.689Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
-[debug] [2017-12-17T05:15:16.690Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
- { refresh_token: '1/A13eqUeGQ1J2LVOpMElGSpYtWHMeKmKLBpH5rZuVoo017jvE1K__7D8HMn6CmPDR',
-  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
-  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
-  grant_type: 'refresh_token',
-  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
- Sat Dec 16 2017 23:15:16 GMT-0600 (Central Standard Time)
-[debug] [2017-12-17T05:15:17.070Z] <<< HTTP RESPONSE 200
-[debug] [2017-12-17T05:15:17.082Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/scoutingfrc-189201  
+[debug] [2017-12-17T22:53:16.431Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-12-17T22:53:16.431Z] > authorizing via signed-in user
+[debug] [2017-12-17T22:53:16.433Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/scoutingfrc-189201  
   
- Sat Dec 16 2017 23:15:17 GMT-0600 (Central Standard Time)
-[debug] [2017-12-17T05:15:17.708Z] <<< HTTP RESPONSE 200
-[debug] [2017-12-17T05:15:17.710Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/scoutingfrc-189201/tokens  
+ Sun Dec 17 2017 16:53:16 GMT-0600 (Central Standard Time)
+[debug] [2017-12-17T22:53:17.052Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-17T22:53:17.055Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/scoutingfrc-189201/tokens  
   
- Sat Dec 16 2017 23:15:17 GMT-0600 (Central Standard Time)
-[debug] [2017-12-17T05:15:22.984Z] <<< HTTP RESPONSE 200
+ Sun Dec 17 2017 16:53:17 GMT-0600 (Central Standard Time)
+[debug] [2017-12-17T22:53:17.435Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from 'C:\FRC\scoutingfrc'...
 [info] 
-[debug] [2017-12-17T05:15:22.996Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/scoutingfrc-189201  
+[debug] [2017-12-17T22:53:17.448Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/scoutingfrc-189201  
   
- Sat Dec 16 2017 23:15:22 GMT-0600 (Central Standard Time)
-[debug] [2017-12-17T05:15:23.400Z] <<< HTTP RESPONSE 200
-[debug] [2017-12-17T05:15:23.401Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/458144233871/clients/_:getWebAppConfig  
+ Sun Dec 17 2017 16:53:17 GMT-0600 (Central Standard Time)
+[debug] [2017-12-17T22:53:17.866Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-17T22:53:17.867Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/458144233871/clients/_:getWebAppConfig  
   
- Sat Dec 16 2017 23:15:23 GMT-0600 (Central Standard Time)
-[debug] [2017-12-17T05:15:24.061Z] <<< HTTP RESPONSE 200
+ Sun Dec 17 2017 16:53:17 GMT-0600 (Central Standard Time)
+[debug] [2017-12-17T22:53:18.266Z] <<< HTTP RESPONSE 200
 [info] i  hosting: Serving hosting files from: public
 [info] +  hosting: Local server: http://localhost:5000
 
