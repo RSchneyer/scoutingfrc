@@ -1,6 +1,21 @@
 <!DOCTYPE hmtl>
 <head>
+    <!-- AngularJS Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-messages.min.js"></script>
+
+    <!-- Angular Material Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
     <script>
       // Initialize Firebase
       var config = {
@@ -13,15 +28,29 @@
       };
       firebase.initializeApp(config);
     </script>
+
+<!-- Handmade files ("artisanal") -->
+    <script src= 'app.js'></script>
+    <link rel="stylesheet" href="scouting.css">
+
 </head>
 
-<body>
-    <form >
-        First name:<br>
-        <input type="text" name="firstname"><br>
-        Last name:<br>
-        <input type="text" name="lastname"><br>
-        <input type="submit">
-    </form>
-    
+<body ng-app='scoutingfrc' ng-controller='authControl'>
+    <md-toolbar>
+        <div class='md-toolbar-tools'>
+            <md-button layout-align='start center'>
+                <i class='material-icons md-icon-36'>menu</i>
+            </md-button>
+            <h2 md-truncate flex>FRC Scout {{authStatus}}</h2>
+            <md-button layout-align='end center' ng-click='signIn()' ng-hide='authStatus'>
+                <i class='material-icons md-icon-36'>account_circle</i>
+            </md-button>
+            <md-button layout-align='end center' ng-click='signOut()' ng-show='authStatus'>
+                <i class='material-icons md-icon-36'>exit_to_app</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <team-input-card ng-show='authStatus'></team-input-card>
+
 </body>
