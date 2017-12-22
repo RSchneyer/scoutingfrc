@@ -1,26 +1,26 @@
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+# Scouting FRC
+Scouting FRC is a project aimed to make scouting more universal for all teams. 
+Making scouting applications is time consuming and arduous process. We hope this
+will make scouting easier for teams and allow teams to focus on the robot,
+instead of a custom scouting app.
 
+## Getting Started
+Download the files, and run them on a website.
 
-Hi there! Welcome to Cloud9 IDE!
+## Testing the website
+If there are any issues while testing the website, git back to us by putting an
+issue in [Github](https://github.com/RSchneyer/scoutingfrc/issues)
 
-To get you started, we included a small hello world application.
+## Contributing
+We would love to have all the help we can in building and testing this website!
+Let us know at [ScoutingFRC@gmail.com](mailto:ScoutingFRC@gmail.com)
 
-1) Open the hello-world.html file
+## Acknowledgements
+Thank you to The Blue Alliance makers for having an easy to use API.
 
-2) Click on the Preview button to open a live preview pane
+## Authors
+Reid Schneyer - "Profensional" AngularJS Developer*  
+Ryley Radack - FIRST Retired Programmer*  
+Phillip Kelsey - The ideas/README.md guy*
 
-3) Make some changes to the file, save, watch the preview, and have fun!
-
-Happy coding!
-The Cloud9 IDE team
-
-
-## Support & Documentation
-
-Visit http://docs.c9.io for documentation, or http://support.c9.io for support.
-To watch some training videos, visit http://www.youtube.com/user/c9ide
+/*We are college kids doing this for fun
