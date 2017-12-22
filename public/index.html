@@ -27,14 +27,14 @@
         messagingSenderId: "458144233871"
       };
       firebase.initializeApp(config);
+	  var firestore = firebase.firestore();
     </script>
 
 <!-- Handmade files ("artisanal") -->
-    <script src= 'app.js'></script>
+	<script src= 'app.js'></script>
     <link rel="stylesheet" href="scouting.css">
 
 </head>
-
 <body ng-app='scoutingfrc' ng-controller='authControl'>
     <md-toolbar>
         <div class='md-toolbar-tools'>
@@ -52,5 +52,7 @@
     </md-toolbar>
 
     <team-input-card ng-show='authStatus'></team-input-card>
+	
+	<load-team-data-card ng-show='authStatus'></load-team-data-card>
 
 </body>
