@@ -32,7 +32,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		}).catch(function(error){
 			console.error("Authentication failed: ", error);
 		});
-	};	
+	};
 
 	$scope.signOut = function(){
 		auth.$signOut().then(function(){
@@ -49,22 +49,62 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			$scope.teamData = response.data;
 		});
 	};
+
 	// TODO: GET OUT OF THiS CONTROLLER!!!
+	/*
+	 * loads basic team information from the variable loadTeamNumber
+	 * Should be called the first time a user joins a team, thus creating the team in the database.
+	 * Also called the first time that a team has info scouted about them.
+	 */
 	$scope.loadTeamData = function(){
-		var team = 'frc' + $scope.iowaTeamNumber;
-		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+team+'?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+		var teamKey = 'frc' + $scope.loadTeamNumber;
+		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 		.then(function(response){
 			$scope.teamDataBlock = response.data;
-			var rootRef = firestore.doc("teams/"+$scope.iowaTeamNumber);
-//			var teamRef = rootRef.collection('teams').doc($scope.iowaTeamNumber).collection('info');
-			console.log("before root");
-			rootRef.set({			
+			var rootRef = firestore.doc("teams/"+$scope.loadTeamNumber);
+			console.log(rootRef);
+			rootRef.set({
 				city:$scope.teamDataBlock.city,
 				country:$scope.teamDataBlock.country,
+				key:$scope.teamDataBlock.key,
 				nickname:$scope.teamDataBlock.nickname,
 				state_prov:$scope.teamDataBlock.state_prov,
 				team_number:$scope.teamDataBlock.team_number
 			});
+		});
+		$scope.loadTeamEventData();
+		console.log("Finished initializing team information!");
+	};
+	
+	// TODO: GET OUT OF THiS CONTROLLER!!!
+	/*
+	 * loads basic event information from the variable loadTeamNumber
+	 * Should be called the first time a user joins a team, thus creating the team events in the database.
+	 * Also called the first time that a team has info scouted about them.
+	 */
+	$scope.loadTeamEventData = function(){
+		var teamKey = 'frc' + $scope.loadTeamNumber;
+		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+		.then(function(response){
+			$scope.teamDataBlock = response.data;
+			console.log($scope.teamDataBlock);
+			for(var i = 0; i < $scope.teamDataBlock.length; i++){
+				var eventVar = $scope.teamDataBlock[i];
+				console.log(eventVar);
+				console.log(i);
+				console.log(eventVar.event_code);
+				
+				var rootRef = firestore.doc("events/"+eventVar.event_code);
+				rootRef.set({
+					address:eventVar.address,
+					city:eventVar.city,
+					country:eventVar.country,
+					short_name:eventVar.short_name,
+					week:eventVar.week,
+					start_date:eventVar.start_date,
+					event_code:eventVar.event_code
+				});
+			}
 		});
 	};
 }]);
