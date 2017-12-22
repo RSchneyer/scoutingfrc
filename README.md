@@ -1,6 +1,6 @@
 # Scouting FRC
 Scouting FRC is a project aimed to make scouting more universal for all teams. 
-Making scouting applications is time consuming and arguous process. We hope this
+Making scouting applications is time consuming and arduous process. We hope this
 will make scouting easier for teams and allow teams to focus on the robot,
 instead of a custom scouting app.
 
