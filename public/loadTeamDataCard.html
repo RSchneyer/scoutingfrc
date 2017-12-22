@@ -1,0 +1,20 @@
+<md-card ng-show="authStatus">
+    <md-card-title>
+        <md-card-title-text>
+            <span class='md-headline'>Load team info to DB</span>
+            <span class='md-subline'>Selected Team: {{teamData.nickname}}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <md-input-container>
+            <label>Team Number</label>
+            <input type='number' ng-model='iowaTeamNumber'>
+        </md-input-container>
+    </md-card-content>
+    <md-card-actions layout='row' layout-align='end end'>
+        <md-button ng-click='loadTeamData()'>Load</md-button>
+    </md-card-actions>
+	<md-card-content>
+		<span class='md-subline'>{{teamDataBlock}}</span>
+	</md-card-content>
+</md-card>
