@@ -15,6 +15,9 @@ issue in [Github](https://github.com/RSchneyer/scoutingfrc/issues)
 We would love to have all the help we can in building and testing this website!
 Let us know at [ScoutingFRC@gmail.com](mailto:ScoutingFRC@gmail.com)
 
+## Acknowledgements
+Thank you to The Blue Alliance makers for having an easy to use API.
+
 ## Authors
 Reid Schneyer - "Profensional" AngularJS Developer*
 Ryley Radack - FIRST Retired Programmer*
