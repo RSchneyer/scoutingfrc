@@ -17,17 +17,17 @@
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase-firestore.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
     <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyCUCYkr-YZSJAzRDOsgzm5FuMd4uaK2P6U",
-        authDomain: "scoutingfrc-189201.firebaseapp.com",
-        databaseURL: "https://scoutingfrc-189201.firebaseio.com",
-        projectId: "scoutingfrc-189201",
-        storageBucket: "scoutingfrc-189201.appspot.com",
-        messagingSenderId: "458144233871"
-      };
-      firebase.initializeApp(config);
-	  var firestore = firebase.firestore();
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyCUCYkr-YZSJAzRDOsgzm5FuMd4uaK2P6U",
+			authDomain: "scoutingfrc-189201.firebaseapp.com",
+			databaseURL: "https://scoutingfrc-189201.firebaseio.com",
+			projectId: "scoutingfrc-189201",
+			storageBucket: "scoutingfrc-189201.appspot.com",
+			messagingSenderId: "458144233871"
+		};
+		firebase.initializeApp(config);
+		var firestore = firebase.firestore();
     </script>
 
 	<!-- Handmade files ("artisanal") -->
@@ -55,4 +55,5 @@
 	
 	<load-team-data-card ng-show='authStatus'></load-team-data-card>
 
+	<scout-match-card ng-show='authStatus'></scout-match-card>
 </body>

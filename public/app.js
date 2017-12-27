@@ -28,6 +28,8 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 
 
 			console.dir(result);
+			$scope.currUser = result.user.displayName;
+			console.log($scope.currUser);
 			$scope.authStatus = true;
 		}).catch(function(error){
 			console.error("Authentication failed: ", error);
@@ -102,10 +104,69 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 					short_name:eventVar.short_name,
 					week:eventVar.week,
 					start_date:eventVar.start_date,
+					end_date:eventVar.end_date,
 					event_code:eventVar.event_code
 				});
 			}
 		});
+	};
+	
+	// TODO: GET OUT OF THiS CONTROLLER!!!
+	/*
+	 * loads basic event information from the variable loadTeamNumber
+	 * Should be called the first time a user joins a team, thus creating the team events in the database.
+	 * Also called the first time that a team has info scouted about them.
+	 */
+	
+	$scope.putMatchData = function(){
+		var rootRef = firestore.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
+		var matchData = rootRef.get()
+		.then(doc => {
+			if (!doc.exists) {
+				console.log('No such document!');
+			} else {
+				console.log('Document data:', doc.data());
+			}
+		})
+		.catch(err => {
+			console.log('Error getting document', err);
+		});
+		var redRef = rootRef.collection("red");
+		var blueRef = rootRef.collection("blue");
+		var scoutedData = {user:$scope.currUser, teleScores:$scope.teleScores, 
+			autoShot:$scope.autoShot};
+		var currUser = $scope.currUser;
+			
+		console.log('scouted data => '+ scoutedData);
+		var testTeamKey = '000' + $scope.teamNum + 'Test';
+		console.log('testTeamKey => '+ testTeamKey);
+		
+		var redData = redRef.get()
+			.then(snapshot => {
+				snapshot.forEach(doc => {
+					console.log('red ', doc.id, '=>', doc.data());
+					if(doc.id == testTeamKey){
+						console.log("Attempting to set data");
+						redRef.doc(doc.id).set({
+							scoutedData
+						});
+					}
+				});
+			})
+			.catch(err => {
+				console.log('Error getting documents', err);
+			});
+		
+		var blueData = blueRef.get()
+			.then(snapshot => {
+				snapshot.forEach(doc => {
+					console.log('blue ', doc.id, '=>', doc.data());
+				});
+			})
+			.catch(err => {
+				console.log('Error getting documents', err);
+			});
+		
 	};
 }]);
 
@@ -118,5 +179,11 @@ app.directive('teamInputCard', function(){
 app.directive('loadTeamDataCard', function() {
 	return {
 		templateUrl: 'loadTeamDataCard.html',
+	}
+});
+
+app.directive('scoutMatchCard', function(){
+	return {
+		templateUrl: 'scoutMatchCard.html',
 	}
 });
