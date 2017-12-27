@@ -63,7 +63,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 		.then(function(response){
 			$scope.teamDataBlock = response.data;
-			var rootRef = firestore.doc("teams/"+$scope.loadTeamNumber);
+			var rootRef = db.doc("teams/"+$scope.loadTeamNumber);
 			console.log(rootRef);
 			rootRef.set({
 				city:$scope.teamDataBlock.city,
@@ -96,7 +96,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 				console.log(i);
 				console.log(eventVar.event_code);
 				
-				var rootRef = firestore.doc("events/"+eventVar.event_code);
+				var rootRef = db.doc("events/"+eventVar.event_code);
 				rootRef.set({
 					address:eventVar.address,
 					city:eventVar.city,
@@ -118,7 +118,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 	 */
 	$scope.putMatchData = function(){
 		//location to save data
-		var rootRef = firestore.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
+		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
 
 		//not needed?
 /*		var matchData = rootRef.get()
@@ -139,7 +139,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
-			autoShot:$scope.autoShot};
+							autoShot:$scope.autoShot};
 		
 // TODO this test team will not be needed, just use the team number	
 		console.log('scouted data => '+ scoutedData);
