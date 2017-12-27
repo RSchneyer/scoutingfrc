@@ -19,7 +19,7 @@ Let us know at [ScoutingFRC@gmail.com](mailto:ScoutingFRC@gmail.com)
 Thank you to The Blue Alliance makers for having an easy to use API.
 
 ## Authors
-Reid Schneyer - "Profensional" AngularJS Developer*  
+Reid Schneyer - "Professional" AngularJS Developer*  
 Ryley Radack - FIRST Retired Programmer*  
 Phillip Kelsey - The ideas/README.md guy*
 
