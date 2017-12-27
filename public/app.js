@@ -28,8 +28,8 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 
 
 			console.dir(result);
-			$scope.currUser = result.user.displayName;
-			console.log($scope.currUser);
+			$scope.currUser = result.user.uid;
+			
 			$scope.authStatus = true;
 		}).catch(function(error){
 			console.error("Authentication failed: ", error);
@@ -113,14 +113,15 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 	
 	// TODO: GET OUT OF THiS CONTROLLER!!!
 	/*
-	 * loads basic event information from the variable loadTeamNumber
-	 * Should be called the first time a user joins a team, thus creating the team events in the database.
-	 * Also called the first time that a team has info scouted about them.
+	 * Takes data from the input fields and saves it under the username at the 
+	 * appropriate path in the db for the chosen match and team info
 	 */
-	
 	$scope.putMatchData = function(){
+		//location to save data
 		var rootRef = firestore.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
-		var matchData = rootRef.get()
+
+		//not needed?
+/*		var matchData = rootRef.get()
 		.then(doc => {
 			if (!doc.exists) {
 				console.log('No such document!');
@@ -130,26 +131,30 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		})
 		.catch(err => {
 			console.log('Error getting document', err);
-		});
+		}); */
+		
+		//path for red and blue alliance
 		var redRef = rootRef.collection("red");
 		var blueRef = rootRef.collection("blue");
-		var scoutedData = {user:$scope.currUser, teleScores:$scope.teleScores, 
+		
+		//create the object of game data to be saved
+		var scoutedData = { teleScores:$scope.teleScores, 
 			autoShot:$scope.autoShot};
-		var currUser = $scope.currUser;
-			
+		
+// TODO this test team will not be needed, just use the team number	
 		console.log('scouted data => '+ scoutedData);
 		var testTeamKey = '000' + $scope.teamNum + 'Test';
 		console.log('testTeamKey => '+ testTeamKey);
-		
+//*****************************************************************		
 		var redData = redRef.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
-					console.log('red ', doc.id, '=>', doc.data());
+//					console.log('red ', doc.id, '=>', doc.data());
 					if(doc.id == testTeamKey){
-						console.log("Attempting to set data");
+						console.log("Sending Data");
 						redRef.doc(doc.id).set({
-							scoutedData
-						});
+							[$scope.currUser] : scoutedData
+						}, { merge: true });
 					}
 				});
 			})
@@ -160,13 +165,19 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		var blueData = blueRef.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
-					console.log('blue ', doc.id, '=>', doc.data());
+//					console.log('blue ', doc.id, '=>', doc.data());
+					if(doc.id == testTeamKey){
+						console.log("Sending Data");
+						redRef.doc(doc.id).set({
+							[currUser] : scoutedData
+						}, { merge: true });
+					}
 				});
 			})
 			.catch(err => {
 				console.log('Error getting documents', err);
 			});
-		
+// TODO catch if team not found, give option for change info(team number or match number)
 	};
 }]);
 
