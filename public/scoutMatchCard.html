@@ -12,7 +12,7 @@
 		-->
 		<md-input-container class="md-block" flex-gt-sm="">
             <label>Competition</label>
-            <md-select ng-model="competition" class="md-no-underline">
+            <md-select ng-model="competition" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
 				<md-option value="iacf">Iowa Regional</md-option>
 				<md-option value="mokc2">Heartland Regional</md-option>
 				<md-option value="ndgf">Great Northern Regional</md-option>
@@ -44,5 +44,5 @@
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
         <md-button ng-click='putMatchData()'>Submit</md-button>
-    </md-card-actions>  
+    </md-card-actions>	
 </md-card>

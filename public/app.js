@@ -95,7 +95,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 				console.log(eventVar);
 				console.log(i);
 				console.log(eventVar.event_code);
-				
+				// TODO edit to also add each match and teams on which alliance for each match
 				var rootRef = db.doc("events/"+eventVar.event_code);
 				rootRef.set({
 					address:eventVar.address,
@@ -131,7 +131,8 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		})
 		.catch(err => {
 			console.log('Error getting document', err);
-		}); */
+		}); 
+ */
 		
 		//path for red and blue alliance
 		var redRef = rootRef.collection("red");
@@ -177,7 +178,56 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			.catch(err => {
 				console.log('Error getting documents', err);
 			});
-// TODO catch if team not found, give option for change info(team number or match number)
+	// TODO catch if team not found, give option for change info(team number or match number)
+	};
+	
+	$scope.calculateAverage = function(){
+//		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum+"/red/0001Test/");
+		//CHANGE
+		var rootRef = db.doc("events/00aaTest/matches/1/red/0001Test/");
+		
+		var datapoints = 0;
+		var totalTeleScores = 0;
+		var trueAutoShot = 0;
+		var falseAutoShot = 0;
+		var autoShot = false;
+		var autoShotPercent = 0;
+		var jsonData;
+		
+		var matchData = rootRef.get()
+		.then(doc => {
+			if (!doc.exists) {
+				console.log('No such document!');
+			} else {
+			//	console.log('Document data:', doc.data());
+				jsonData = doc.data();
+				console.log(jsonData);
+				for(var p in jsonData){
+				//	console.log(p, ' ', jsonData[p]);
+				//	console.log(jsonData[p].teleScores);
+					if(jsonData[p].autoShot){
+						trueAutoShot++;
+					}else{
+						falseAutoShot++;
+					}
+					totalTeleScores += jsonData[p].teleScores;
+					datapoints ++;
+				}
+				autoShotPercent = (falseAutoShot/datapoints)*100;
+				
+				if(trueAutoShot > falseAutoShot){
+					autoShot = true;
+					autoShotPercent = (trueAutoShot/datapoints)*100;
+				}
+				console.log('TotalTeleScores:', totalTeleScores);
+				console.log('Datapoints:', datapoints);
+				console.log('Made auto shot:'+autoShot+' '+autoShotPercent+'%');
+				console.log('AverageTeleScores:', totalTeleScores/datapoints);
+			}
+		})
+		.catch(err => {
+			console.log('Error getting document', err);
+		});
 	};
 }]);
 
