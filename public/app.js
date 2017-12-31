@@ -285,24 +285,24 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 
 app.directive('teamInputCard', function(){
 	return {
-		templateUrl: 'teamInputCard.html',
+		templateUrl: 'directives/teamInputCard.html',
 	}
 });
 
 app.directive('loadTeamDataCard', function() {
 	return {
-		templateUrl: 'loadTeamDataCard.html',
+		templateUrl: 'directives/loadTeamDataCard.html',
 	}
 });
 
 app.directive('scoutMatchCard', function(){
 	return {
-		templateUrl: 'scoutMatchCard.html',
+		templateUrl: 'directives/scoutMatchCard.html',
 	}
 });
 
 app.directive('teamStatsCard', function(){
 	return {
-		templateUrl: 'teamStatsCard.html',
+		templateUrl: 'directives/teamStatsCard.html',
 	}
 });
