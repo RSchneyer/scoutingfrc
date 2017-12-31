@@ -9,28 +9,16 @@
     <!-- Angular Material Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
 	
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase-firestore.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
-    <script>
-		// Initialize Firebase
-		var config = {
-			apiKey: "AIzaSyCUCYkr-YZSJAzRDOsgzm5FuMd4uaK2P6U",
-			authDomain: "scoutingfrc-189201.firebaseapp.com",
-			databaseURL: "https://scoutingfrc-189201.firebaseio.com",
-			projectId: "scoutingfrc-189201",
-			storageBucket: "scoutingfrc-189201.appspot.com",
-			messagingSenderId: "458144233871"
-		};
-		firebase.initializeApp(config);
-		var firestore = firebase.firestore();
-    </script>
-	
+    
 	<!-- Handmade files ("artisanal") -->
+	<script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
     <link rel="stylesheet" href="scouting.css">
 	
@@ -50,6 +38,8 @@
             </md-button>
         </div>
     </md-toolbar>
+
+    <team-stats-card></team-stats-card>
 
     <team-input-card ng-show='authStatus'></team-input-card>
 	

@@ -6,17 +6,25 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
-        <md-input-container>
-    <!--        <label>Competition</label>-->
-            <select ng-model='competition'>
-			<!--
-				TODO - make this autoload with js for competitions that match the current week
-			-->
-				<option value="iacf">Iowa Regional</option>
-				<option value="mokc2">Heartland Regional</option>
-				<option value="ndgf">Great Northern Regional</option>
-				<option value="00aaTest">Test Regional</option>
-			</select>
+		<!--
+			TODO - make this autoload with js for competitions that match the current week
+			https://material.angularjs.org/latest/demo/input
+		-->
+		<md-input-container class="md-block" flex-gt-sm="">
+            <label>Competition</label>
+            <md-select ng-model="competition" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
+				<md-option value="iacf">Iowa Regional</md-option>
+				<md-option value="mokc2">Heartland Regional</md-option>
+				<md-option value="ndgf">Great Northern Regional</md-option>
+				<md-option value="00aaTest">Test Regional</md-option>
+            </md-select>
+        </md-input-container><br>
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label>Alliance Color</label>
+            <md-select ng-model="scoutedColor" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
+                <md-option value="red">Red</md-option>
+                <md-option value="blue">Blue</md-option>
+            </md-select>
         </md-input-container><br>
 		<md-input-container>
             <label>Team Number</label>
@@ -26,22 +34,22 @@
             <label>Match Number</label>
             <input type='number' ng-model='matchNum'>
         </md-input-container><br>
-		<md-input-container>
-            <label>Auto Shot Made</label>
-            <input type='checkbox' ng-model='autoShot'>
-        </md-input-container><br>
+		<md-checkbox ng-model="autoShot" class="md-primary" aria-label="Checkbox 1">
+            Auto Shot Made
+        </md-checkbox><br>
 		<md-input-container>
             <label>Tele Scores</label>
             <input type='number' ng-model='teleScores'>
         </md-input-container><br>
-<!--		<md-input-container>
-            <label>Tele Flag Level</label>
-            <input type='radio' value="high" ng-model='teleFlag'>High<br>
-			<input type='radio' value="middle" ng-model='teleFlag'>Middle<br>
-			<input type='radio' value"low" ng-model='teleFlag'>Low
-        </md-input-container><br>-->
+		<!-- TODO - Need to figure out better label -->
+		<md-radio-group ng-model="teleFlag">
+			<label>Tele Flag Level</label>
+			<md-radio-button value="high" class="md-primary">High</md-radio-button>
+			<md-radio-button value="middle" class="md-primary">Middle</md-radio-button>
+			<md-radio-button value="low" class="md-primary">Low</md-radio-button>
+		</md-radio-group><br>
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
         <md-button ng-click='putMatchData()'>Submit</md-button>
-    </md-card-actions>  
+    </md-card-actions>	
 </md-card>
