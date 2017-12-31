@@ -65,6 +65,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			$scope.teamDataBlock = response.data;
 			var rootRef = db.doc("teams/"+$scope.loadTeamNumber);
 			console.log(rootRef);
+			console.log($scope.teamDataBlock);
 			rootRef.set({
 				city:$scope.teamDataBlock.city,
 				country:$scope.teamDataBlock.country,
@@ -93,9 +94,11 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			for(var i = 0; i < $scope.teamDataBlock.length; i++){
 				var eventVar = $scope.teamDataBlock[i];
 				console.log(eventVar);
-				console.log(i);
 				console.log(eventVar.event_code);
+				var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
+
 				// TODO edit to also add each match and teams on which alliance for each match
+				// TODO for each event, load a teams list into the db for all present teams
 				var rootRef = db.doc("events/"+eventVar.event_code);
 				rootRef.set({
 					address:eventVar.address,
@@ -118,8 +121,8 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 	 */
 	$scope.putMatchData = function(){
 		//location to save data
-		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
-
+//		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
+		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition+"/matches/"+$scope.matchNum);
 		//not needed?
 /*		var matchData = rootRef.get()
 		.then(doc => {
@@ -135,18 +138,24 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
  */
 		
 		//path for red and blue alliance
-		var redRef = rootRef.collection("red");
-		var blueRef = rootRef.collection("blue");
+//		var redRef = rootRef.collection("red");
+//		var blueRef = rootRef.collection("blue");
 		
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
-							autoShot:$scope.autoShot};
+							autoShot:$scope.autoShot,
+							teleFlag:$scope.teleFlag};
 		
 // TODO this test team will not be needed, just use the team number	
 		console.log('scouted data => '+ scoutedData);
-		var testTeamKey = '000' + $scope.teamNum + 'Test';
-		console.log('testTeamKey => '+ testTeamKey);
-//*****************************************************************		
+//		var testTeamKey = '000' + $scope.teamNum + 'Test';
+//		console.log('testTeamKey => '+ testTeamKey);
+
+		rootRef.set({
+			[$scope.currUser] : scoutedData,
+			color : $scope.scoutedColor
+		}, { merge: true });
+/*****************************************************************		
 		var redData = redRef.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
@@ -179,13 +188,10 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 				console.log('Error getting documents', err);
 			});
 	// TODO catch if team not found, give option for change info(team number or match number)
+	*/
 	};
 	
 	$scope.calculateAverage = function(){
-//		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum+"/red/0001Test/");
-		//CHANGE
-		var rootRef = db.doc("events/00aaTest/matches/1/red/0001Test/");
-		
 		var datapoints = 0;
 		var totalTeleScores = 0;
 		var trueAutoShot = 0;
@@ -193,7 +199,53 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		var autoShot = false;
 		var autoShotPercent = 0;
 		var jsonData;
+
+		if($scope.statMatchNum == 'all'){
+			var path = "teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition+"/matches/";
+			var rootRef = db.collection(path);
+			console.log('all value');
+			console.log(path);
+			var matches = rootRef.get()
+			.then(doc => {
+				if (!doc.exists) {
+					console.log('No such document!');
+				} else {
+				//	console.log('Document data:', doc.data());
+					jsonData = doc.data();
+					console.log(jsonData);
+					for(var p in jsonData){
+					//	console.log(p, ' ', jsonData[p]);
+					//	console.log(jsonData[p].teleScores);
+						if(jsonData[p].autoShot){
+							trueAutoShot++;
+						}else{
+							falseAutoShot++;
+						}
+						totalTeleScores += jsonData[p].teleScores;
+						datapoints ++;
+					}
+					autoShotPercent = (falseAutoShot/datapoints)*100;
+					
+					if(trueAutoShot > falseAutoShot){
+						autoShot = true;
+						autoShotPercent = (trueAutoShot/datapoints)*100;
+					}
+					console.log('TotalTeleScores:', totalTeleScores);
+					console.log('Datapoints:', datapoints);
+					console.log('Made auto shot:'+autoShot+' '+autoShotPercent+'%');
+					console.log('AverageTeleScores:', totalTeleScores/datapoints);
+				}
+			})
+			.catch(err => {
+				console.log('Error getting document', err);
+			});
+		}else{
+			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition+"/matches/"+$scope.matchNum);
+		};
 		
+		var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition+"/matches/"+$scope.matchNum);
+//		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum+"/red/0001Test/");
+				
 		var matchData = rootRef.get()
 		.then(doc => {
 			if (!doc.exists) {
@@ -246,5 +298,11 @@ app.directive('loadTeamDataCard', function() {
 app.directive('scoutMatchCard', function(){
 	return {
 		templateUrl: 'scoutMatchCard.html',
+	}
+});
+
+app.directive('teamStatsCard', function(){
+	return {
+		templateUrl: 'teamStatsCard.html',
 	}
 });

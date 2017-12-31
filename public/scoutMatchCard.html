@@ -19,6 +19,13 @@
 				<md-option value="00aaTest">Test Regional</md-option>
             </md-select>
         </md-input-container><br>
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label>Alliance Color</label>
+            <md-select ng-model="scoutedColor" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
+                <md-option value="red">Red</md-option>
+                <md-option value="blue">Blue</md-option>
+            </md-select>
+        </md-input-container><br>
 		<md-input-container>
             <label>Team Number</label>
             <input type='number' ng-model='teamNum'>
