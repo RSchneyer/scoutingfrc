@@ -1,11 +1,26 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase']);
 
-app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth', function($scope, $rootScope, $http, $firebaseAuth){
-	$scope.authStatus = false;
+app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth', '$mdSidenav', function($scope, $rootScope, $http, $firebaseAuth, $mdSidenav){
+	
+	$scope.authStatus;
 	var auth = $firebaseAuth();
 
 	var db = firebase.firestore();
-	var usersDB = db.collection('users');
+	var usersDB = db.collection('users')
+
+
+	$scope.checkAuth = function(){
+		var loggedIn = auth.$getAuth();
+		if (loggedIn){
+			$scope.authStatus = true;
+		} else {
+			$scope.authStatus = false;
+		}
+		console.log('checkAuth ran!');
+		console.log(loggedIn);
+	};
+	$scope.checkAuth();
+
 
 	$scope.signIn = function(){
 		auth.$signInWithPopup('google').then(function(result){
@@ -28,6 +43,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 
 
 			console.dir(result);
+			$scope.userPhoto = result.user.photoURL;
 			$scope.currUser = result.user.uid;
 			
 			$scope.authStatus = true;
@@ -43,7 +59,21 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 		});
 	};
 
+	$scope.togglesideNav = function(){
+		$mdSidenav('left').toggle();
+		console.log('SideNav toggled');
+		console.log($scope.userPhoto);
+	};
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO: Move to appropriate Controller
+	
+}]);
+
+app.controller('inputControl', ['$scope', '$http', function($scope, $http){
+
+	var db = firebase.firestore();
+	var usersDB = db.collection('users')
+
 	$scope.getTeamData = function(){
 		var team = 'frc' + $scope.frcTeam;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+team+'/simple?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
@@ -281,28 +311,44 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			console.log('Error getting document', err);
 		});
 	};
+	
 }]);
 
+
+
+
+
+
+
+
+
+//Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.directive('teamInputCard', function(){
 	return {
-		templateUrl: 'teamInputCard.html',
+		templateUrl: 'directives/teamInputCard.html',
 	}
 });
 
 app.directive('loadTeamDataCard', function() {
 	return {
-		templateUrl: 'loadTeamDataCard.html',
+		templateUrl: 'directives/loadTeamDataCard.html',
 	}
 });
 
 app.directive('scoutMatchCard', function(){
 	return {
-		templateUrl: 'scoutMatchCard.html',
+		templateUrl: 'directives/scoutMatchCard.html',
 	}
 });
 
 app.directive('teamStatsCard', function(){
 	return {
-		templateUrl: 'teamStatsCard.html',
+		templateUrl: 'directives/teamStatsCard.html',
+	}
+});
+
+app.directive('sideNav', function(){
+	return {
+		templateUrl: 'directives/sideNav.html',
 	}
 });
