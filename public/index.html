@@ -22,9 +22,13 @@
 	<script src= 'app.js'></script>
     <link rel="stylesheet" href="scouting.css">
 	
+    <!-- MAke the site responsive -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+
+
 </head>
 <body ng-app='scoutingfrc' ng-controller='authControl'>
-    <md-toolbar>
+    <md-toolbar flex>
         <div class='md-toolbar-tools'>
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
@@ -38,10 +42,9 @@
             </md-button>
         </div>
     </md-toolbar>
-
-    <md-content flex>
+    <side-nav></side-nav>
+    <md-content flex style='height:100%'>
         <!-- Directives!!! -->
-        <side-nav></side-nav>
         <div layout-margin>
             <!-- Ryley's Input Stuff -->
             <team-stats-card ng-controller='inputControl'></team-stats-card>
