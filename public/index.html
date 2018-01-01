@@ -39,14 +39,16 @@
         </div>
     </md-toolbar>
 
-    <!-- Directives!!! -->
-    <side-nav></side-nav>
+    <md-content flex>
+        <!-- Directives!!! -->
+        <side-nav></side-nav>
+        <div layout-margin>
+            <!-- Ryley's Input Stuff -->
+            <team-stats-card ng-controller='inputControl'></team-stats-card>
+            <team-input-card ng-controller='inputControl' ng-show='authStatus'></team-input-card>
+            <load-team-data-card ng-controller='inputControl' ng-show='authStatus'></load-team-data-card>
+            <scout-match-card ng-controller='inputControl' ng-show='authStatus'></scout-match-card>
+        </div>        
+    </md-content>
 
-    <team-stats-card ng-controller='inputControl'></team-stats-card>
-
-    <team-input-card ng-controller='inputControl' ng-show='authStatus'></team-input-card>
-	
-	<load-team-data-card ng-controller='inputControl' ng-show='authStatus'></load-team-data-card>
-
-	<scout-match-card ng-controller='inputControl' ng-show='authStatus'></scout-match-card>
 </body>

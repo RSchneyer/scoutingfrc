@@ -23,33 +23,35 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 
 
 	$scope.signIn = function(){
-		auth.$signInWithPopup('google').then(function(result){
-			var authResult = result;
-			usersDB.doc(authResult.user.uid).get().then(function(result){
-				if (result.exists) {
-					console.log("You Exist. Congrats.")
-				} else {
-					usersDB.doc(authResult.user.uid).set({
-						userDisplayName: authResult.user.displayName
-					})
-					.then(function(){
-						console.log('User created!')
-					})
-					.catch(function(error){
-						console.log('An error occurred: ', error);
-					})
-				};
-			})	
+		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(function(){
+			auth.$signInWithPopup('google').then(function(result){
+				var authResult = result;
+				usersDB.doc(authResult.user.uid).get().then(function(result){
+					if (result.exists) {
+						console.log("You Exist. Congrats.")
+					} else {
+						usersDB.doc(authResult.user.uid).set({
+							userDisplayName: authResult.user.displayName
+						})
+						.then(function(){
+							console.log('User created!')
+						})
+						.catch(function(error){
+							console.log('An error occurred: ', error);
+						})
+					};
+				})	
 
 
-			console.dir(result);
-			$scope.userPhoto = result.user.photoURL;
-			$scope.currUser = result.user.uid;
+				console.dir(result);
+				$scope.currUser = result.user.uid;
 			
-			$scope.authStatus = true;
-		}).catch(function(error){
-			console.error("Authentication failed: ", error);
-		});
+				$scope.authStatus = true;
+			}).catch(function(error){
+				console.error("Authentication failed: ", error);
+			});			
+			})
+
 	};
 
 	$scope.signOut = function(){
