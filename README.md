@@ -13,14 +13,14 @@ issue in [Github](https://github.com/RSchneyer/scoutingfrc/issues)
 
 ## Contributing
 We would love to have all the help we can in building and testing this website!
-Let us know at [ScoutingFRC@gmail.com](mailto:ScoutingFRC@gmail.com)
+Let us know at [ScoutingFRCweb@gmail.com](mailto:ScoutingFRCWeb@gmail.com)
 
 ## Acknowledgements
 Thank you to The Blue Alliance makers for having an easy to use API.
 
 ## Authors
-Reid Schneyer - "Professional" AngularJS Developer*  
-Ryley Radack - FIRST Retired Programmer*  
-Phillip Kelsey - The ideas/README.md guy*
+[Reid Schneyer](https://www.linkedin.com/in/reid-s-532023121/) - "Professional" AngularJS Developer*  
+[Ryley Radack](https://www.linkedin.com/in/ryley-radack-381a2a147/) - FIRST Retired Programmer*  
+[Phillip Kelsey](https://www.linkedin.com/in/phillip-kelsey-112a0a147/) - The ideas/README.md guy*
 
 /*We are college kids doing this for fun
