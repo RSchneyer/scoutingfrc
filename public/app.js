@@ -351,3 +351,9 @@ app.directive('sideNav', function(){
 		templateUrl: 'directives/sideNav.html',
 	}
 });
+
+app.directive('signInCard', function(){
+	return {
+		templateUrl: 'directives/signInCard.html',
+	}
+});
