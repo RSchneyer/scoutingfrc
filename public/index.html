@@ -29,7 +29,7 @@
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
-            <h2 md-truncate flex>FRC Scout {{authStatus}}</h2>
+            <h2 md-truncate flex>FRC Scout</h2>
             <md-button layout-align='end center' ng-click='signIn()' ng-hide='authStatus'>
                 <i class='material-icons md-icon-36'>account_circle</i>
             </md-button>
@@ -42,11 +42,11 @@
     <!-- Directives!!! -->
     <side-nav></side-nav>
 
-    <team-stats-card></team-stats-card>
+    <team-stats-card ng-controller='inputControl'></team-stats-card>
 
-    <team-input-card ng-show='authStatus'></team-input-card>
+    <team-input-card ng-controller='inputControl' ng-show='authStatus'></team-input-card>
 	
-	<load-team-data-card ng-show='authStatus'></load-team-data-card>
+	<load-team-data-card ng-controller='inputControl' ng-show='authStatus'></load-team-data-card>
 
-	<scout-match-card ng-show='authStatus'></scout-match-card>
+	<scout-match-card ng-controller='inputControl' ng-show='authStatus'></scout-match-card>
 </body>

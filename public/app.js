@@ -1,11 +1,13 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase']);
 
 app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth', '$mdSidenav', function($scope, $rootScope, $http, $firebaseAuth, $mdSidenav){
+	
 	$scope.authStatus;
 	var auth = $firebaseAuth();
 
 	var db = firebase.firestore();
 	var usersDB = db.collection('users')
+
 
 	$scope.checkAuth = function(){
 		var loggedIn = auth.$getAuth();
@@ -64,6 +66,14 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 	};
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO: Move to appropriate Controller
+	
+}]);
+
+app.controller('inputControl', ['$scope', '$http', function($scope, $http){
+
+	var db = firebase.firestore();
+	var usersDB = db.collection('users')
+
 	$scope.getTeamData = function(){
 		var team = 'frc' + $scope.frcTeam;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+team+'/simple?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
@@ -301,8 +311,18 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			console.log('Error getting document', err);
 		});
 	};
+	
 }]);
 
+
+
+
+
+
+
+
+
+//Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.directive('teamInputCard', function(){
 	return {
 		templateUrl: 'directives/teamInputCard.html',
