@@ -96,7 +96,9 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 				console.log(eventVar);
 				console.log(eventVar.event_code);
 				var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
-
+				teamRef.set({
+					name:eventVar.short_name
+				});
 				// TODO edit to also add each match and teams on which alliance for each match
 				// TODO for each event, load a teams list into the db for all present teams
 				var rootRef = db.doc("events/"+eventVar.event_code);
@@ -147,12 +149,6 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 							teleFlag:$scope.teleFlag,
 							color:$scope.scoutedColor
 							};
-		
-// TODO this test team will not be needed, just use the team number	
-		console.log('scouted data => '+ scoutedData);
-//		var testTeamKey = '000' + $scope.teamNum + 'Test';
-//		console.log('testTeamKey => '+ testTeamKey);
-
 		rootRef.set({
 			[$scope.currUser] : scoutedData,
 		}, { merge: true });
@@ -196,12 +192,6 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 	/*
 	 * Takes data from the input fields and calculates averages from the data set
 	 */
-	$scope.teamStatNumChange = function(){
-		calculateAverage();
-	};
-	$scope.statTeamCompetitionCahnge = function(){
-		calculateAverage();
-	}
 	$scope.calculateAverage = function(){
 		$scope.datapoints = 0;
 		var totalTeleScores = 0;
@@ -316,6 +306,36 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 			});
 		};
 	};
+	//still in progress
+	$scope.teamStatNumChange = function(){
+		var rootRef = db.collection("teams/"+$scope.teamStatNum+"/events/");
+		var competitions = '[{"name":"All Season", "value":"all"},';
+		var i = 0;
+		var teamComps = rootRef.get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				if(i != 0){
+					competitions = competitions + ', '
+				}
+				console.warn(doc.id);
+				docData = doc.data();
+				console.log(docData);
+				competitions = competitions + '{"name":"'+docData.name+'", "value":"'+doc.id+'"}';
+				i++;
+			})
+			competitions += ']';
+			console.log(competitions);
+			$scope.statTeamComps = JSON.parse(competitions);
+			console.log($scope.statTeamComps);
+//			$scope.statTeamCompetition = $scope.statTeamComps[0];
+//			console.log($scope.statTeamCompetition);
+			$scope.calculateAverage();
+		})
+	};
+	//still in progress
+	$scope.statTeamCompetitionCahnge = function(){
+		$scope.calculateAverage();
+	}
 }]);
 
 app.directive('teamInputCard', function(){
