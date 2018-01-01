@@ -1,14 +1,13 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-            <span class='md-headline'>Team Stats</span>
-<!--            <span class='md-subline'>Selected Team: {{teamData.nickname}}</span>-->
+            <span class='md-headline'>Team Stats: {{teamStatNum}}</span>
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
         <md-input-container>
             <label>Team Number</label>
-            <input type='number' ng-model='teamStatNum'>
+            <input type='number' ng-model='teamStatNum' ng-change="teamStatNumChange()">
         </md-input-container>
         <!--
 			TODO - make this autoload with js for competitions that match the team
@@ -17,19 +16,24 @@
 		-->
 		<md-input-container class="md-block" flex-gt-sm="">
             <label>Competition</label>
-            <md-select ng-model="statTeamCompetition" class="md-no-underline" ng-change="calculateAverage()">
-                <md-option value="all">All Season</md-option>
-				<md-option value="iacf">Iowa Regional</md-option>
-				<md-option value="mokc2">Heartland Regional</md-option>
-				<md-option value="ndgf">Great Northern Regional</md-option>
-				<md-option value="00aaTest">Test Regional</md-option>
+            <md-select ng-model="statTeamCompetition" class="md-no-underline" ng-change="statTeamCompetitionChange()">
+            <!-- ng-options="item.name for item in statTeamComps" 
+                 ng-options="item.name for item in towns"
+            -->
+                <md-option value="all" selected>All Season</md-option>
             </md-select>
         </md-input-container>
-        <md-input-container class="md-block" flex-gt-sm="">
+        <md-input-container class="md-block" flex-gt-sm="" ng-show="statTeamCompetition!='all'">
             <label>Match</label>
             <md-select ng-model="statMatchNum" class="md-no-underline" ng-change="calculateAverage()">
                 <md-option value="all">All matches</md-option>
             </md-select>
         </md-input-container>
+    </md-card-content>
+    <md-card-content>
+        <span class='md-subline'>Selected Competition: {{statTeamCompetition}}</span><br>
+        <span class='md-subline'>Auto Shot percentage: {{autoShotPercent}}%</span><br>
+        <span class='md-subline'>Average Tele Scores: {{avgTeleScores}}</span><br>
+        <span class='md-sublime'>Data points averaged: {{datapoints}}</span><br>
     </md-card-content>
 </md-card>
