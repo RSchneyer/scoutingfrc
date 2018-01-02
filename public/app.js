@@ -333,7 +333,6 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 			$scope.calculateAverage();
 		})
 	};
-	//still in progress
 	$scope.statTeamCompetitionChange = function(){
 		var rootRef = db.collection("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/matches/");
 		var competitions = [{number:'All Matches', value:'all'}];
@@ -378,7 +377,6 @@ app.directive('scoutMatchCard', function(){
 
 app.directive('teamStatsCard', function(){
 	return {
-		require: '^inputControl',
 		templateUrl: 'directives/teamStatsCard.html',
 	}
 });
