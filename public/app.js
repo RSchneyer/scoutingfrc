@@ -227,33 +227,49 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		if($scope.statTeamCompetition.value == 'all' || $scope.statTeamCompetition == null){
 			var path = "teams/"+$scope.teamStatNum+"/events/";
 			var rootRef = db.collection(path);
-			console.log('all competition value');
+			var numEvents = 0;
 			var comps = rootRef.get()
 			.then(snapshot => {
+				//for each event
 				snapshot.forEach(doc => {
 					if (!doc.exists) {
 						console.log('No such document!');
 					}else{
+						console.log('Event: '+doc.id);
+						var numMatches = 0;
+						var autoShotEvent = 0.0;
+						var teleScoreEvent = 0.0;
 						db.collection(path+doc.id+"/matches/").get()
 						.then(snapshot => {
+							//for each match
 							snapshot.forEach(doc => {
 								if (!doc.exists) {
 									console.error('No such document!');
 								} else {
+									var autoShotMatch = 0;
+									var teleScoreMatch = 0.0;
+									var entriesMatch = 0.0;
 									jsonData = doc.data();
+									//for each scouting entry
 									for(var p in jsonData){
 										if(jsonData[p].autoShot){
-											trueAutoShot++;
+											autoShotMatch++;
 										}
-										totalTeleScores += jsonData[p].teleScores;
-										$scope.datapoints ++;
+										teleScoreMatch += jsonData[p].teleScores;
+										entriesMatch++;
+										$scope.datapoints++;
 									}
-									$scope.autoShotPercent = (trueAutoShot/$scope.datapoints)*100;
+									numMatches++;
+									autoShotEvent+=autoShotMatch/entriesMatch;
+									teleScoreEvent+=teleScoreMatch/entriesMatch;
 								};
 							})
-							$scope.avgTeleScores = totalTeleScores/$scope.datapoints;
-//							console.log('TotalTeleScores:', totalTeleScores, '\nDatapoints:', $scope.datapoints, '\nMade auto shot:'+$scope.autoShotPercent+'%\nAverageTeleScores:', $scope.avgTeleScores);
-							$scope.$apply()
+							numEvents++;
+							trueAutoShot+=autoShotEvent/numMatches;
+							totalTeleScores+=teleScoreEvent/numMatches;
+							$scope.autoShotPercent = (trueAutoShot/numEvents)*100;
+							$scope.avgTeleScores = totalTeleScores/numEvents;
+							$scope.$apply();
 						})
 					}
 				})
@@ -264,26 +280,35 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		}else if($scope.statMatchNum.value == 'all' || $scope.statMatchNums == null){
 			var path = "teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/matches/";
 			var rootRef = db.collection(path);
+			var numMatches = 0;
 			var matches = rootRef.get()
 			.then(snapshot => {
+				//for each match
 				snapshot.forEach(doc => {
 					if (!doc.exists) {
 						console.log('No such document!');
 					} else {
+						var autoShot = 0;
+						var teleScore = 0;
+						var entries = 0;
 						jsonData = doc.data();
+						//for each scouting entry
 						for(var p in jsonData){
 							if(jsonData[p].autoShot){
-								trueAutoShot++;
+								autoShot++;
 							}
-							totalTeleScores += jsonData[p].teleScores;
-							$scope.datapoints ++;
+							teleScore += jsonData[p].teleScores;
+							entries++;
+							$scope.datapoints++;
 						}
-						$scope.autoShotPercent = (trueAutoShot/$scope.datapoints)*100;
-						$scope.avgTeleScores = totalTeleScores/$scope.datapoints;
-//						console.log('TotalTeleScores:', totalTeleScores, '\nDatapoints:', $scope.datapoints, '\nMade auto shot:'+$scope.autoShotPercent+'%\nAverageTeleScores:', $scope.avgTeleScores);
-						$scope.$apply()
+						numMatches++;
+						trueAutoShot+=autoShot/entries;
+						totalTeleScores+=teleScore/entries;
 					};
 				})
+				$scope.autoShotPercent = (trueAutoShot/numMatches)*100;
+				$scope.avgTeleScores = totalTeleScores/numMatches;
+				$scope.$apply();
 			})
 			.catch(err => {
 				console.log('Error getting document', err);
@@ -305,8 +330,7 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 					}
 					$scope.autoShotPercent = (trueAutoShot/$scope.datapoints)*100;
 					$scope.avgTeleScores = totalTeleScores/$scope.datapoints;
-//					console.log('TotalTeleScores:', totalTeleScores, '\nDatapoints:', $scope.datapoints, '\nMade auto shot:'+$scope.autoShotPercent+'%\nAverageTeleScores:', $scope.avgTeleScores);
-					$scope.$apply()
+					$scope.$apply();
 				}
 			})
 			.catch(err => {
