@@ -43,7 +43,6 @@ app.controller('authControl', ['$scope', '$rootScope', '$http', '$firebaseAuth',
 
 
 			console.dir(result);
-			$scope.userPhoto = result.user.photoURL;
 			$scope.currUser = result.user.uid;
 			
 			$scope.authStatus = true;
