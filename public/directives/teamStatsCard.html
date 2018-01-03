@@ -9,29 +9,22 @@
             <label>Team Number</label>
             <input type='number' ng-model='teamStatNum' ng-change="teamStatNumChange()">
         </md-input-container>
-        <!--
-			TODO - make this autoload with js for competitions that match the team
-            TODO - make match numbers autoload from team and competition
-			https://material.angularjs.org/latest/demo/input
-		-->
-		<md-input-container class="md-block" flex-gt-sm="">
-            <label>Competition</label>
-            <md-select ng-model="statTeamCompetition" class="md-no-underline" ng-change="statTeamCompetitionChange()">
-            <!-- ng-options="item.name for item in statTeamComps" 
-                 ng-options="item.name for item in towns"
-            -->
-                <md-option value="all" selected>All Season</md-option>
-            </md-select>
+        <!-- TODO - work on css********** -->
+		<md-input-container class="md-block" flex-gt-sm="" ng-show="teamStatNum!=null">
+            <label>Competition:</label>
+                <select ng-model="statTeamCompetition" class="md-no-underline" ng-change="statTeamCompetitionChange()" ng-options="obj.name for obj in statTeamComps">
+                </select>
+            <label></label>
         </md-input-container>
-        <md-input-container class="md-block" flex-gt-sm="" ng-show="statTeamCompetition!='all'">
-            <label>Match</label>
-            <md-select ng-model="statMatchNum" class="md-no-underline" ng-change="calculateAverage()">
-                <md-option value="all">All matches</md-option>
-            </md-select>
+        <md-input-container class="md-block" flex-gt-sm="" ng-show="statTeamCompetition.value!='all'">
+            <label>Match:</label>
+                <select ng-model="statMatchNum" class="md-no-underline" ng-change="calculateAverage()" ng-options="obj.number for obj in statMatchNums">
+                </select>
+            <label></label>
         </md-input-container>
     </md-card-content>
-    <md-card-content>
-        <span class='md-subline'>Selected Competition: {{statTeamCompetition}}</span><br>
+    <md-card-content ng-show="teamStatNum!=null">
+        <span class='md-subline'>Selected Competition: {{statTeamCompetition.value}}</span><br>
         <span class='md-subline'>Auto Shot percentage: {{autoShotPercent}}%</span><br>
         <span class='md-subline'>Average Tele Scores: {{avgTeleScores}}</span><br>
         <span class='md-sublime'>Data points averaged: {{datapoints}}</span><br>
