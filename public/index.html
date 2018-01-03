@@ -22,9 +22,14 @@
 	<script src= 'app.js'></script>
     <link rel="stylesheet" href="scouting.css">
 	
+    <!-- MAke the site responsive -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <title>FRC Scout</title>
+    <link rel="icon" href="databasefavicon.png" type="image/png">
+
 </head>
 <body ng-app='scoutingfrc' ng-controller='authControl'>
-    <md-toolbar>
+    <md-toolbar flex>
         <div class='md-toolbar-tools'>
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
@@ -39,14 +44,18 @@
         </div>
     </md-toolbar>
 
-    <!-- Directives!!! -->
     <side-nav></side-nav>
 
-    <team-stats-card ng-controller='inputControl'></team-stats-card>
+    <md-content flex style='height:100%'>
+        <!-- Directives!!! -->
+        <div layout-margin>
+            <sign-in-card ng-hide='authStatus' layout-align='center' flex='50'></sign-in-card>
+            <!-- Ryley's Input Stuff -->
+            <team-stats-card ng-controller='inputControl' ng-show='authStatus'></team-stats-card>
+            <team-input-card ng-controller='inputControl' ng-show='authStatus'></team-input-card>
+            <load-team-data-card ng-controller='inputControl' ng-show='authStatus'></load-team-data-card>
+            <scout-match-card ng-controller='inputControl' ng-show='authStatus'></scout-match-card>
+        </div>        
+    </md-content>
 
-    <team-input-card ng-controller='inputControl' ng-show='authStatus'></team-input-card>
-	
-	<load-team-data-card ng-controller='inputControl' ng-show='authStatus'></load-team-data-card>
-
-	<scout-match-card ng-controller='inputControl' ng-show='authStatus'></scout-match-card>
 </body>
