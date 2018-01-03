@@ -113,27 +113,35 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 * Also called the first time that a team has info scouted about them.
 	 */
 	$scope.loadTeamEventData = function(){
+		var delayer = 0;
 		var teamKey = 'frc' + $scope.loadTeamNumber;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 		.then(function(response){
 			$scope.teamDataBlock = response.data;
 			for(var i = 0; i < $scope.teamDataBlock.length; i++){
 				var eventVar = $scope.teamDataBlock[i];
-				var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
-
-				// TODO edit to also add each match and teams on which alliance for each match
-				// TODO for each event, load a teams list into the db for all present teams
-				var rootRef = db.doc("events/"+eventVar.event_code);
-				rootRef.set({
-					address:eventVar.address,
-					city:eventVar.city,
-					country:eventVar.country,
-					short_name:eventVar.short_name,
-					week:eventVar.week,
-					start_date:eventVar.start_date,
-					end_date:eventVar.end_date,
-					event_code:eventVar.event_code
-				});
+				console.log(eventVar.event_code);
+				var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+				.then(function(resp){
+					console.warn(resp.data);
+					var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
+					teamRef.set({
+						name:eventVar.short_name
+					});
+					// TODO edit to also add each match and teams on which alliance for each match
+					var rootRef = db.doc("events/"+eventVar.event_code);
+					rootRef.set({
+						address:eventVar.address,
+						city:eventVar.city,
+						country:eventVar.country,
+						short_name:eventVar.short_name,
+						week:eventVar.week,
+						start_date:eventVar.start_date,
+						end_date:eventVar.end_date,
+						event_code:eventVar.event_code,
+						teams:resp.data//not always saving this
+					});
+				})
 			}
 		});
 	};
@@ -166,17 +174,12 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 */
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
-							autoShot:$scope.autoShot,
-							teleFlag:$scope.teleFlag};
-		
-// TODO this test team will not be needed, just use the team number	
-		console.log('scouted data => '+ scoutedData);
-//		var testTeamKey = '000' + $scope.teamNum + 'Test';
-//		console.log('testTeamKey => '+ testTeamKey);
-
+//							autoShot:$scope.autoShot,
+							teleFlag:$scope.teleFlag,
+							color:$scope.scoutedColor
+							};
 		rootRef.set({
 			[$scope.currUser] : scoutedData,
-			color : $scope.scoutedColor
 		}, { merge: true });
 /*****************************************************************		
 		var redData = redRef.get()
@@ -219,22 +222,13 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 * Takes data from the input fields and calculates averages from the data set
 	 */
 	$scope.calculateAverage = function(){
-		var datapoints = 0;
+		$scope.datapoints = 0;
 		var totalTeleScores = 0;
 		var trueAutoShot = 0;
-		var falseAutoShot = 0;
-		var autoShot = false;
-		var autoShotPercent = 0;
+		$scope.autoShotPercent = 0;
+		$scope.avgTeleScores = 0;
 		var jsonData;
 
-<<<<<<< HEAD
-		if($scope.statMatchNum == 'all'){
-			var path = "teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition+"/matches/";
-			var rootRef = db.collection(path);
-			console.log('all value');
-			console.log(path);
-			var matches = rootRef.get()
-=======
 		if($scope.statTeamCompetition.value == 'all' || $scope.statTeamCompetition == null){
 			var path = "teams/"+$scope.teamStatNum+"/events/";
 			var rootRef = db.collection(path);
@@ -327,84 +321,27 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		}else{
 			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/matches/"+$scope.statMatchNum.value);
 			var matchData = rootRef.get()
->>>>>>> master
 			.then(doc => {
 				if (!doc.exists) {
 					console.log('No such document!');
 				} else {
-				//	console.log('Document data:', doc.data());
 					jsonData = doc.data();
 					for(var p in jsonData){
-					//	console.log(p, ' ', jsonData[p]);
-					//	console.log(jsonData[p].teleScores);
 						if(jsonData[p].autoShot){
 							trueAutoShot++;
-						}else{
-							falseAutoShot++;
 						}
 						totalTeleScores += jsonData[p].teleScores;
-						datapoints ++;
+						$scope.datapoints ++;
 					}
-					autoShotPercent = (falseAutoShot/datapoints)*100;
-					
-					if(trueAutoShot > falseAutoShot){
-						autoShot = true;
-						autoShotPercent = (trueAutoShot/datapoints)*100;
-					}
-<<<<<<< HEAD
-					console.log('TotalTeleScores:', totalTeleScores);
-					console.log('Datapoints:', datapoints);
-					console.log('Made auto shot:'+autoShot+' '+autoShotPercent+'%');
-					console.log('AverageTeleScores:', totalTeleScores/datapoints);
-=======
 					$scope.autoShotPercent = (trueAutoShot/$scope.datapoints)*100;
 					$scope.avgTeleScores = totalTeleScores/$scope.datapoints;
 					$scope.$apply();
->>>>>>> master
 				}
 			})
 			.catch(err => {
 				console.log('Error getting document', err);
 			});
-		}else{
-			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition+"/matches/"+$scope.matchNum);
 		};
-<<<<<<< HEAD
-		
-		var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition+"/matches/"+$scope.matchNum);
-//		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum+"/red/0001Test/");
-				
-		var matchData = rootRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!');
-			} else {
-			//	console.log('Document data:', doc.data());
-				jsonData = doc.data();
-				console.log(jsonData);
-				for(var p in jsonData){
-				//	console.log(p, ' ', jsonData[p]);
-				//	console.log(jsonData[p].teleScores);
-					if(jsonData[p].autoShot){
-						trueAutoShot++;
-					}else{
-						falseAutoShot++;
-					}
-					totalTeleScores += jsonData[p].teleScores;
-					datapoints ++;
-				}
-				autoShotPercent = (falseAutoShot/datapoints)*100;
-				
-				if(trueAutoShot > falseAutoShot){
-					autoShot = true;
-					autoShotPercent = (trueAutoShot/datapoints)*100;
-				}
-				console.log('TotalTeleScores:', totalTeleScores);
-				console.log('Datapoints:', datapoints);
-				console.log('Made auto shot:'+autoShot+' '+autoShotPercent+'%');
-				console.log('AverageTeleScores:', totalTeleScores/datapoints);
-			}
-=======
 	};
 	$scope.statTeamCompetition = {name:'All Seasons', value:'all'};
 	$scope.statMatchNum = {number:'All Matches', value:'all'};
@@ -423,15 +360,8 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 			$scope.statTeamComps = competitions;
 			$scope.statTeamCompetition = $scope.statTeamComps[0];
 			$scope.calculateAverage();
->>>>>>> master
 		})
-		.catch(err => {
-			console.log('Error getting document', err);
-		});
 	};
-<<<<<<< HEAD
-	
-=======
 	$scope.statTeamCompetitionChange = function(){
 		var rootRef = db.collection("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/matches/");
 		var competitions = [{number:'All Matches', value:'all'}];
@@ -448,10 +378,33 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 			$scope.statMatchNum = $scope.statMatchNums[0];
 			$scope.calculateAverage();
 		})
-	}
->>>>>>> master
-}]);
+	};
 
+}]);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.controller('outputControl', ['$scope', '$http', function($scope, $http){
+	var db = firebase.firestore();
+	$scope.options = [];
+	$scope.downloadEvent = function(){
+
+	};
+	//initialiaze the competitions to pick in the dropdown box
+	var init = function(){
+		var rootRef = db.collection("events/");
+		var evets = rootRef.get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				docData = doc.data();
+				var element = {};
+				element.name = docData.short_name;
+				element.id = doc.id;
+				$scope.options.push(element);
+				$scope.$apply();
+			})
+		})
+	}
+	init();
+}]);
 
 
 
@@ -487,8 +440,8 @@ app.directive('sideNav', function(){
 	}
 });
 
-app.directive('signInCard', function(){
+app.directive('exportCSVCard', function(){
 	return {
-		templateUrl: 'directives/signInCard.html',
+		templateUrl: 'directives/exportCSVCard.html',
 	}
 });
