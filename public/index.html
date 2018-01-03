@@ -20,6 +20,8 @@
 	<!-- Handmade files ("artisanal") -->
 	<script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
+    <script src='controllers/inputController.js'></script>
+    <script src='controllers/authController.js'></script>
     <link rel="stylesheet" href="scouting.css">
 	
     <!-- MAke the site responsive -->
@@ -45,7 +47,7 @@
     </md-toolbar>
 
     <!-- Directives!!! -->
-    <side-nav></side-nav>
+    <side-nav ng-controller='navControl'></side-nav>
 
     <md-content flex style='height:100%'>
         <!-- Directives!!! -->
