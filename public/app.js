@@ -1,10 +1,53 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase']);
 
-app.controller('navControl', ['$mdSidenav', function($mdSidenav){
+app.run(function($rootScope){
+	$rootScope.loggedIn = false;
+
+	firebase.auth().onAuthStateChanged(function(user){
+		console.log('Auth State Changed');
+		if (user) {
+			console.log('User', user);
+			$rootScope.$apply(function(){
+				$rootScope.user = user;
+				$rootScope.loggedIn = true;
+			});
+		} 
+		else {
+			console.log('error');
+		}
+	});
+
+	$rootScope.signIn = function(){
+		var provider = new firebase.auth.GoogleAuthProvider();
+
+		firebase.auth().signInWithPopup(provider).then(function(result){
+			$rootScope.$apply(function(){
+				$rootScope.user = result.user;
+				$rootScope.loggedIn = true;
+			});
+		});
+	};
+
+	$rootScope.signOut = function(){
+		firebase.auth().signOut().then(function(){
+			$rootScope.user = {};
+			$rootScope.loggedIn = false;
+		});
+	};
+});
+
+
+
+
+
+
+
+
+
+app.controller('navControl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	$scope.togglesideNav = function(){
 		$mdSidenav('left').toggle();
 		console.log('SideNav toggled');
-		console.log($scope.userPhoto);
 	};	
 }])
 
