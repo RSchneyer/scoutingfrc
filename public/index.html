@@ -20,6 +20,8 @@
 	<!-- Handmade files ("artisanal") -->
 	<script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
+    <script src='controllers/inputController.js'></script>
+    <!-- <script src='controllers/authController.js'></script> -->
     <link rel="stylesheet" href="scouting.css">
 
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
@@ -31,35 +33,35 @@
     <link rel="icon" href="databasefavicon.png" type="image/png">
 
 </head>
-<body ng-app='scoutingfrc' ng-controller='authControl'>
+<body ng-app='scoutingfrc' >
     <md-toolbar flex>
         <div class='md-toolbar-tools'>
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
             <h2 md-truncate flex>FRC Scout</h2>
-            <md-button layout-align='end center' ng-click='signIn()' ng-hide='authStatus'>
+            <md-button layout-align='end center' ng-click='signIn()' ng-hide='loggedIn'>
                 <i class='material-icons md-icon-36'>account_circle</i>
             </md-button>
-            <md-button layout-align='end center' ng-click='signOut()' ng-show='authStatus'>
+            <md-button layout-align='end center' ng-click='signOut()' ng-show='loggedIn'>
                 <i class='material-icons md-icon-36'>exit_to_app</i>
             </md-button>
         </div>
     </md-toolbar>
 
     <!-- Directives!!! -->
-    <side-nav></side-nav>
+    <side-nav ng-controller='navControl'></side-nav>
 
 
     <md-content flex style='height:100%'>
         <!-- Directives!!! -->
         <div layout-margin>
-            <sign-in-card ng-hide='authStatus' layout-align='center' flex='50'></sign-in-card>
+            <sign-in-card ng-hide='loggedIn' layout-align='center' flex='50'></sign-in-card>
             <!-- Ryley's Input Stuff -->
-            <team-stats-card ng-controller='inputControl' ng-show='authStatus'></team-stats-card>
-            <team-input-card ng-controller='inputControl' ng-show='authStatus'></team-input-card>
-            <load-team-data-card ng-controller='inputControl' ng-show='authStatus'></load-team-data-card>
-            <scout-match-card ng-controller='inputControl' ng-show='authStatus'></scout-match-card>
+            <team-stats-card ng-controller='inputControl' ng-show='loggedIn'></team-stats-card>
+            <team-input-card ng-controller='inputControl' ng-show='loggedIn'></team-input-card>
+            <load-team-data-card ng-controller='inputControl' ng-show='loggedIn'></load-team-data-card>
+            <scout-match-card ng-controller='inputControl' ng-show='loggedIn'></scout-match-card>
         </div>        
     </md-content>
 
