@@ -30,8 +30,8 @@
     <link rel="icon" href="databasefavicon.png" type="image/png">
 
 </head>
-<body ng-app='scoutingfrc' >
-    <md-toolbar flex>
+<body ng-app='scoutingfrc' style='height:100%' >
+    <md-toolbar flex style='overflow: hidden'>
         <div class='md-toolbar-tools'>
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
@@ -49,7 +49,7 @@
     <!-- Directives!!! -->
     <side-nav ng-controller='navControl'></side-nav>
 
-    <md-content flex style='height:100%'>
+    <md-content >
         <!-- Directives!!! -->
         <div layout-margin>
             <sign-in-card ng-hide='loggedIn' layout-align='center' flex='50'></sign-in-card>
@@ -58,7 +58,8 @@
             <team-input-card ng-controller='inputControl' ng-show='loggedIn'></team-input-card>
             <load-team-data-card ng-controller='inputControl' ng-show='loggedIn'></load-team-data-card>
             <scout-match-card ng-controller='inputControl' ng-show='loggedIn'></scout-match-card>
+            <export-c-s-v-card ng-controller='outputControl' ng-show='loggedIn'></export-c-s-v-card>
         </div>        
     </md-content>
-    <export-c-s-v-card ng-controller='outputControl'></export-c-s-v-card>
+    
 </body>

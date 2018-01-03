@@ -86,35 +86,41 @@ app.controller('outputControl', ['$scope', '$http', function($scope, $http){
 app.directive('teamInputCard', function(){
 	return {
 		templateUrl: 'directives/teamInputCard.html',
-	}
+	};
 });
 
 app.directive('loadTeamDataCard', function() {
 	return {
 		templateUrl: 'directives/loadTeamDataCard.html',
-	}
+	};
 });
 
 app.directive('scoutMatchCard', function(){
 	return {
 		templateUrl: 'directives/scoutMatchCard.html',
-	}
+	};
 });
 
 app.directive('teamStatsCard', function(){
 	return {
 		templateUrl: 'directives/teamStatsCard.html',
-	}
+	};
 });
 
 app.directive('sideNav', function(){
 	return {
 		templateUrl: 'directives/sideNav.html',
-	}
+	};
 });
 
 app.directive('exportCSVCard', function(){
 	return {
 		templateUrl: 'directives/exportCSVCard.html',
-	}
+	};
+});
+
+app.directive('signInCard', function(){
+	return {
+		templateUrl: 'directives/signInCard.html',
+	};
 });
