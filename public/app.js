@@ -114,29 +114,35 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 * Also called the first time that a team has info scouted about them.
 	 */
 	$scope.loadTeamEventData = function(){
+		var delayer = 0;
 		var teamKey = 'frc' + $scope.loadTeamNumber;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 		.then(function(response){
 			$scope.teamDataBlock = response.data;
 			for(var i = 0; i < $scope.teamDataBlock.length; i++){
 				var eventVar = $scope.teamDataBlock[i];
-				var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
-				teamRef.set({
-					name:eventVar.short_name
-				});
-				// TODO edit to also add each match and teams on which alliance for each match
-				// TODO for each event, load a teams list into the db for all present teams
-				var rootRef = db.doc("events/"+eventVar.event_code);
-				rootRef.set({
-					address:eventVar.address,
-					city:eventVar.city,
-					country:eventVar.country,
-					short_name:eventVar.short_name,
-					week:eventVar.week,
-					start_date:eventVar.start_date,
-					end_date:eventVar.end_date,
-					event_code:eventVar.event_code
-				});
+				console.log(eventVar.event_code);
+				var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+				.then(function(resp){
+					console.warn(resp.data);
+					var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
+					teamRef.set({
+						name:eventVar.short_name
+					});
+					// TODO edit to also add each match and teams on which alliance for each match
+					var rootRef = db.doc("events/"+eventVar.event_code);
+					rootRef.set({
+						address:eventVar.address,
+						city:eventVar.city,
+						country:eventVar.country,
+						short_name:eventVar.short_name,
+						week:eventVar.week,
+						start_date:eventVar.start_date,
+						end_date:eventVar.end_date,
+						event_code:eventVar.event_code,
+						teams:resp.data//not always saving this
+					});
+				})
 			}
 		});
 	};
@@ -373,9 +379,33 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 			$scope.statMatchNum = $scope.statMatchNums[0];
 			$scope.calculateAverage();
 		})
-	}
-}]);
+	};
 
+}]);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.controller('outputControl', ['$scope', '$http', function($scope, $http){
+	var db = firebase.firestore();
+	$scope.options = [];
+	$scope.downloadEvent = function(){
+
+	};
+	//initialiaze the competitions to pick in the dropdown box
+	var init = function(){
+		var rootRef = db.collection("events/");
+		var evets = rootRef.get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				docData = doc.data();
+				var element = {};
+				element.name = docData.short_name;
+				element.id = doc.id;
+				$scope.options.push(element);
+				$scope.$apply();
+			})
+		})
+	}
+	init();
+}]);
 
 
 
@@ -408,5 +438,11 @@ app.directive('teamStatsCard', function(){
 app.directive('sideNav', function(){
 	return {
 		templateUrl: 'directives/sideNav.html',
+	}
+});
+
+app.directive('exportCSVCard', function(){
+	return {
+		templateUrl: 'directives/exportCSVCard.html',
 	}
 });
