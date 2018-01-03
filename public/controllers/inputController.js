@@ -104,7 +104,7 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 */
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
-//							autoShot:$scope.autoShot,
+							autoShot:$scope.autoShot,
 							teleFlag:$scope.teleFlag,
 							color:$scope.scoutedColor
 							};
