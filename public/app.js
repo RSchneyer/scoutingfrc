@@ -1,12 +1,25 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase']);
 
 app.run(function($rootScope){
+	var db = firebase.firestore();
 	$rootScope.loggedIn = false;
 
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
+		//If user exists (logged in)
 		if (user) {
-			console.log('User', user);
+			var userDoc = db.collection('users').doc(user.uid);
+			//If document with user's uid exists in users collection, otherwise create uid named document and add displayname and email fields
+			if (userDoc.exists) {
+				//User already exists, log in as usual
+				console.log('User exists in Firestore');
+			} else {
+				userDoc.set({
+					userDisplayName: user.displayName,
+					email: user.email
+				});
+			}
+			//Set $scope variables
 			$rootScope.$apply(function(){
 				$rootScope.user = user;
 				$rootScope.loggedIn = true;
@@ -49,7 +62,7 @@ app.controller('navControl', ['$scope', '$mdSidenav', function($scope, $mdSidena
 		$mdSidenav('left').toggle();
 		console.log('SideNav toggled');
 	};	
-}])
+}]);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,9 +86,9 @@ app.controller('outputControl', ['$scope', '$http', function($scope, $http){
 				element.id = doc.id;
 				$scope.options.push(element);
 				$scope.$apply();
-			})
-		})
-	}
+			});
+		});
+	};
 	init();
 }]);
 
