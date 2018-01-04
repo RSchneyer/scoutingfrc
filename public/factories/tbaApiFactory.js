@@ -24,5 +24,5 @@ angular.module('scoutingfrc', []).
 			return $http.get(baseUrl + '/team/' + teamKey + '/events/' + year + apiKey);
 		};
 
-
+	return tbaApi;
 }]);
