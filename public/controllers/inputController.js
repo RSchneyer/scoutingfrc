@@ -11,7 +11,6 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		});
 	};
 
-	// TODO: GET OUT OF THiS CONTROLLER!!!
 	/*
 	 * loads basic team information from the variable loadTeamNumber
 	 * Should be called the first time a user joins a team, thus creating the team in the database.
@@ -36,7 +35,6 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		console.log("Finished initializing team information!");
 	};
 	
-	// TODO: GET OUT OF THiS CONTROLLER!!!
 	/*
 	 * loads basic event information from the variable loadTeamNumber
 	 * Should be called the first time a user joins a team, thus creating the team events in the database.
@@ -60,7 +58,7 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 					start_date:eventVar.start_date,
 					end_date:eventVar.end_date,
 					event_code:eventVar.event_code,
-					teams:resp.data//not always saving this
+					teams:resp.data
 				}, { merge: true });
 				var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
 				teamRef.set({
@@ -85,25 +83,8 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 */
 	$scope.putMatchData = function(){
 		//location to save data
-//		var rootRef = db.doc("events/"+$scope.competition+"/matches/"+$scope.matchNum);
 		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition+"/matches/"+$scope.matchNum);
-/*		var matchData = rootRef.get()
-		.then(doc => {
-			if (!doc.exists) {
-				console.log('No such document!');
-			} else {
-				console.log('Document data:', doc.data());
-			}
-		})
-		.catch(err => {
-			console.log('Error getting document', err);
-		}); 
 
-		
-		//path for red and blue alliance
-		//var redRef = rootRef.collection("red");
-		//var blueRef = rootRef.collection("blue");
-*/
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
 							autoShot:$scope.autoShot,
@@ -113,43 +94,9 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		rootRef.set({
 			[$scope.currUser] : scoutedData,
 		}, { merge: true });
-/*****************************************************************		
-		var redData = redRef.get()
-			.then(snapshot => {
-				snapshot.forEach(doc => {
-				//	console.log('red ', doc.id, '=>', doc.data());
-					if(doc.id == testTeamKey){
-						console.log("Sending Data");
-						redRef.doc(doc.id).set({
-							[$scope.currUser] : scoutedData
-						}, { merge: true });
-					}
-				});
-			})
-			.catch(err => {
-				console.log('Error getting documents', err);
-			});
-		
-		var blueData = blueRef.get()
-			.then(snapshot => {
-				snapshot.forEach(doc => {
-				//	console.log('blue ', doc.id, '=>', doc.data());
-					if(doc.id == testTeamKey){
-						console.log("Sending Data");
-						redRef.doc(doc.id).set({
-							[currUser] : scoutedData
-						}, { merge: true });
-					}
-				});
-			})
-			.catch(err => {
-				console.log('Error getting documents', err);
-			});
 	// TODO catch if team not found, give option for change info(team number or match number)
-	*/
 	};
-
-	// TODO: GET OUT OF THiS CONTROLLER!!!
+	//TODO move into cloud function?
 	/*
 	 * Takes data from the input fields and calculates averages from the data set
 	 */
@@ -311,5 +258,4 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 			$scope.calculateAverage();
 		})
 	};
-
 }]);

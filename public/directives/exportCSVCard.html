@@ -1,17 +1,17 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-            <span class='md-headline'>Download CSV: {{teamStatNum}}</span>
+            <span class='md-headline'>Download CSV:</span>
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
         <!-- TODO - work on css**********  class="md-block" -->
         <md-input-container  flex-gt-sm="">
             <label style="position:relative;">Competition:</label>
-            <select ng-model="exportCompetition" class="md-no-underline" ng-options="obj.name for obj in options"></select>
+            <select ng-model="exportCompetition" class="md-no-underline" ng-options="obj.name for obj in options" ng-change="csvCompChange"></select>
         </md-input-container>
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
-        <md-button ng-click='downloadEvent()'>Download</md-button>
+        <md-button ng-csv="csvArray" filename="{{ exportCompetition.id }}.csv">Download</md-button>
     </md-card-actions>
 </md-card>

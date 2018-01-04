@@ -1,11 +1,13 @@
 app.controller('outputControl', ['$scope', '$http', function($scope, $http){
 	var db = firebase.firestore();
 	$scope.options = [];
-	$scope.downloadEvent = function(){
-
+	$scope.csvArray = [{a:1, c:"c", d:"d"}, {b:"1", c:"3", a:"5"}, {a:"h", b:"8", c:"d"}];
+	
+	$scope.csvCompChange = function(){
+		
 	};
 	//initialiaze the competitions to pick in the dropdown box
-	var init = function(){
+	$scope.init = function(){
 		var rootRef = db.collection("events/");
 		var evets = rootRef.get()
 		.then(snapshot => {
@@ -19,5 +21,5 @@ app.controller('outputControl', ['$scope', '$http', function($scope, $http){
 			})
 		})
 	}
-	init();
+	$scope.init();
 }]);
