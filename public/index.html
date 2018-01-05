@@ -21,6 +21,8 @@
 	<script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
     <script src='controllers/inputController.js'></script>
+    <script type="text/javascript" src='factories/tbaApiFactory.js'></script>
+    <script type="text/javascript" src='controllers/navController.js'></script>
     <!-- <script src='controllers/authController.js'></script> -->
     <link rel="stylesheet" href="scouting.css">
 	
@@ -32,7 +34,7 @@
 </head>
 <body ng-app='scoutingfrc' style='height:100%' >
     <md-toolbar flex style='overflow: hidden'>
-        <div class='md-toolbar-tools'>
+        <div class='md-toolbar-tools' ng-controller="navControl">
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>

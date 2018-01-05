@@ -36,7 +36,7 @@ app.run(function($rootScope){
 		firebase.auth().signInWithPopup(provider).then(function(result){
 			$rootScope.$apply(function(){
 				$rootScope.user = result.user;
-				$rootScope.loggedIn = true;
+				$rootScope.loggedIn = true;	
 			});
 		});
 	};
@@ -57,12 +57,7 @@ app.run(function($rootScope){
 
 
 
-app.controller('navControl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
-	$scope.togglesideNav = function(){
-		$mdSidenav('left').toggle();
-		console.log('SideNav toggled');
-	};	
-}]);
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
