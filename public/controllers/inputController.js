@@ -71,7 +71,7 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 						event_code:eventVar.event_code,
 						teams:resp.data//not always saving this
 					});
-				})
+				});
 			}
 		});
 	};

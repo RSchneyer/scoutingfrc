@@ -1,6 +1,8 @@
-app.controller('sideControl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
+angular.module('scoutingfrc', ['ngMaterial', 'firebase'])
+
+.controller('sideControl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
 	$scope.togglesideNav = function() {
-		$mdSidenav('left').toggle();
+		$mdSidenav('leftNav').toggle();
 		console.log('SideNav toggled');
 	};	
 }]);
