@@ -46,10 +46,7 @@
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
-            <h2 md-truncate flex>FRC Scout</h2>
-            <md-button layout-align='end center' ng-click='signIn()' ng-hide='loggedIn'>
-                <i class='material-icons md-icon-36'>account_circle</i>
-            </md-button>
+            <h1 md-truncate flex>FRC Scout</h1>
             <md-button layout-align='end center' ng-click='signOut()' ng-show='loggedIn'>
                 <i class='material-icons md-icon-36'>exit_to_app</i>
             </md-button>
@@ -62,13 +59,9 @@
 
         <!-- Directives!!! -->
         <div layout-margin>
-            <sign-in-card ng-hide='loggedIn' layout-align='center' flex='50'></sign-in-card>
-            <!-- Ryley's Input Stuff -->
-            <team-stats-card ng-controller='inputControl' ng-show='loggedIn'></team-stats-card>
-            <team-input-card ng-controller='inputControl' ng-show='loggedIn'></team-input-card>
-            <load-team-data-card ng-controller='inputControl' ng-show='loggedIn'></load-team-data-card>
-            <scout-match-card ng-controller='inputControl' ng-show='loggedIn'></scout-match-card>
-            <export-c-s-v-card ng-controller='outputControl' ng-show='loggedIn'></export-c-s-v-card>
+            <sign-in-card ng-hide='loggedIn'></sign-in-card>
+            <load-team-data-card></load-team-data-card>
         </div>        
+
     </md-content>
 </body>

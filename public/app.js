@@ -2,6 +2,7 @@ var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize',
 
 app.run(function($rootScope){
 	$rootScope.loggedIn = false;
+	$rootScope.newUser = false;
 	var db = firebase.firestore();
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
@@ -12,9 +13,9 @@ app.run(function($rootScope){
 				//User already exists, log in as usual
 				console.log('User exists in Firestore');
 			} else {
-				userDoc.set({
-					userDisplayName: user.displayName,
-					email: user.email
+				//Set flag to display team register directive
+				$rootScope.$apply(function(){
+					$rootScope.newUser = true;
 				});
 			}
 			//Set $scope variables
@@ -27,6 +28,8 @@ app.run(function($rootScope){
 			console.log('error');
 		}
 	});
+
+	 
 
 	$rootScope.signIn = function(){
 		var provider = new firebase.auth.GoogleAuthProvider();
