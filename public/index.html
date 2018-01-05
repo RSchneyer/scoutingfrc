@@ -25,9 +25,10 @@
     <script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
     <script src='controllers/inputController.js'></script>
-    <script src='controllers/navController.js'></script>
     <script src='controllers/outputController.js'></script>
-    <!-- <script src='controllers/authController.js'></script> -->
+    <script src='controllers/navController.js'></script>
+	<script type="text/javascript" src='factories/tbaApiFactory.js'></script>
+
     <link rel="stylesheet" href="scouting.css">
 
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
@@ -39,9 +40,9 @@
     <link rel="icon" href="databasefavicon.png" type="image/png">
 
 </head>
-<body ng-app='scoutingfrc' >
-    <md-toolbar flex>
-        <div class='md-toolbar-tools'>
+<body ng-app='scoutingfrc' style='height:100%' >
+    <md-toolbar flex style='overflow: hidden'>
+        <div class='md-toolbar-tools' ng-controller="navControl">
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
@@ -57,9 +58,8 @@
 
     <!-- Directives!!! -->
     <side-nav ng-controller='navControl'></side-nav>
-
-
     <md-content flex style='height:100%'>
+
         <!-- Directives!!! -->
         <div layout-margin>
             <sign-in-card ng-hide='loggedIn' layout-align='center' flex='50'></sign-in-card>
@@ -68,8 +68,7 @@
             <team-input-card ng-controller='inputControl' ng-show='loggedIn'></team-input-card>
             <load-team-data-card ng-controller='inputControl' ng-show='loggedIn'></load-team-data-card>
             <scout-match-card ng-controller='inputControl' ng-show='loggedIn'></scout-match-card>
+            <export-c-s-v-card ng-controller='outputControl' ng-show='loggedIn'></export-c-s-v-card>
         </div>        
     </md-content>
-
-    <export-c-s-v-card ng-controller='outputControl'></export-c-s-v-card>
 </body>

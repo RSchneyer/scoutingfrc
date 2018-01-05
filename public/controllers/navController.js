@@ -3,4 +3,4 @@ app.controller('navControl', ['$scope', '$mdSidenav', function($scope, $mdSidena
 		$mdSidenav('left').toggle();
 		console.log('SideNav toggled');
 	};	
-}])
+}]);
