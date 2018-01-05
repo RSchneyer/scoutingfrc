@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
-	
+
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase-firestore.js"></script>
@@ -28,7 +28,11 @@
     <script src='controllers/outputController.js'></script>
     <script src='controllers/navController.js'></script>
 	<script type="text/javascript" src='factories/tbaApiFactory.js'></script>
+
     <link rel="stylesheet" href="scouting.css">
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <title>FRC Scout</title>
 	
     <!-- MAke the site responsive -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
@@ -54,8 +58,8 @@
 
     <!-- Directives!!! -->
     <side-nav ng-controller='navControl'></side-nav>
+    <md-content flex style='height:100%'>
 
-    <md-content >
         <!-- Directives!!! -->
         <div layout-margin>
             <sign-in-card ng-hide='loggedIn' layout-align='center' flex='50'></sign-in-card>
@@ -67,5 +71,4 @@
             <export-c-s-v-card ng-controller='outputControl' ng-show='loggedIn'></export-c-s-v-card>
         </div>        
     </md-content>
-    
 </body>
