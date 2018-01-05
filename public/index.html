@@ -17,13 +17,17 @@
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase-firestore.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
     
-	<!-- Handmade files ("artisanal") -->
-	<script src='firebaseConfig.js'></script>
+	<!-- Other Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.6/ng-csv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.8/angular-sanitize.min.js"></script>
+
+    <!-- Handmade files ("artisanal") -->
+    <script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
     <script src='controllers/inputController.js'></script>
-    <script type="text/javascript" src='factories/tbaApiFactory.js'></script>
-    <script type="text/javascript" src='controllers/navController.js'></script>
-    <!-- <script src='controllers/authController.js'></script> -->
+    <script src='controllers/outputController.js'></script>
+    <script src='controllers/navController.js'></script>
+	<script type="text/javascript" src='factories/tbaApiFactory.js'></script>
     <link rel="stylesheet" href="scouting.css">
 	
     <!-- MAke the site responsive -->
@@ -34,7 +38,7 @@
 </head>
 <body ng-app='scoutingfrc' style='height:100%' >
     <md-toolbar flex style='overflow: hidden'>
-        <div class='md-toolbar-tools' ng-controller="sideControl">
+        <div class='md-toolbar-tools' ng-controller="navControl">
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
@@ -49,7 +53,7 @@
     </md-toolbar>
 
     <!-- Directives!!! -->
-    <side-nav ng-controller='sideControl' md-component-id='leftNav'></side-nav>
+    <side-nav ng-controller='navControl'></side-nav>
 
     <md-content >
         <!-- Directives!!! -->

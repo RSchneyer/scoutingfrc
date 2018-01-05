@@ -1,5 +1,4 @@
-angular.module('scoutingfrc', []).
-	factory('tbaApi', ['$http', function($http){
+app.factory('tbaApi', ['$http', function($http){
 		var baseUrl = 'https://www.thebluealliance.com/api/v3/';
 		var apiKey = '?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z';
 		var tbaApi = {};
@@ -8,7 +7,7 @@ angular.module('scoutingfrc', []).
 			teamKey = 'frc' + team;
 			return $http.get(baseUrl + '/team/' + teamKey + apiKey);
 		};
-
+		
 		tbaApi.getTeamSimple = function(team){
 			teamKey = 'frc' + team;
 			return $http.get(baseUrl + '/team/' + teamKey + apiKey);

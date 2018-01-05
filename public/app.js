@@ -1,12 +1,10 @@
-var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase']);
+var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv']);
 
 app.run(function($rootScope){
-	var db = firebase.firestore();
 	$rootScope.loggedIn = false;
-
+	var db = firebase.firestore();
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
-		//If user exists (logged in)
 		if (user) {
 			var userDoc = db.collection('users').doc(user.uid);
 			//If document with user's uid exists in users collection, otherwise create uid named document and add displayname and email fields
@@ -36,7 +34,7 @@ app.run(function($rootScope){
 		firebase.auth().signInWithPopup(provider).then(function(result){
 			$rootScope.$apply(function(){
 				$rootScope.user = result.user;
-				$rootScope.loggedIn = true;	
+				$rootScope.loggedIn = true;
 			});
 		});
 	};
@@ -48,45 +46,6 @@ app.run(function($rootScope){
 		});
 	};
 });
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-app.controller('outputControl', ['$scope', '$http', function($scope, $http){
-	var db = firebase.firestore();
-	$scope.options = [];
-	$scope.downloadEvent = function(){
-
-	};
-	//initialiaze the competitions to pick in the dropdown box
-	var init = function(){
-		var rootRef = db.collection("events/");
-		var evets = rootRef.get()
-		.then(snapshot => {
-			snapshot.forEach(doc => {
-				docData = doc.data();
-				var element = {};
-				element.name = docData.short_name;
-				element.id = doc.id;
-				$scope.options.push(element);
-				$scope.$apply();
-			});
-		});
-	};
-	init();
-}]);
-
-
 
 
 //Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
