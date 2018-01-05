@@ -1,7 +1,7 @@
 app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 
 	var db = firebase.firestore();
-	var usersDB = db.collection('users')
+	var usersDB = db.collection('users');
 
 	$scope.getTeamData = function(){
 		var team = 'frc' + $scope.frcTeam;

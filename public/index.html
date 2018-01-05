@@ -34,7 +34,7 @@
 </head>
 <body ng-app='scoutingfrc' style='height:100%' >
     <md-toolbar flex style='overflow: hidden'>
-        <div class='md-toolbar-tools' ng-controller="navControl">
+        <div class='md-toolbar-tools' ng-controller="sideControl">
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
@@ -49,7 +49,7 @@
     </md-toolbar>
 
     <!-- Directives!!! -->
-    <side-nav ng-controller='navControl'></side-nav>
+    <side-nav ng-controller='sideControl' md-component-id='left'></side-nav>
 
     <md-content >
         <!-- Directives!!! -->
