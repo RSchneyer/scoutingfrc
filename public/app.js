@@ -1,4 +1,4 @@
-var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase']);
+var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv']);
 
 app.run(function($rootScope){
 	$rootScope.loggedIn = false;
