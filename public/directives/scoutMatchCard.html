@@ -2,7 +2,6 @@
     <md-card-title>
         <md-card-title-text>
             <span class='md-headline'>Input Match info</span>
-<!--            <span class='md-subline'>Selected Team: {{teamData.nickname}}</span> -->
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
@@ -11,7 +10,7 @@
 			https://material.angularjs.org/latest/demo/input
 		-->
 		<md-input-container class="md-block" flex-gt-sm="">
-            <label>Competition:</label>
+            <label style="position:relative;">Competition:</label>
             <select ng-model="competition" class="md-no-underline" ng-options="obj.name for obj in scoutableComps"></select>
         </md-input-container><br>
         <md-input-container class="md-block" flex-gt-sm="">

@@ -11,13 +11,13 @@
         </md-input-container>
         <!-- TODO - work on css********** -->
 		<md-input-container class="md-block" flex-gt-sm="" ng-show="teamStatNum!=null">
-            <label>Competition:</label>
+            <label style="position:relative;">Competition:</label>
                 <select ng-model="statTeamCompetition" class="md-no-underline" ng-change="statTeamCompetitionChange()" ng-options="obj.name for obj in statTeamComps">
                 </select>
             <label></label>
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm="" ng-show="statTeamCompetition.value!='all'">
-            <label>Match:</label>
+            <label style="position:relative;">Match:</label>
                 <select ng-model="statMatchNum" class="md-no-underline" ng-change="calculateAverage()" ng-options="obj.number for obj in statMatchNums">
                 </select>
             <label></label>

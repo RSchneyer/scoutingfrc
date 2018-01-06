@@ -83,8 +83,7 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 */
 	$scope.putMatchData = function(){
 		//location to save data
-		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition+"/matches/"+$scope.matchNum);
-
+		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition.value+"/matches/"+$scope.matchNum);
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
 							autoShot:$scope.autoShot,
