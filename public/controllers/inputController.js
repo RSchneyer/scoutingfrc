@@ -83,19 +83,43 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 */
 	$scope.putMatchData = function(){
 		//location to save data
-		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition+"/matches/"+$scope.matchNum);
-
+		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition.value+"/matches/"+$scope.matchNum);
 		//create the object of game data to be saved
 		var scoutedData = { teleScores:$scope.teleScores, 
 							autoShot:$scope.autoShot,
 							teleFlag:$scope.teleFlag,
-							color:$scope.scoutedColor
+							color:$scope.scoutedColor,
+							timestamp: firebase.firestore.FieldValue.serverTimestamp()
 							};
 		rootRef.set({
 			[$scope.currUser] : scoutedData,
 		}, { merge: true });
 	// TODO catch if team not found, give option for change info(team number or match number)
 	};
+
+	$scope.competitionOptions = function(){
+		$scope.scoutableComps = [];
+		//Can only choose loaded events
+		//TODO - choose only events that the user's team is attending
+//		if($rootScope.userTeam != null){
+//			var rootRef = db.collection("teams/"+$rootScope.userTeam+"/events/");
+//		}else{
+			var rootRef = db.collection("events/");
+//		}
+		var teamComps = rootRef.get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				docData = doc.data();
+				var element = {};
+				element.name = docData.short_name;
+				element.value = doc.id;
+				$scope.scoutableComps.push(element);
+			})
+		})
+	};
+//  TODO this will have to be moved to be triggered when the userTeam is changed - https://stackoverflow.com/questions/29467339/how-to-call-a-function-from-another-controller-in-angularjs
+	$scope.competitionOptions();
+
 	//TODO move into cloud function?
 	/*
 	 * Takes data from the input fields and calculates averages from the data set
