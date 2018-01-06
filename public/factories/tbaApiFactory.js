@@ -22,6 +22,6 @@ app.factory('tbaApi', ['$http', function($http){
 			teamKey = 'frc' + team;
 			return $http.get(baseUrl + '/team/' + teamKey + '/events/' + year + apiKey);
 		};
-
+		
 	return tbaApi;
 }]);
