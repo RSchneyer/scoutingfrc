@@ -27,6 +27,6 @@ app.factory('tbaApi', ['$http', function($http){
 		tbaApi.getEventMatches = function(eventKey){
 			return $http.get(baseUrl + '/event/' + eventKey + '/matches' + apiKey);
 		};
-
+		
 	return tbaApi;
 }]);
