@@ -76,7 +76,6 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 		});
 	};
 	
-	// TODO: GET OUT OF THiS CONTROLLER!!!
 	/*
 	 * Takes data from the input fields and saves it under the username at the 
 	 * appropriate path in the db for the chosen match and team info
@@ -121,127 +120,50 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 //  TODO this will have to be moved to be triggered when the userTeam is changed - https://stackoverflow.com/questions/29467339/how-to-call-a-function-from-another-controller-in-angularjs
 	$scope.competitionOptions();
 
-	//TODO move into cloud function?
 	/*
-	 * Takes data from the input fields and calculates averages from the data set
+	 * Takes data from the input fields displays the appropriate average
 	 */
 	$scope.calculateAverage = function(){
-		$scope.datapoints = 0;
-		var totalTeleScores = 0;
-		var trueAutoShot = 0;
-		$scope.autoShotPercent = 0;
-		$scope.avgTeleScores = 0;
 		var jsonData;
-
+		//all season
 		if($scope.statTeamCompetition.value == 'all' || $scope.statTeamCompetition == null){
-			var path = "teams/"+$scope.teamStatNum+"/events/";
-			var rootRef = db.collection(path);
-			var numEvents = 0;
-			var comps = rootRef.get()
-			.then(snapshot => {
-				//for each event
-				snapshot.forEach(doc => {
-					if (!doc.exists) {
-						console.log('No such document!');
-					}else{
-						console.log('Event: '+doc.id);
-						var numMatches = 0;
-						var autoShotEvent = 0.0;
-						var teleScoreEvent = 0.0;
-						db.collection(path+doc.id+"/matches/").get()
-						.then(snapshot => {
-							//for each match
-							snapshot.forEach(doc => {
-								if (!doc.exists) {
-									console.error('No such document!');
-								} else {
-									var autoShotMatch = 0;
-									var teleScoreMatch = 0.0;
-									var entriesMatch = 0.0;
-									jsonData = doc.data();
-									//for each scouting entry
-									for(var p in jsonData){
-										if(jsonData[p].autoShot){
-											autoShotMatch++;
-										}
-										teleScoreMatch += jsonData[p].teleScores;
-										entriesMatch++;
-										$scope.datapoints++;
-									}
-									numMatches++;
-									autoShotEvent+=autoShotMatch/entriesMatch;
-									teleScoreEvent+=teleScoreMatch/entriesMatch;
-								};
-							})
-							numEvents++;
-							trueAutoShot+=autoShotEvent/numMatches;
-							totalTeleScores+=teleScoreEvent/numMatches;
-							$scope.autoShotPercent = (trueAutoShot/numEvents)*100;
-							$scope.avgTeleScores = totalTeleScores/numEvents;
-							$scope.$apply();
-						})
-					}
-				})
-			})
-			.catch(err => {
-				console.log('Error getting document', err);
-			});
-		}else if($scope.statMatchNum.value == 'all' || $scope.statMatchNums == null){
-			var path = "teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/matches/";
-			var rootRef = db.collection(path);
-			var numMatches = 0;
-			var matches = rootRef.get()
-			.then(snapshot => {
-				//for each match
-				snapshot.forEach(doc => {
-					if (!doc.exists) {
-						console.log('No such document!');
-					} else {
-						var autoShot = 0;
-						var teleScore = 0;
-						var entries = 0;
-						jsonData = doc.data();
-						//for each scouting entry
-						for(var p in jsonData){
-							if(jsonData[p].autoShot){
-								autoShot++;
-							}
-							teleScore += jsonData[p].teleScores;
-							entries++;
-							$scope.datapoints++;
-						}
-						numMatches++;
-						trueAutoShot+=autoShot/entries;
-						totalTeleScores+=teleScore/entries;
-					};
-				})
-				$scope.autoShotPercent = (trueAutoShot/numMatches)*100;
-				$scope.avgTeleScores = totalTeleScores/numMatches;
-				$scope.$apply();
-			})
-			.catch(err => {
-				console.log('Error getting document', err);
-			});
-		}else{
-			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/matches/"+$scope.statMatchNum.value);
-			var matchData = rootRef.get()
+			var rootRef = db.doc("teams/"+$scope.teamStatNum);
+			var data = rootRef.get()
 			.then(doc => {
-				if (!doc.exists) {
-					console.log('No such document!');
-				} else {
-					jsonData = doc.data();
-					for(var p in jsonData){
-						if(jsonData[p].autoShot){
-							trueAutoShot++;
-						}
-						totalTeleScores += jsonData[p].teleScores;
-						$scope.datapoints ++;
-					}
-					$scope.autoShotPercent = (trueAutoShot/$scope.datapoints)*100;
-					$scope.avgTeleScores = totalTeleScores/$scope.datapoints;
-					$scope.$apply();
-				}
-			})
+				jsonData = doc.data().seasonAverage;
+				$scope.autoShotPercent = jsonData.autoShotPercent;
+				$scope.avgTeleScores = jsonData.avgTeleScores;
+				$scope.datapoints = jsonData.datapoints;
+				$scope.$apply();
+			});
+			.catch(err => {
+				console.log('Error getting document', err);
+			});
+		//all competition
+		}else if($scope.statMatchNum.value == 'all' || $scope.statMatchNums == null){
+			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/averages/"+$scope.statTeamCompetition.value);
+			var data = rootRef.get()
+			.then(doc => {
+				jsonData = doc.data();
+				$scope.autoShotPercent = jsonData.autoShotPercent;
+				$scope.avgTeleScores = jsonData.avgTeleScores;
+				$scope.datapoints = jsonData.datapoints;
+				$scope.$apply();
+			});
+			.catch(err => {
+				console.log('Error getting document', err);
+			});
+		//one match
+		}else{
+			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/averages/"+$scope.statMatchNum.value);
+			var data = rootRef.get()
+			.then(doc => {
+				jsonData = doc.data();
+				$scope.autoShotPercent = jsonData.autoShotPercent;
+				$scope.avgTeleScores = jsonData.avgTeleScores;
+				$scope.datapoints = jsonData.datapoints;
+				$scope.$apply();
+			});
 			.catch(err => {
 				console.log('Error getting document', err);
 			});
