@@ -13,7 +13,7 @@ issue in [Github](https://github.com/RSchneyer/scoutingfrc/issues)
 
 ## Contributing
 We would love to have all the help we can in building and testing this website!
-Let us know at [ScoutingFRCweb@gmail.com](mailto:ScoutingFRCWeb@gmail.com)
+Let us know at [ScoutingFRCweb@gmail.com](mailto:ScoutingFRCWeb@gmail.com), or join our [Slack Workspace](https://join.slack.com/t/scoutingfrc/shared_invite/enQtMjk0NjUwNTQyMjkzLTNjY2Q4ZDM1MWI3ZWViMzhmM2FkZTlhOGE1OWE0OGFkZWJmNWQ4NzRlOWE1MGU5YjY5YWYxMzk0NGNjODdjZTg)
 
 ## Acknowledgements
 Thank you to The Blue Alliance makers for having an easy to use API.
