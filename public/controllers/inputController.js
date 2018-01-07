@@ -135,7 +135,7 @@ app.controller('inputControl', ['$scope', '$http', 'tbaApi',  function($scope, $
 				$scope.avgTeleScores = jsonData.avgTeleScores;
 				$scope.datapoints = jsonData.datapoints;
 				$scope.$apply();
-			});
+			})
 			.catch(err => {
 				console.log('Error getting document', err);
 			});
@@ -149,7 +149,7 @@ app.controller('inputControl', ['$scope', '$http', 'tbaApi',  function($scope, $
 				$scope.avgTeleScores = jsonData.avgTeleScores;
 				$scope.datapoints = jsonData.datapoints;
 				$scope.$apply();
-			});
+			})
 			.catch(err => {
 				console.log('Error getting document', err);
 			});
@@ -163,7 +163,7 @@ app.controller('inputControl', ['$scope', '$http', 'tbaApi',  function($scope, $
 				$scope.avgTeleScores = jsonData.avgTeleScores;
 				$scope.datapoints = jsonData.datapoints;
 				$scope.$apply();
-			});
+			})
 			.catch(err => {
 				console.log('Error getting document', err);
 			});

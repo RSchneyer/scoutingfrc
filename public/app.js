@@ -1,4 +1,4 @@
-var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv']);
+var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv', 'ngRoute']);
 
 app.run(function($rootScope){
 	$rootScope.loggedIn = false;
@@ -49,6 +49,20 @@ app.run(function($rootScope){
 		});
 	};
 });
+
+// Angular Routing /////////////////////////////
+
+app.config(function($routeProvider){
+	$routeProvider
+	.when('/', {
+		templateUrl: 'register.html'
+	})
+	.when('dashboard', {
+		templateUrl: 'dashboard.html'
+	});
+});
+
+
 
 
 //Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////

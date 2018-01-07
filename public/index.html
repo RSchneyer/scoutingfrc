@@ -55,13 +55,8 @@
 
     <!-- Directives!!! -->
     <side-nav ng-controller='navControl'></side-nav>
-    <md-content flex style='height:100%'>
 
-        <!-- Directives!!! -->
-        <div layout-margin>
-            <sign-in-card ng-hide='loggedIn'></sign-in-card>
-            <load-team-data-card></load-team-data-card>
-        </div>        
-
-    </md-content>
+    <div ng-view>
+        <!-- This is where the views from Angular Routing go -->
+    </div>
 </body>
