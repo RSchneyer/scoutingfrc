@@ -82,6 +82,7 @@ app.controller('inputControl', ['$scope', '$http', function($scope, $http){
 	 * appropriate path in the db for the chosen match and team info
 	 */
 	$scope.putMatchData = function(){
+		console.log("Match data sent!");
 		//location to save data
 		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition.value+"/matches/"+$scope.matchNum);
 		//create the object of game data to be saved
