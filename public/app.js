@@ -7,6 +7,7 @@ app.run(function($rootScope){
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
 		if (user) {
+
 			var userDoc = db.collection('users').doc(user.uid);
 			//If document with user's uid exists in users collection, otherwise create uid named document and add displayname and email fields
 			if (userDoc.exists) {
@@ -22,6 +23,7 @@ app.run(function($rootScope){
 			$rootScope.$apply(function(){
 				$rootScope.user = user;
 				$rootScope.loggedIn = true;
+				$location.path('/dashboard');
 			});
 		} 
 		else {
