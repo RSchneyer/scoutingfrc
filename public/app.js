@@ -22,7 +22,7 @@ app.run(function($rootScope){
 				$rootScope.user = user;
 				$rootScope.loggedIn = true;
 			});
-		} 
+		}
 		else {
 			console.log('error');
 		}
