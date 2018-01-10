@@ -1,6 +1,6 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv', 'ngRoute']);
 
-app.run(function($rootScope){
+app.run(function($rootScope, $location){
 	$rootScope.loggedIn = false;
 	$rootScope.newUser = false;
 	var db = firebase.firestore();
@@ -23,7 +23,7 @@ app.run(function($rootScope){
 			$rootScope.$apply(function(){
 				$rootScope.user = user;
 				$rootScope.loggedIn = true;
-				$location.path('/dashboard');
+				$location.path('/dashboard'); //Direct user to scoutingfrc.com/dashboard if user is logged in
 			});
 		} 
 		else {
@@ -46,22 +46,26 @@ app.run(function($rootScope){
 
 	$rootScope.signOut = function(){
 		firebase.auth().signOut().then(function(){
-			$rootScope.user = {};
-			$rootScope.loggedIn = false;
+			$rootScope.$apply(function(){
+				$rootScope.user = {};
+				$rootScope.loggedIn = false;
+				$location.path('/');
+			});
 		});
 	};
 });
-
+	
 // Angular Routing /////////////////////////////
 
-app.config(function($routeProvider){
+app.config(function($routeProvider, $locationProvider){
 	$routeProvider
 	.when('/', {
-		templateUrl: 'register.html'
+		templateUrl: 'views/register.html',
 	})
-	.when('dashboard', {
-		templateUrl: 'dashboard.html'
+	.when('/dashboard', {
+		templateUrl: 'views/dashboard.html'
 	});
+	$locationProvider.html5Mode(true);
 });
 
 

@@ -5,6 +5,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-messages.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.min.js"></script>
 	
     <!-- Angular Material Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
@@ -38,6 +39,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
     <title>FRC Scout</title>
     <link rel="icon" href="databasefavicon.png" type="image/png">
+    <base href="/"> <!-- Makes routing pretty -->
 
 </head>
 <body ng-app='scoutingfrc' style='height:100%' >
@@ -55,8 +57,9 @@
 
     <!-- Directives!!! -->
     <side-nav ng-controller='navControl'></side-nav>
-
-    <div ng-view>
-        <!-- This is where the views from Angular Routing go -->
+    <div id='main'>
+        <!-- This is where the views from Angular Routing should go --> 
+        <div ng-view></div>        
     </div>
+
 </body>
