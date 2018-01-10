@@ -10,12 +10,11 @@ app.factory('tbaApi', ['$http', function($http){
 		
 		tbaApi.getTeamSimple = function(team){
 			teamKey = 'frc' + team;
-			return $http.get(baseUrl + '/team/' + teamKey + apiKey);
+			return $http.get(baseUrl + '/team/' + teamKey + '/simple' + apiKey);
 		};
 
-		tbaApi.getEventTeams = function(eventKey, team){
-			teamKey = 'frc' + team;
-			return $http.get(baseUrl + '/event/' + eventKey + '/teams/' + teamKey + apiKey); 
+		tbaApi.getEventTeams = function(eventKey){
+			return $http.get(baseUrl + '/event/' + eventKey + '/teams/keys' + apiKey); 
 		};
 
 		tbaApi.getTeamEvents = function(team, year){

@@ -25,7 +25,7 @@ app.run(function($rootScope, $location){
 				$rootScope.loggedIn = true;
 				$location.path('/dashboard'); //Direct user to scoutingfrc.com/dashboard if user is logged in
 			});
-		} 
+		}
 		else {
 			console.log('error');
 		}

@@ -1,4 +1,6 @@
-app.controller('inputControl', ['$scope', '$http',  function($scope, $http){
+app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope){
+//app.controller('inputControl', ['$scope', '$http', 'tbaApi', function($scope, tbaApi, $http){
+
 
 	var db = firebase.firestore();
 	var usersDB = db.collection('users');
@@ -6,6 +8,7 @@ app.controller('inputControl', ['$scope', '$http',  function($scope, $http){
 	$scope.getTeamData = function(){
 		var team = 'frc' + $scope.frcTeam;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+team+'/simple?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+//		var info = tbaApi.getTeamSimple($scope.frcTeam)
 		.then(function(response){
 			$scope.teamData = response.data;
 		});
@@ -19,6 +22,7 @@ app.controller('inputControl', ['$scope', '$http',  function($scope, $http){
 	$scope.loadTeamData = function(){
 		var teamKey = 'frc' + $scope.loadTeamNumber;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+//		var info = tbaApi.getTeam($scope.loadTeamNumber)
 		.then(function(response){
 			$scope.teamDataBlock = response.data;
 			var rootRef = db.doc("teams/"+$scope.loadTeamNumber);
@@ -43,7 +47,9 @@ app.controller('inputControl', ['$scope', '$http',  function($scope, $http){
 	$scope.loadTeamEventData = function(){
 		var dbCalls = function(eventVar){
 			console.log(eventVar.event_code);
+//			var eventCode = '2018'+eventVar.event_code;
 			var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+//			var eventTeams = tbaApi.getEventTeams(eventCode)
 			.then(function(resp){
 				console.warn(resp.data);
 				// TODO edit to also add each match and teams on which alliance for each match
@@ -68,6 +74,7 @@ app.controller('inputControl', ['$scope', '$http',  function($scope, $http){
 		};
 		var teamKey = 'frc' + $scope.loadTeamNumber;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+//		var info = tbaApi.getTeamEvents($scope.loadTeamNumber, 2018)
 		.then(function(response){
 			$scope.teamDataBlock = response.data;
 			for(var i = 0; i < $scope.teamDataBlock.length; i++){
@@ -92,7 +99,7 @@ app.controller('inputControl', ['$scope', '$http',  function($scope, $http){
 							timestamp: firebase.firestore.FieldValue.serverTimestamp()
 							};
 		rootRef.set({
-			[$scope.currUser] : scoutedData,
+			[$rootScope.user.uid] : scoutedData,
 		}, { merge: true });
 	// TODO catch if team not found, give option for change info(team number or match number)
 	};
