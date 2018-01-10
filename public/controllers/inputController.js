@@ -1,6 +1,7 @@
 app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope){
 //app.controller('inputControl', ['$scope', '$http', 'tbaApi', function($scope, tbaApi, $http){
 
+
 	var db = firebase.firestore();
 	var usersDB = db.collection('users');
 
