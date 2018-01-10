@@ -1,14 +1,14 @@
-<md-card flex='50'>
+<md-card >
 	<md-card-title>
 		<md-card-title-text>
 			<span class='md-headline'>Sign In</span>
 		</md-card-title-text>
 	</md-card-title>
 	<md-card-content layout='column' layout-align='start center'>
-		<span>Sign in with Google to use FRC Scout</span>
-		<md-button class='md-raised' layout='row'>
+		<span>Click the button to sign in with Google</span>
+		<md-button class='md-raised' layout='row' ng-click='signIn()'>
 			<i class='material-icons'>account_circle</i>
-			<span></span>	
+			<span flex></span>	
 			<span>Google</span>
 		</md-button>
 	</md-card-content>
