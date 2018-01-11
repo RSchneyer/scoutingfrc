@@ -26,18 +26,16 @@
     <script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
     <script src='controllers/inputController.js'></script>
-    <script src='controllers/outputController.js'></script>
+    <script src='controllers/outputController.js'></script>     
     <script src='controllers/navController.js'></script>
 	<script type="text/javascript" src='factories/tbaApiFactory.js'></script>
+    <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="scouting.css">
 
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
-    <title>FRC Scout</title>
-	
     <!-- MAke the site responsive -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
-    <title>FRC Scout</title>
+    <title>ScoutingFRC</title>
     <link rel="icon" href="databasefavicon.png" type="image/png">
     <base href="/"> <!-- Makes routing pretty -->
 
@@ -48,7 +46,7 @@
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
-            <h1 md-truncate flex>FRC Scout</h1>
+            <h1 md-truncate flex>ScoutingFRC</h1>
             <md-button layout-align='end center' ng-click='signOut()' ng-show='loggedIn'>
                 <i class='material-icons md-icon-36'>exit_to_app</i>
             </md-button>
