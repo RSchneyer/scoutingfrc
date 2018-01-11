@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 admin.initializeApp(functions.config().firebase);
 
 var db = admin.firestore();
-var FieldValue = require("firebase-admin").firestore.FieldValue;
+var FieldValue = require('firebase-admin').firestore.FieldValue;
 
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
@@ -18,14 +18,18 @@ const mailTransport = nodemailer.createTransport({
 });
 const APP_NAME = 'ScoutingFRC';
 
-
-
 exports.userCreate = functions.auth.user().onCreate(event => {
 	const user = event.data;
 	const displayName = user.displayName;
 	const uid = user.uid;
 	const email = user.email;
 	console.log('new user Created:'+ displayName+' UID: '+uid);
+
+	var ref = db.collection('users').doc(uid);
+	ref.set({
+		email : email,
+		userDisplayName : displayName	
+	}, { merge: true });
 	return sendWelcomeEmail(email, displayName);
 });
 
@@ -49,7 +53,7 @@ function sendWelcomeEmail(email, displayName) {
 // exports.loadTeamData = functions.database.ref('').onWrite(event => {
 //
 // });
-
+///*
 exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/averages/{event}')
 .onWrite(event => {
 	console.log('Event Data Changed');
@@ -158,3 +162,6 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	});
 	return 0;
 });
+
+//*/
+

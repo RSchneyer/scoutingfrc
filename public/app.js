@@ -1,37 +1,39 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv', 'ngRoute']);
 
-app.run(function($rootScope, $location){
+app.run(function($rootScope, $location, $mdDialog){
 	$rootScope.loggedIn = false;
 	$rootScope.newUser = false;
 	var db = firebase.firestore();
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
 		if (user) {
-
 			var userDoc = db.collection('users').doc(user.uid);
 			//If document with user's uid exists in users collection, otherwise create uid named document and add displayname and email fields
-			if (userDoc.exists) {
-				//User already exists, log in as usual
-				console.log('User exists in Firestore');
-			} else {
-				//Set flag to display team register directive
+			var userCheck = userDoc.get()
+			.then(doc => {
+				if(doc.exists){
+					//User already exists, log in as usual
+					console.log('User exists in Firestore');
+				}else{
+					$rootScope.showPrompt();
+					//Set flag to display team register directive
+					$rootScope.$apply(function(){
+						$rootScope.newUser = true;
+					});
+					console.log($rootScope.newUser);
+				}
+				//Set $scope variables
 				$rootScope.$apply(function(){
-					$rootScope.newUser = true;
+					$rootScope.user = user;
+					$rootScope.loggedIn = true;
+					$location.path('/dashboard'); //Direct user to scoutingfrc.com/dashboard if user is logged in
 				});
-			}
-			//Set $scope variables
-			$rootScope.$apply(function(){
-				$rootScope.user = user;
-				$rootScope.loggedIn = true;
-				$location.path('/dashboard'); //Direct user to scoutingfrc.com/dashboard if user is logged in
 			});
 		}
 		else {
-			console.log('error');
+			console.log('error: no user logged in');
 		}
 	});
-
-	 
 
 	$rootScope.signIn = function(){
 		var provider = new firebase.auth.GoogleAuthProvider();
@@ -52,6 +54,34 @@ app.run(function($rootScope, $location){
 				$location.path('/');
 			});
 		});
+	};
+
+	$rootScope.showPrompt = function() {
+    // Appending dialog to document.body to cover sidenav in docs app
+    	var confirm = $mdDialog.prompt()
+		.title('What team are you apart of?')	
+      	.textContent('Put zero if you are unaffiliated')
+      	.placeholder('Team #')
+      	.ariaLabel('Team #')
+      	.initialValue('0')
+//      	.targetEvent(ev)
+      	.required(true)
+	    .ok('Lets Go!')
+	    .cancel('I\'d rather not be affiliated with a team');
+
+		$mdDialog.show(confirm).then(function(result) {
+//	    	console.log(result);
+	    	var ref = db.collection('users').doc($rootScope.user.uid);
+	    	ref.set({
+				team : result
+			}, { merge: true });
+	    }, function() {
+//	    	console.log(result);
+	    	var ref = db.collection('users').doc($rootScope.user.uid);
+	    	ref.set({
+				team : 0
+			}, { merge: true });
+    	});
 	};
 });
 	
