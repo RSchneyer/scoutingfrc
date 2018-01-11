@@ -1,0 +1,35 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class='md-headline'>Pre Match Scouting</span>
+        </md-card-title-text><br>
+    </md-card-title>
+    <md-card-content>
+		<!--
+			TODO - make this autoload with js for competitions that match the current week
+			https://material.angularjs.org/latest/demo/input
+		-->
+		<md-input-container class="md-block" flex-gt-sm="">
+            <label style="position:relative;">Competition:</label>
+            <select ng-model="competition" class="md-no-underline" ng-options="obj.name for obj in scoutableComps"></select>
+        </md-input-container><br>
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label>Alliance Color</label>
+            <md-select ng-model="scoutedColor" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
+                <md-option value="red">Red</md-option>
+                <md-option value="blue">Blue</md-option>
+            </md-select>
+        </md-input-container><br>
+		<md-input-container class="md-block" flex-gt-sm="">
+            <label style="position:relative;">Team Number</label>
+            <select ng-model="TeamNumber" class="md-no-underline" <!--ng-options="obj.name for obj in TeamsinComp"-->></select>
+        </md-input-container><br>
+		<md-input-container class="md-block" flex-gt-sm="">
+			<label style="position:relative;">Match Number</label>
+			<select ng-model="MatchNumber" class="md-no-underline" <!--ng-options="obj.name for obj in MatchNumTeam"-->></select>
+		</md-input-container><br>
+    </md-card-content>
+    <md-card-actions layout='row' layout-align='end end'>
+        <md-button ng-click=''>Submit</md-button>
+    </md-card-actions>	
+</md-card>

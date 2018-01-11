@@ -1,0 +1,31 @@
+ <md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class='md-headline'>Auto Scouting</span>
+        </md-card-title-text><br>
+    </md-card-title>
+    <md-card-content>
+		<md-card-actions layout='row' layout-align='start start'>
+			<md-button ng-click=''>Start Match</md-button>
+		</md-card-actions>	
+		<md-checkbox ng-model="autoCross" class="md-primary" aria-label="Checkbox 1" class="flex-33">
+            Crossed Auto Line
+        </md-checkbox><br>
+		<md-radio-group ng-model="CubeAutoLoca" class="flex">
+			<label style="font-weight:bold;">Auto Cube Location</label>
+			<md-radio-button value="notry" class="md-primary">No Cube Attempt</md-radio-button>
+			<md-radio-button value="lowtry" class="md-primary">Attempted Low Switch</md-radio-button>
+			<md-radio-button value="hightry" class="md-primary">Attempted High Switch</md-radio-button>
+			<md-radio-button value="lowsuccess" class="md-primary">Successful Low Switch</md-radio-button>
+			<md-radio-button value="highsuccess" class="md-primary">Successful High Switch</md-radio-button>
+		</md-radio-group>
+		<md-checkbox ng-model="autoWrongCube" class="md-primary" aria-label="Checkbox 1" class="flex-33">
+            Cube on the Wrong Side of Scale/Switch
+        </md-checkbox>
+		<!-- TODO - Need to figure out better label -->
+    </md-card-content>
+    <md-card-actions layout='row' layout-align='end end'>
+        <md-button ng-click=''>Submit</md-button>
+    </md-card-actions>
+	
+</md-card>
