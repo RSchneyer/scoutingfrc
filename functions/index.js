@@ -1,16 +1,50 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
+const nodemailer = require('nodemailer');
+
 admin.initializeApp(functions.config().firebase);
+
 var db = admin.firestore();
 var FieldValue = require("firebase-admin").firestore.FieldValue;
+
+const gmailEmail = functions.config().gmail.email;
+const gmailPassword = functions.config().gmail.password;
+const mailTransport = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: gmailEmail,
+		pass: gmailPassword
+	}
+});
+const APP_NAME = 'ScoutingFRC';
+
+
 
 exports.userCreate = functions.auth.user().onCreate(event => {
 	const user = event.data;
 	const displayName = user.displayName;
 	const uid = user.uid;
+	const email = user.email;
 	console.log('new user Created:'+ displayName+' UID: '+uid);
-	return 0;
+	return sendWelcomeEmail(email, displayName);
 });
+
+function sendWelcomeEmail(email, displayName) {
+	const mailOptions = {
+		from: `ScoutingFRC <noreply@firebase.com>`,
+		to: email
+	};
+
+	mailOptions.subject = `Welcome to ScoutingFRC!`;
+	mailOptions.text = `Hey ${displayName || ''}! 
+						Welcome to ScoutingFRC. If you have any questions, you can contact us at scoutingfrcweb@gmail.com. 
+						Have a great season! 
+						The ScoutingFRC team`;
+						
+	return mailTransport.sendMail(mailOptions).then(function(){
+		console.log('Welcome email sent to: ', email);	
+		});
+}
 
 // exports.loadTeamData = functions.database.ref('').onWrite(event => {
 //
