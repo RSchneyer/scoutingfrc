@@ -64,6 +64,15 @@ app.config(function($routeProvider, $locationProvider){
 	})
 	.when('/dashboard', {
 		templateUrl: 'views/dashboard.html'
+	})
+	.when('/matches', {
+		templateUrl:'views/matches.html'
+	})
+	.when('/download', {
+		templateUrl:'views/download.html'
+	})
+	.when('/about', {
+		templateUrl: 'views/about.html'
 	});
 	$locationProvider.html5Mode(true);
 });
