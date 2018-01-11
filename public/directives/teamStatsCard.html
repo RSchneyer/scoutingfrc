@@ -1,0 +1,32 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class='md-headline'>Team Stats: {{teamStatNum}}</span>
+        </md-card-title-text><br>
+    </md-card-title>
+    <md-card-content>
+        <md-input-container>
+            <label>Team Number</label>
+            <input type='number' ng-model='teamStatNum' ng-change="teamStatNumChange()">
+        </md-input-container>
+        <!-- TODO - work on css********** -->
+		<md-input-container class="md-block" flex-gt-sm="" ng-show="teamStatNum!=null">
+            <label style="position:relative;">Competition:</label>
+                <select ng-model="statTeamCompetition" class="md-no-underline" ng-change="statTeamCompetitionChange()" ng-options="obj.name for obj in statTeamComps">
+                </select>
+            <label></label>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="" ng-show="statTeamCompetition.value!='all'">
+            <label style="position:relative;">Match:</label>
+                <select ng-model="statMatchNum" class="md-no-underline" ng-change="calculateAverage()" ng-options="obj.number for obj in statMatchNums">
+                </select>
+            <label></label>
+        </md-input-container>
+    </md-card-content>
+    <md-card-content ng-show="teamStatNum!=null">
+        <span class='md-subline'>Selected Competition: {{statTeamCompetition.value}}</span><br>
+        <span class='md-subline'>Auto Shot percentage: {{autoShotPercent}}%</span><br>
+        <span class='md-subline'>Average Tele Scores: {{avgTeleScores}}</span><br>
+        <span class='md-sublime'>Data points averaged: {{datapoints}}</span><br>
+    </md-card-content>
+</md-card>

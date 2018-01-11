@@ -5,52 +5,59 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-messages.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.min.js"></script>
+	
     <!-- Angular Material Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
 
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase-firestore.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyCUCYkr-YZSJAzRDOsgzm5FuMd4uaK2P6U",
-        authDomain: "scoutingfrc-189201.firebaseapp.com",
-        databaseURL: "https://scoutingfrc-189201.firebaseio.com",
-        projectId: "scoutingfrc-189201",
-        storageBucket: "scoutingfrc-189201.appspot.com",
-        messagingSenderId: "458144233871"
-      };
-      firebase.initializeApp(config);
-    </script>
+    
+	<!-- Other Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.6/ng-csv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.8/angular-sanitize.min.js"></script>
 
-<!-- Handmade files ("artisanal") -->
-    <script src= 'app.js'></script>
+    <!-- Handmade files ("artisanal") -->
+    <script src='firebaseConfig.js'></script>
+	<script src= 'app.js'></script>
+    <script src='controllers/inputController.js'></script>
+    <script src='controllers/outputController.js'></script>     
+    <script src='controllers/navController.js'></script>
+	<script type="text/javascript" src='factories/tbaApiFactory.js'></script>
+    <link rel="manifest" href="manifest.json">
+
     <link rel="stylesheet" href="scouting.css">
 
-</head>
+    <!-- MAke the site responsive -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <title>ScoutingFRC</title>
+    <link rel="icon" href="databasefavicon.png" type="image/png">
+    <base href="/"> <!-- Makes routing pretty -->
 
-<body ng-app='scoutingfrc' ng-controller='authControl'>
-    <md-toolbar>
-        <div class='md-toolbar-tools'>
-            <md-button layout-align='start center'>
+</head>
+<body ng-app='scoutingfrc' style='height:100%' >
+    <md-toolbar flex style='overflow: hidden'>
+        <div class='md-toolbar-tools' ng-controller="navControl">
+            <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
-            <h2 md-truncate flex>FRC Scout {{authStatus}}</h2>
-            <md-button layout-align='end center' ng-click='signIn()' ng-hide='authStatus'>
-                <i class='material-icons md-icon-36'>account_circle</i>
-            </md-button>
-            <md-button layout-align='end center' ng-click='signOut()' ng-show='authStatus'>
+            <h1 md-truncate flex>ScoutingFRC</h1>
+            <md-button layout-align='end center' ng-click='signOut()' ng-show='loggedIn'>
                 <i class='material-icons md-icon-36'>exit_to_app</i>
             </md-button>
         </div>
     </md-toolbar>
 
-    <team-input-card ng-show='authStatus'></team-input-card>
+    <!-- Directives!!! -->
+    <side-nav ng-controller='navControl'></side-nav>
+    <div id='main'>
+        <!-- This is where the views from Angular Routing should go --> 
+        <div ng-view></div>        
+    </div>
 
 </body>

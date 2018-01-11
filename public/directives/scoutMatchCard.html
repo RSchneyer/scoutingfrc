@@ -1,0 +1,49 @@
+<md-card ng-show="loggedIn">
+    <md-card-title>
+        <md-card-title-text>
+            <span class='md-headline'>Input Match info</span>
+        </md-card-title-text><br>
+    </md-card-title>
+    <md-card-content>
+		<!--
+			TODO - make this autoload with js for competitions that match the current week
+			https://material.angularjs.org/latest/demo/input
+		-->
+		<md-input-container class="md-block" flex-gt-sm="">
+            <label style="position:relative;">Competition:</label>
+            <select ng-model="competition" class="md-no-underline" ng-options="obj.name for obj in scoutableComps"></select>
+        </md-input-container><br>
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label>Alliance Color</label>
+            <md-select ng-model="scoutedColor" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
+                <md-option value="red">Red</md-option>
+                <md-option value="blue">Blue</md-option>
+            </md-select>
+        </md-input-container><br>
+		<md-input-container>
+            <label>Team Number</label>
+            <input type='number' ng-model='teamNum'>
+        </md-input-container><br>
+		<md-input-container>
+            <label>Match Number</label>
+            <input type='number' ng-model='matchNum'>
+        </md-input-container><br>
+		<md-checkbox ng-model="autoShot" class="md-primary" aria-label="Checkbox 1">
+            Auto Shot Made
+        </md-checkbox><br>
+		<md-input-container>
+            <label>Tele Scores</label>
+            <input type='number' ng-model='teleScores'>
+        </md-input-container><br>
+		<!-- TODO - Need to figure out better label -->
+		<md-radio-group ng-model="teleFlag">
+			<label>Tele Flag Level</label>
+			<md-radio-button value="high" class="md-primary">High</md-radio-button>
+			<md-radio-button value="middle" class="md-primary">Middle</md-radio-button>
+			<md-radio-button value="low" class="md-primary">Low</md-radio-button>
+		</md-radio-group><br>
+    </md-card-content>
+    <md-card-actions layout='row' layout-align='end end'>
+        <md-button ng-click='putMatchData()'>Submit</md-button>
+    </md-card-actions>	
+</md-card>

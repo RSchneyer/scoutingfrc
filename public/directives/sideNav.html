@@ -1,0 +1,34 @@
+<md-sidenav md-component-id='left'>
+	<div layout="column" layout-fill>
+	  <md-toolbar class='md-tall'>
+	  	<div class='md-toolbar-tools' layout='column' layout-align='start' layout-padding>
+	  		<h2>ScoutingFRC</h2>
+	  		<span flex></span>
+	  		<h3>User's Name</h3>
+	  	</div>
+	  </md-toolbar>
+
+	  <md-content>
+	    <md-list>
+	      <md-list-item ng-click="dashboard()">
+	      	<h3>Dashboard</h3>
+	      </md-list-item>
+
+	      <md-list-item ng-click="matches()">
+			<h3>Match Scouting</h3>	     
+	      </md-list-item>
+
+	      <md-list-item ng-click="csv()">
+	      	<h3>CSV Download</h3>
+	      </md-list-item>
+
+	      <md-list-item ng-click="about()">
+	      	<h3>About</h3>
+	      </md-list-item>
+
+	    </md-list>
+	  </md-content>
+
+	</div>	
+
+</md-sidenav>

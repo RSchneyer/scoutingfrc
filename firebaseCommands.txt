@@ -1,0 +1,4 @@
+firebase serve
+(to run locally)
+firebase deploy
+(deploy to url)
