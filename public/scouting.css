@@ -5,3 +5,32 @@ body{
 .md-icon-36{
 	font-size: 36px;
 }
+/*div.counter{
+	padding: 15px;
+	display: inline-block;
+}*/
+#wrapper {
+
+  text-align: center;
+}
+/* Styles used for the counter. */
+.counter-container .counter-minus, .counter-plus {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    background: #3F51B5;
+    color: white;
+    margin: 0;
+    padding: 15px 30px;
+    text-decoration: none;
+}
+
+.counter-container .counter-field {
+    margin: 0;
+    padding: 10px;
+	font-size: 25px;
+    text-align: center;
+    width: 30%;
+}

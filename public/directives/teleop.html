@@ -1,0 +1,29 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class='md-headline'>Tele-op Scouting</span>
+        </md-card-title-text><br>
+    </md-card-title>
+    <md-card-content>
+	<div id="wrapper">
+		<div class="counter" counter value="quantity1" min="0"></div><br>
+	</div>
+	<div id="wrapper">
+		<div class="counter" counter value="quantity2" min="0"></div><br>
+	</div>	
+	<div id="wrapper">	
+		<div class="counter" counter value="quantity3" min="0"></div><br>
+	</div>	
+		<md-card-actions layout='row' layout-align='center center'>
+			<md-button ng-click=''>Force</md-button>
+			<md-button ng-click=''>Boost</md-button>
+			<md-button ng-click=''>Levitate</md-button>
+		</md-card-actions>	
+		<md-checkbox ng-model="autoCross" class="md-primary" aria-label="Checkbox 1" class="flex-33">
+            Any Cubes on Wrong Side of Scale/Switch 
+        </md-checkbox>
+    </md-card-content>
+    <md-card-actions layout='row' layout-align='end end'>
+        <md-button ng-click=''>Submit</md-button>
+    </md-card-actions>	
+</md-card>

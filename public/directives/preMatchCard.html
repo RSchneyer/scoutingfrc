@@ -1,7 +1,7 @@
-<md-card ng-show="loggedIn">
+<md-card>
     <md-card-title>
         <md-card-title-text>
-            <span class='md-headline'>Auto Scouting</span>
+            <span class='md-headline'>Pre Match Scouting</span>
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
@@ -20,30 +20,16 @@
                 <md-option value="blue">Blue</md-option>
             </md-select>
         </md-input-container><br>
-		<md-input-container>
-            <label>Team Number</label>
-            <input type='number' ng-model='teamNum'>
+		<md-input-container class="md-block" flex-gt-sm="">
+            <label style="position:relative;">Team Number</label>
+            <select ng-model="TeamNumber" class="md-no-underline" <!--ng-options="obj.name for obj in TeamsinComp"-->></select>
         </md-input-container><br>
-		<md-input-container>
-            <label>Match Number</label>
-            <input type='number' ng-model='matchNum'>
-        </md-input-container><br>
-		<md-checkbox ng-model="autoShot" class="md-primary" aria-label="Checkbox 1">
-            Auto Shot Made
-        </md-checkbox><br>
-		<md-input-container>
-            <label>Tele Scores</label>
-            <input type='number' ng-model='teleScores'>
-        </md-input-container><br>
-		<!-- TODO - Need to figure out better label -->
-		<md-radio-group ng-model="teleFlag">
-			<label>Tele Flag Level</label>
-			<md-radio-button value="high" class="md-primary">High</md-radio-button>
-			<md-radio-button value="middle" class="md-primary">Middle</md-radio-button>
-			<md-radio-button value="low" class="md-primary">Low</md-radio-button>
-		</md-radio-group><br>
+		<md-input-container class="md-block" flex-gt-sm="">
+			<label style="position:relative;">Match Number</label>
+			<select ng-model="MatchNumber" class="md-no-underline" <!--ng-options="obj.name for obj in MatchNumTeam"-->></select>
+		</md-input-container><br>
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
-        <md-button ng-click='putMatchData()'>Submit</md-button>
+        <md-button ng-click=''>Submit</md-button>
     </md-card-actions>	
 </md-card>

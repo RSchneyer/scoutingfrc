@@ -5,7 +5,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-messages.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.min.js"></script>
 	
     <!-- Angular Material Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
@@ -26,18 +25,19 @@
     <script src='firebaseConfig.js'></script>
 	<script src= 'app.js'></script>
     <script src='controllers/inputController.js'></script>
-    <script src='controllers/outputController.js'></script>     
+    <script src='controllers/outputController.js'></script>
     <script src='controllers/navController.js'></script>
 	<script type="text/javascript" src='factories/tbaApiFactory.js'></script>
-    <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="scouting.css">
 
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <title>FRC Scout</title>
+	
     <!-- MAke the site responsive -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
-    <title>ScoutingFRC</title>
+    <title>FRC Scout</title>
     <link rel="icon" href="databasefavicon.png" type="image/png">
-    <base href="/"> <!-- Makes routing pretty -->
 
 </head>
 <body ng-app='scoutingfrc' style='height:100%' >
@@ -46,7 +46,10 @@
             <md-button layout-align='start center' ng-click="togglesideNav()">
                 <i class='material-icons md-icon-36'>menu</i>
             </md-button>
-            <h1 md-truncate flex>ScoutingFRC</h1>
+            <h2 md-truncate flex>FRC Scout</h2>
+            <md-button layout-align='end center' ng-click='signIn()' ng-hide='loggedIn'>
+                <i class='material-icons md-icon-36'>account_circle</i>
+            </md-button>
             <md-button layout-align='end center' ng-click='signOut()' ng-show='loggedIn'>
                 <i class='material-icons md-icon-36'>exit_to_app</i>
             </md-button>
@@ -55,9 +58,22 @@
 
     <!-- Directives!!! -->
     <side-nav ng-controller='navControl'></side-nav>
-    <div id='main'>
-        <!-- This is where the views from Angular Routing should go --> 
-        <div ng-view></div>        
-    </div>
+    <md-content flex style='height:100%'>
 
+        <!-- Directives!!! -->
+        <div layout-margin>
+            <!--<sign-in-card ng-hide='loggedIn' layout-align='center' flex='50'></sign-in-card>
+            <!-- Ryley's Input Stuff -->
+            <team-stats-card ng-controller='inputControl' ng-show='loggedIn'></team-stats-card>
+            <team-input-card ng-controller='inputControl' ng-show='loggedIn'></team-input-card>
+            <load-team-data-card ng-controller='inputControl' ng-show='loggedIn'></load-team-data-card>
+            <scout-match-card ng-controller='inputControl' ng-show='loggedIn'></scout-match-card>
+            <export-c-s-v-card ng-controller='outputControl' ng-show='loggedIn'></export-c-s-v-card>
+			<pre-match-card ng-controller='inputControl'></pre-match-card>
+			<auto-card ng-controller='inputControl'></auto-card>
+			<teleop ng-controller='inputControl'></teleop>
+			<end-game ng-controller='inputControl'></end-game>
+			
+        </div>        
+    </md-content>
 </body>
