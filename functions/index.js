@@ -41,9 +41,9 @@ function sendWelcomeEmail(email, displayName) {
 
 	mailOptions.subject = `Welcome to ScoutingFRC!`;
 	mailOptions.text = `Hey ${displayName || ''}! 
-						Welcome to ScoutingFRC. If you have any questions, you can contact us at scoutingfrcweb@gmail.com. 
-						Have a great season! 
-						The ScoutingFRC team`;
+				Welcome to ScoutingFRC. If you have any questions, you can contact us at scoutingfrcweb@gmail.com. 
+				Have a great season! 
+				The ScoutingFRC team`;
 						
 	return mailTransport.sendMail(mailOptions).then(function(){
 		console.log('Welcome email sent to: ', email);	
