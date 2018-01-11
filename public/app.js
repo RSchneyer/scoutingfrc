@@ -8,19 +8,20 @@ app.run(function($rootScope, $location, $mdDialog){
 		console.log('Auth State Changed');
 		if (user) {
 			var userDoc = db.collection('users').doc(user.uid);
-			//If document with user's uid exists in users collection, otherwise create uid named document and add displayname and email fields
+			//If document with user's uid exists in users collection, otherwise create uid named document and ask for team affiliation
 			var userCheck = userDoc.get()
 			.then(doc => {
 				if(doc.exists){
 					//User already exists, log in as usual
 					console.log('User exists in Firestore');
+					console.log('userTeam: '+doc.data().team);
+					$rootScope.userTeam = doc.data().team;
 				}else{
 					$rootScope.showPrompt();
 					//Set flag to display team register directive
 					$rootScope.$apply(function(){
 						$rootScope.newUser = true;
 					});
-					console.log($rootScope.newUser);
 				}
 				//Set $scope variables
 				$rootScope.$apply(function(){
@@ -70,23 +71,23 @@ app.run(function($rootScope, $location, $mdDialog){
 	    .cancel('I\'d rather not be affiliated with a team');
 
 		$mdDialog.show(confirm).then(function(result) {
-//	    	console.log(result);
 	    	var ref = db.collection('users').doc($rootScope.user.uid);
 	    	ref.set({
 				team : result
 			}, { merge: true });
+			$rootScope.userTeam = result;
 	    }, function() {
-//	    	console.log(result);
 	    	var ref = db.collection('users').doc($rootScope.user.uid);
 	    	ref.set({
 				team : 0
 			}, { merge: true });
+			$rootScope.userTeam = 0;
     	});
 	};
 });
+
 	
 // Angular Routing /////////////////////////////
-
 app.config(function($routeProvider, $locationProvider){
 	$routeProvider
 	.when('/', {
@@ -108,9 +109,7 @@ app.config(function($routeProvider, $locationProvider){
 });
 
 
-
-
-//Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.directive('teamInputCard', function(){
 	return {
 		templateUrl: 'directives/teamInputCard.html',
