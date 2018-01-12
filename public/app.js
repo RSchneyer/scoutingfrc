@@ -4,6 +4,7 @@ app.run(function($rootScope, $location, $mdDialog){
 	$rootScope.loggedIn = false;
 	$rootScope.newUser = false;
 	var db = firebase.firestore();
+
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
 		if (user) {
@@ -113,36 +114,42 @@ app.config(function($routeProvider, $locationProvider){
 app.directive('teamInputCard', function(){
 	return {
 		templateUrl: 'directives/teamInputCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('loadTeamDataCard', function() {
 	return {
 		templateUrl: 'directives/loadTeamDataCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('scoutMatchCard', function(){
 	return {
 		templateUrl: 'directives/scoutMatchCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('teamStatsCard', function(){
 	return {
 		templateUrl: 'directives/teamStatsCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('sideNav', function(){
 	return {
 		templateUrl: 'directives/sideNav.html',
+		controller: 'navControl'
 	};
 });
 
 app.directive('exportCSVCard', function(){
 	return {
 		templateUrl: 'directives/exportCSVCard.html',
+		controller: 'outputControl'
 	};
 });
 
@@ -154,29 +161,32 @@ app.directive('signInCard', function(){
 app.directive('preMatchCard', function(){
 	return {
 		templateUrl: 'directives/preMatchCard.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('autoCard', function(){
 	return {
 		templateUrl: 'directives/autoCard.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('endGame', function(){
 	return {
 		templateUrl: 'directives/endGame.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('teleop', function(){
 	return {
 		templateUrl: 'directives/teleop.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('counter', function() {
     return {
         restrict: 'A',
         scope: { value: '=value' },
-        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a>\
-                  <input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
+        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
                   <a  href="javascript:;" class="counter-plus" ng-click="plus()">+</a>',
         link: function( scope , element , attributes ) {
             // Make sure the value attribute is not missing.
@@ -198,7 +208,7 @@ app.directive('counter', function() {
              */
             var setValue = function( val ) {
                 scope.value = parseInt( val );
-            }
+            };
             
             // Set the value initially, as an integer.
             setValue( scope.value );
@@ -258,5 +268,5 @@ app.directive('counter', function() {
                 setValue( scope.value );
             };
         }
-    }
+    };
 });
