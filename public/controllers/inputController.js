@@ -105,29 +105,45 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	// TODO catch if team not found, give option for change info(team number or match number)
 	};
 
+	$scope.scoutableComps = [];
 	$scope.competitionOptions = function(){
-		$scope.scoutableComps = [];
+		var Comps = [];
 		//Can only choose loaded events
 		//TODO - choose only events that the user's team is attending
-//		if($rootScope.userTeam != null){
-//			var rootRef = db.collection("teams/"+$rootScope.userTeam+"/events/");
-//		}else{
+//		console.log('compOptions run!');
+		if($rootScope.userTeam != 0){
+			var rootRef = db.collection("teams/"+$rootScope.userTeam+"/events/");
+		}else{
 			var rootRef = db.collection("events/");
-//		}
+		}
 		var teamComps = rootRef.get()
 		.then(snapshot => {
 			snapshot.forEach(doc => {
 				docData = doc.data();
+//				console.log(docData);
 				var element = {};
-				element.name = docData.short_name;
+				if(docData.name != null){
+					element.name = docData.name;
+				}else{
+					element.name = docData.short_name;
+				}
 				element.value = doc.id;
-				$scope.scoutableComps.push(element);
-			})
+				Comps.push(element);
+			});
+			$scope.scoutableComps = Comps;
+			$scope.$apply();
+//			console.log($scope.scoutableComps);
 		})
 	};
-//  TODO this will have to be moved to be triggered when the userTeam is changed - https://stackoverflow.com/questions/29467339/how-to-call-a-function-from-another-controller-in-angularjs
-	$scope.competitionOptions();
 
+//  This will be triggered when the userTeam is changed
+	$scope.$watch(function() {
+  		return $rootScope.userTeam;
+	}, function() {
+//  		console.log('Watch saw change');
+  		$scope.competitionOptions();
+	}, true);
+	
 	/*
 	 * Takes data from the input fields displays the appropriate average
 	 */
