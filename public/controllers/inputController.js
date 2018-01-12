@@ -6,6 +6,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	var db = firebase.firestore();
 	var usersDB = db.collection('users');
 
+/*  not needed (never used)
 	$scope.getTeamData = function(){
 		var team = 'frc' + $scope.frcTeam;
 		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+team+'/simple?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
@@ -14,30 +15,33 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 			$scope.teamData = response.data;
 		});
 	};
-
+*/
 	/*
-	 * loads basic team information from the variable loadTeamNumber
-	 * Should be called the first time a user joins a team, thus creating the team in the database.
-	 * Also called the first time that a team has info scouted about them.
+	 * loads basic team information from the Blue Alliance If team not in DataBase
 	 */
-	$scope.loadTeamData = function(){
-		var teamKey = 'frc' + $scope.loadTeamNumber;
-		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
-//		var info = tbaApi.getTeam($scope.loadTeamNumber)
-		.then(function(response){
-			$scope.teamDataBlock = response.data;
-			var rootRef = db.doc("teams/"+$scope.loadTeamNumber);
-			rootRef.set({
-				city:$scope.teamDataBlock.city,
-				country:$scope.teamDataBlock.country,
-				key:$scope.teamDataBlock.key,
-				nickname:$scope.teamDataBlock.nickname,
-				state_prov:$scope.teamDataBlock.state_prov,
-				team_number:$scope.teamDataBlock.team_number
-			});
-		});
-		$scope.loadTeamEventData();
-		console.log("Finished initializing team information!");
+	$scope.loadTeamData = function(teamNum){
+		var rootRef = db.doc("teams/"+teamNum);
+		rootRef.get()
+		.then(doc => {
+			if(!doc.exists && teamNum != null){
+				console.log('loading team data to DataBase');
+				var teamKey = 'frc' + teamNum;
+				var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+		//		var info = tbaApi.getTeam($scope.loadTeamNumber)
+				.then(function(response){
+					var jsonData = response.data;
+					rootRef.set({
+						city:jsonData.city,
+						country:jsonData.country,
+						key:jsonData.key,
+						nickname:jsonData.nickname,
+						state_prov:jsonData.state_prov,
+						team_number:jsonData.team_number
+					});
+				});
+				console.log("Finished initializing team information!");
+			}
+		})
 	};
 	
 	/*
@@ -45,10 +49,9 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	 * Should be called the first time a user joins a team, thus creating the team events in the database.
 	 * Also called the first time that a team has info scouted about them.
 	 */
-	$scope.loadTeamEventData = function(){
+	$scope.loadTeamEventData = function(teamNum){
 		var dbCalls = function(eventVar){
 			console.log(eventVar.event_code);
-//			var eventCode = '2018'+eventVar.event_code;
 			var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 //			var eventTeams = tbaApi.getEventTeams(eventCode)
 			.then(function(resp){
@@ -67,19 +70,30 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 					event_code:eventVar.event_code,
 					teams:resp.data
 				}, { merge: true });
-				var teamRef = db.doc("teams/"+$scope.loadTeamNumber+"/events/"+eventVar.event_code);
+				var teamRef = db.doc("teams/"+teamNum+"/events/"+eventVar.event_code);
 				teamRef.set({
 					name:eventVar.short_name
 				});
+				//load team info for each team at the event(possible scoutable teams)
+				for(var j = 0; j < resp.data.length; j++){
+					$scope.loadTeamData(resp.data[j].substr(3));
+				}
 			});
 		};
-		var teamKey = 'frc' + $scope.loadTeamNumber;
-		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
-//		var info = tbaApi.getTeamEvents($scope.loadTeamNumber, 2018)
-		.then(function(response){
-			$scope.teamDataBlock = response.data;
-			for(var i = 0; i < $scope.teamDataBlock.length; i++){
-				dbCalls($scope.teamDataBlock[i]);
+
+		var checkRef = db.doc("teams/"+teamNum);
+		checkRef.get()
+		.then(doc => {
+			if(!doc.exists && teamNum != null){
+				var teamKey = 'frc' + teamNum;
+				var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
+		//		var info = tbaApi.getTeamEvents($scope.loadTeamNumber, 2018)
+				.then(function(response){
+					$scope.teamDataBlock = response.data;
+					for(var i = 0; i < $scope.teamDataBlock.length; i++){
+						dbCalls($scope.teamDataBlock[i]);
+					}
+				});
 			}
 		});
 	};
@@ -88,6 +102,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	 * Takes data from the input fields and saves it under the username at the 
 	 * appropriate path in the db for the chosen match and team info
 	 */
+	//TODO
 	$scope.putMatchData = function(){
 		console.log("Match data sent!");
 		//location to save data
@@ -108,9 +123,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	$scope.scoutableComps = [];
 	$scope.competitionOptions = function(){
 		var Comps = [];
-		//Can only choose loaded events
-		//TODO - choose only events that the user's team is attending
-//		console.log('compOptions run!');
 		if($rootScope.userTeam != 0){
 			var rootRef = db.collection("teams/"+$rootScope.userTeam+"/events/");
 		}else{
@@ -120,7 +132,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 		.then(snapshot => {
 			snapshot.forEach(doc => {
 				docData = doc.data();
-//				console.log(docData);
 				var element = {};
 				if(docData.name != null){
 					element.name = docData.name;
@@ -132,16 +143,20 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 			});
 			$scope.scoutableComps = Comps;
 			$scope.$apply();
-//			console.log($scope.scoutableComps);
 		})
 	};
 
-//  This will be triggered when the userTeam is changed
+	//  This will be triggered when the userTeam is changed
 	$scope.$watch(function() {
   		return $rootScope.userTeam;
 	}, function() {
-//  		console.log('Watch saw change');
   		$scope.competitionOptions();
+  		//If new user, cather team and event information
+  		if($rootScope.newUser){
+  			console.log('newUser');
+  			$scope.loadTeamData($rootScope.userTeam);
+	  		$scope.loadTeamEventData($rootScope.userTeam);
+		}	
 	}, true);
 	
 	/*

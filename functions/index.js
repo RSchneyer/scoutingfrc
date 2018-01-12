@@ -49,11 +49,12 @@ function sendWelcomeEmail(email, displayName) {
 		console.log('Welcome email sent to: ', email);	
 		});
 }
-
-// exports.loadTeamData = functions.database.ref('').onWrite(event => {
-//
-// });
-///*
+/*
+exports.loadTeamData = functions.firestore.document('/users/{user}')
+.onWrite(event => {
+	
+});
+*/
 exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/averages/{event}')
 .onWrite(event => {
 	console.log('Event Data Changed');
@@ -162,6 +163,3 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	});
 	return 0;
 });
-
-//*/
-
