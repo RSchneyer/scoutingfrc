@@ -229,4 +229,33 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 			$scope.calculateAverage();
 		})
 	};
+	
+	$scope.preShow = true;
+	$scope.autoShow = false;
+	$scope.teleShow = false;
+	$scope.endShow = false;
+	$scope.autoBack = function(){
+		$scope.preShow = true;
+		$scope.autoShow = false;
+		$scope.teleShow = false;
+		$scope.endShow = false;
+	}
+	$scope.preNext = function(){
+		$scope.preShow = false;
+		$scope.autoShow = true;
+		$scope.teleShow = false;
+		$scope.endShow = false;
+	};
+	$scope.autoNext = function(){
+		$scope.autoShow = false;
+		$scope.teleShow = true;
+		$scope.preShow = false;
+		$scope.endShow = false;
+	};
+	$scope.teleNext = function(){
+		$scope.teleShow = false;
+		$scope.endShow = true;
+		$scope.preShow = false;
+		$scope.autoShow = false;
+	};
 }]);

@@ -4,13 +4,6 @@ app.run(function($rootScope, $location, $mdDialog){
 	$rootScope.loggedIn = false;
 	$rootScope.newUser = false;
 	var db = firebase.firestore();
-	
-	//Trigger drop down boxes to update with team information
-	// $rootScope.teamAssigned = function() {
-	// 	console.warn('emitting');
- //        $rootScope.$broadcast("TeamAssigned", {});
- //        $rootScope.$emit("TeamAssigned", {});
-    // }
 
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
@@ -24,7 +17,6 @@ app.run(function($rootScope, $location, $mdDialog){
 					console.log('User exists in Firestore');
 					console.log('userTeam: '+doc.data().team);
 					$rootScope.userTeam = doc.data().team;
-//					$rootScope.teamAssigned();
 				}else{
 					$rootScope.showPrompt();
 					//Set flag to display team register directive
@@ -85,14 +77,12 @@ app.run(function($rootScope, $location, $mdDialog){
 				team : result
 			}, { merge: true });
 			$rootScope.userTeam = result;
-//			$rootScope.teamAssigned();
 	    }, function() {
 	    	var ref = db.collection('users').doc($rootScope.user.uid);
 	    	ref.set({
 				team : 0
 			}, { merge: true });
 			$rootScope.userTeam = 0;
-//			$rootScope.teamAssigned();
     	});
 	};
 });
