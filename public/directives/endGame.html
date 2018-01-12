@@ -6,7 +6,7 @@
     </md-card-title>
     <md-card-content>	
 		<md-radio-group ng-model="CubeAutoLoca" class="flex">
-			<label style="font-weight:bold;">End Game</label>
+			<label style="font-weight:bold;">End Game</label><!-- should this be a drop-down? -->
 			<md-radio-button value="notryclimb" class="md-primary">Not Parked on Platform</md-radio-button>
 			<md-radio-button value="parked" class="md-primary">Parked on Platform</md-radio-button>
 			<md-radio-button value="atmpthook" class="md-primary">Attempted to Hook onto Bar</md-radio-button>
@@ -32,7 +32,7 @@
         </md-checkbox>
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
+        <md-button ng-click='autoNext()'>Back</md-button>
         <md-button ng-click=''>Submit</md-button>
     </md-card-actions>
-	
 </md-card>
