@@ -1,4 +1,4 @@
-app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope){
+app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', function($scope, $http, $rootScope, $mdDialog){
 //app.controller('inputControl', ['$scope', '$http', 'tbaApi', function($scope, tbaApi, $http){
     $scope.quantity1 = 0;
 	$scope.quantity2 = 0;
@@ -98,6 +98,55 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 		});
 	};
 	
+	$scope.checkSubmit = function(){
+		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value)
+		rootRef.get()
+		.then(doc => {
+			if(doc.exists){
+				$scope.confirmSubmit();
+			}else{
+				$scope.confirmTeam();
+			}
+		})
+	}
+	$scope.confirmTeam = function() {
+    	// Appending dialog to document.body to cover sidenav in docs app
+    	var confirm = $mdDialog.confirm()
+        	.title('Are you sure this the right team number?')
+        	.textContent('According to our records, team '+ $scope.TeamNumber + " is not attending the " + $scope.competition.name + " Regional")
+          	.ariaLabel('Confirm Team')
+//          	.targetEvent(ev)
+          	.ok('I am sure')
+          	.cancel('I will change that');
+
+    	$mdDialog.show(confirm).then(function() {
+			$scope.confirmSubmit();
+    	}, function() {
+      		$scope.autoBack();
+    	});
+  	};
+  	$scope.confirmSubmit = function() {
+  		$scope.myHTML = '<p>Team Number: '+$scope.TeamNumber+'<br>Match Number: '+$scope.MatchNumber+'<br>Competition Name: '+$scope.competition.name+'</p>';
+    	console.log($scope.myHTML);
+    	// Appending dialog to document.body to cover sidenav in docs app
+    	var confirm = $mdDialog.confirm()
+        	.title('Submission Confirmation')
+        	//TODO make this actually interactive
+        	.htmlContent("<div ng-bind-html='myHTML'></div><p>Soon you will be able review your inputs in this window</p><div [innerHTML]='myHTML'></div>")
+//        	.textContent('Some Text\nnew line')
+          	.ariaLabel('Confirm Submit')
+//          	.targetEvent(ev)
+          	.ok('Submit')
+          	.cancel('I need to make a change');
+
+    	$mdDialog.show(confirm).then(function() {
+			//ok
+			$scope.putMatchData();
+    	}, function() {
+      		//cancel
+    	});
+  	};
+
 	/*
 	 * Takes data from the input fields and saves it under the username at the 
 	 * appropriate path in the db for the chosen match and team info
@@ -105,7 +154,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	$scope.putMatchData = function(){
 		console.log("Match data sent!");
 		//location to save data
-		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition.value+"/matches/"+$scope.matchNum);
+		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
 		//create the object of game data to be saved
 		var scoutedData = {
 							//TODO Need to add variables from button presses
