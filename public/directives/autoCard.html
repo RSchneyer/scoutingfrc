@@ -5,9 +5,17 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label>Starting Position(From Alliance Driver Station)</label>
+            <md-select ng-model="startingPos" class="md-no-underline">
+                <md-option value="left">Left</md-option>
+                <md-option value="middle">Middle</md-option>
+                <md-option value="right">Right</md-option>
+            </md-select>
+        </md-input-container><br>
 		<md-card-actions layout='row' layout-align='start start'>
 			<md-button ng-click=''>Start Match</md-button>
-		</md-card-actions>	
+		</md-card-actions>
 		<md-checkbox ng-model="autoCross" class="md-primary" aria-label="Checkbox 1" class="flex-33">
             Crossed Auto Line
         </md-checkbox><br>

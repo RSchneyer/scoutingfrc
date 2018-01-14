@@ -102,18 +102,31 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', function($scope
 	 * Takes data from the input fields and saves it under the username at the 
 	 * appropriate path in the db for the chosen match and team info
 	 */
-	//TODO
 	$scope.putMatchData = function(){
 		console.log("Match data sent!");
 		//location to save data
 		var rootRef = db.doc("teams/"+$scope.teamNum+"/events/"+$scope.competition.value+"/matches/"+$scope.matchNum);
 		//create the object of game data to be saved
-		var scoutedData = { teleScores:$scope.teleScores, 
-							autoShot:$scope.autoShot,
-							teleFlag:$scope.teleFlag,
-							color:$scope.scoutedColor,
+		var scoutedData = {
+							//TODO Need to add variables from button presses
+							color:$scope.scoutedColor || '',
+							startPos: $scope.startingPos || '',
+							autoCube: $scope.CubeAutoLoca || '',
+							autoWrong: $scope.autoWrongCube || false,
+							autoCross: $scope.autoCross || false,
+							//change these///////////////
+							quantity1: $scope.quantity1,
+							quantity2: $scope.quantity2,
+							quantity3: $scope.quantity3,
+							//////////////////////////////
+							teleWrong: $scope.teleWrongCube || false,
+							endClimb: $scope.endClimb || '',
+							climbLoca: $scope.climbLoca || '',
+							defender: $scope.defender || false,
+							defended: $scope.defended || false,
 							timestamp: firebase.firestore.FieldValue.serverTimestamp()
 							};
+		console.log(scoutedData);
 		rootRef.set({
 			[$rootScope.user.uid] : scoutedData,
 		}, { merge: true });
