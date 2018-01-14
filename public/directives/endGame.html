@@ -5,24 +5,24 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>	
-		<md-radio-group ng-model="CubeAutoLoca" class="flex">
+		<md-radio-group ng-model="endClimb" class="flex">
 			<label style="font-weight:bold;">End Game</label><!-- should this be a drop-down? -->
-			<md-radio-button value="notryclimb" class="md-primary">Not Parked on Platform</md-radio-button>
+			<md-radio-button value="noTryPark" class="md-primary">Not Parked on Platform</md-radio-button>
 			<md-radio-button value="parked" class="md-primary">Parked on Platform</md-radio-button>
-			<md-radio-button value="atmpthook" class="md-primary">Attempted to Hook onto Bar</md-radio-button>
-			<md-radio-button value="atmptrobo" class="md-primary">Attempted to Attach to a Robot</md-radio-button>
-			<md-radio-button value="atmptrobo" class="md-primary">Attempted to Carry a Robot</md-radio-button>
+			<md-radio-button value="atmptHook" class="md-primary">Attempted to Hook onto Bar</md-radio-button>
+			<md-radio-button value="atmptAttach" class="md-primary">Attempted to Attach to a Robot</md-radio-button>
+			<md-radio-button value="atmptCarry" class="md-primary">Attempted to Carry a Robot</md-radio-button>
 			<md-radio-button value="atmptclimb" class="md-primary">Hooked bar and Attempted Climb</md-radio-button>
-			<md-radio-button value="successrobo" class="md-primary">Successful Climb on Another Robot</md-radio-button>
-			<md-radio-button value="successrobo" class="md-primary">Successful Climb with Another Robot Attached</md-radio-button>
-			<md-radio-button value="successown" class="md-primary">Successful Climb on Own</md-radio-button>
+			<md-radio-button value="successAttach" class="md-primary">Successful Climb on Another Robot</md-radio-button>
+			<md-radio-button value="successCarry" class="md-primary">Successful Climb with Another Robot Attached</md-radio-button>
+			<md-radio-button value="successSolo" class="md-primary">Successful Climb on Own</md-radio-button>
 		</md-radio-group><br>
-		<md-radio-group ng-model="CubeAutoLoca" class="flex">
+		<md-radio-group ng-model="climbLoca" class="flex">
 			<label style="font-weight:bold;">Climb Location(From Alliance Driver Station)</label>
-			<md-radio-button value="notryclimb" class="md-primary">No Attempt</md-radio-button>
-			<md-radio-button value="parked" class="md-primary">Center</md-radio-button>
-			<md-radio-button value="atmpthook" class="md-primary">Left</md-radio-button>
-			<md-radio-button value="atmptrobo" class="md-primary">Right</md-radio-button>
+			<md-radio-button value="notry" class="md-primary">No Attempt</md-radio-button>
+			<md-radio-button value="left" class="md-primary">Left</md-radio-button>
+			<md-radio-button value="center" class="md-primary">Center</md-radio-button>
+			<md-radio-button value="right" class="md-primary">Right</md-radio-button>
 		</md-radio-group><br>
 		<md-checkbox ng-model="defender" class="md-primary" aria-label="Checkbox 1" class="flex-33">
             Defended Against Opponents
@@ -33,6 +33,6 @@
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
         <md-button ng-click='autoNext()'>Back</md-button>
-        <md-button ng-click=''>Submit</md-button>
+        <md-button ng-click='checkSubmit()'>Submit</md-button>
     </md-card-actions>
 </md-card>

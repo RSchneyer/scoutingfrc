@@ -13,6 +13,25 @@
             <label style="position:relative;">Competition:</label>
             <select ng-model="competition" class="md-no-underline" ng-options="obj.name for obj in scoutableComps"></select>
         </md-input-container><br>
+
+        <md-input-container>
+            <label>Team Number</label>
+            <input type='number' ng-model='TeamNumber'>
+        </md-input-container>
+        <md-input-container>
+            <label>Match Number</label>
+            <input type='number' ng-model='MatchNumber'>
+        </md-input-container>
+<!--
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label style="position:relative;">Team Number</label>
+            <select ng-model="TeamNumber" class="md-no-underline" <!--ng-options="obj.name for obj in TeamsinComp"- ->></select>
+        </md-input-container><br>
+		<md-input-container class="md-block" flex-gt-sm="">
+			<label style="position:relative;">Match Number</label>
+			<select ng-model="MatchNumber" class="md-no-underline" <!--ng-options="obj.name for obj in MatchNumTeam"- ->></select>
+		</md-input-container><br>
+        -->
         <md-input-container class="md-block" flex-gt-sm="">
             <label>Alliance Color</label>
             <md-select ng-model="scoutedColor" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
@@ -20,14 +39,6 @@
                 <md-option value="blue">Blue</md-option>
             </md-select>
         </md-input-container><br>
-		<md-input-container class="md-block" flex-gt-sm="">
-            <label style="position:relative;">Team Number</label>
-            <select ng-model="TeamNumber" class="md-no-underline" <!--ng-options="obj.name for obj in TeamsinComp"-->></select>
-        </md-input-container><br>
-		<md-input-container class="md-block" flex-gt-sm="">
-			<label style="position:relative;">Match Number</label>
-			<select ng-model="MatchNumber" class="md-no-underline" <!--ng-options="obj.name for obj in MatchNumTeam"-->></select>
-		</md-input-container><br>
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
         <md-button ng-click='preNext()'>Next</md-button>

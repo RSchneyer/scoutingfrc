@@ -44,16 +44,17 @@ function sendWelcomeEmail(email, displayName) {
 				Welcome to ScoutingFRC. If you have any questions, you can contact us at scoutingfrcweb@gmail.com. 
 				Have a great season! 
 				The ScoutingFRC team`;
-						
+
 	return mailTransport.sendMail(mailOptions).then(function(){
 		console.log('Welcome email sent to: ', email);	
 		});
 }
-
-// exports.loadTeamData = functions.database.ref('').onWrite(event => {
-//
-// });
-///*
+/*
+exports.loadTeamData = functions.firestore.document('/users/{user}')
+.onWrite(event => {
+	
+});
+*/
 exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/averages/{event}')
 .onWrite(event => {
 	console.log('Event Data Changed');
@@ -162,6 +163,3 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	});
 	return 0;
 });
-
-//*/
-

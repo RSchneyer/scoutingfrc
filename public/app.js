@@ -86,6 +86,7 @@ app.run(function($rootScope, $location, $mdDialog){
     	});
 	};
 });
+
 	
 // Angular Routing /////////////////////////////
 app.config(function($routeProvider, $locationProvider){
