@@ -19,14 +19,8 @@ Let us know at [ScoutingFRCweb@gmail.com](mailto:ScoutingFRCWeb@gmail.com), or j
 Thank you to The Blue Alliance makers for having an easy to use API.
 
 ## Authors
-<<<<<<< HEAD
-Reid Schneyer - "Professional" AngularJS Developer*  
-Ryley Radack - FIRST Retired Programmer*  
-Phillip Kelsey - The ideas/README.md guy*
-=======
 [Reid Schneyer](https://www.linkedin.com/in/reid-s-532023121/) - "Professional" AngularJS Developer*  
 [Ryley Radack](https://www.linkedin.com/in/ryley-radack-381a2a147/) - FIRST Retired Programmer*  
 [Phillip Kelsey](https://www.linkedin.com/in/phillip-kelsey-112a0a147/) - The ideas/README.md guy*
->>>>>>> master
 
 /*We are college kids doing this for fun
