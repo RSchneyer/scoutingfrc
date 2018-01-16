@@ -265,6 +265,6 @@ app.directive('counter', function() {
                 // Re-set the value as an integer.
                 setValue( scope.value );
             };
-        };
+        }
     };
 });
