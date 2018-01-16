@@ -5,15 +5,10 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
-		<!--
-			TODO - make this autoload with js for competitions that match the current week
-			https://material.angularjs.org/latest/demo/input
-		-->
 		<md-input-container class="md-block" flex-gt-sm="">
             <label style="position:relative;">Competition:</label>
             <select ng-model="competition" class="md-no-underline" ng-options="obj.name for obj in scoutableComps"></select>
         </md-input-container><br>
-
         <md-input-container>
             <label>Team Number</label>
             <input type='number' ng-model='TeamNumber'>

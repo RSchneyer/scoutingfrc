@@ -1,8 +1,6 @@
-var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv', 'ngRoute']);
-
+var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv']);
 app.run(function($rootScope, $location, $mdDialog){
 	$rootScope.loggedIn = false;
-	$rootScope.newUser = false;
 	var db = firebase.firestore();
 
 	firebase.auth().onAuthStateChanged(function(user){
@@ -50,11 +48,8 @@ app.run(function($rootScope, $location, $mdDialog){
 
 	$rootScope.signOut = function(){
 		firebase.auth().signOut().then(function(){
-			$rootScope.$apply(function(){
-				$rootScope.user = {};
-				$rootScope.loggedIn = false;
-				$location.path('/');
-			});
+			$rootScope.user = {};
+			$rootScope.loggedIn = false;
 		});
 	};
 
@@ -86,7 +81,6 @@ app.run(function($rootScope, $location, $mdDialog){
     	});
 	};
 });
-
 	
 // Angular Routing /////////////////////////////
 app.config(function($routeProvider, $locationProvider){
@@ -186,7 +180,8 @@ app.directive('counter', function() {
     return {
         restrict: 'A',
         scope: { value: '=value' },
-        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
+        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a>\
+                  <input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
                   <a  href="javascript:;" class="counter-plus" ng-click="plus()">+</a>',
         link: function( scope , element , attributes ) {
             // Make sure the value attribute is not missing.
@@ -209,7 +204,6 @@ app.directive('counter', function() {
             var setValue = function( val ) {
                 scope.value = parseInt( val );
             };
-            
             // Set the value initially, as an integer.
             setValue( scope.value );
             
@@ -267,6 +261,6 @@ app.directive('counter', function() {
                 // Re-set the value as an integer.
                 setValue( scope.value );
             };
-        }
+        };
     };
 });

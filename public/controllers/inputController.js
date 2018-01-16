@@ -3,6 +3,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
     $scope.quantity1 = 0;
 	$scope.quantity2 = 0;
 	$scope.quantity3 = 0;
+	$scope.quantity4 = 0;
 	var db = firebase.firestore();
 	var usersDB = db.collection('users');
 
