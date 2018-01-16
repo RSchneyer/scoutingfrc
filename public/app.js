@@ -1,30 +1,37 @@
 var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv']);
-
-app.run(function($rootScope){
+app.run(function($rootScope, $location, $mdDialog){
 	$rootScope.loggedIn = false;
 	var db = firebase.firestore();
+
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log('Auth State Changed');
 		if (user) {
 			var userDoc = db.collection('users').doc(user.uid);
-			//If document with user's uid exists in users collection, otherwise create uid named document and add displayname and email fields
-			if (userDoc.exists) {
-				//User already exists, log in as usual
-				console.log('User exists in Firestore');
-			} else {
-				userDoc.set({
-					userDisplayName: user.displayName,
-					email: user.email
+			//If document with user's uid exists in users collection, otherwise create uid named document and ask for team affiliation
+			var userCheck = userDoc.get()
+			.then(doc => {
+				if(doc.exists){
+					//User already exists, log in as usual
+					console.log('User exists in Firestore');
+					console.log('userTeam: '+doc.data().team);
+					$rootScope.userTeam = doc.data().team;
+				}else{
+					$rootScope.showPrompt();
+					//Set flag to display team register directive
+					$rootScope.$apply(function(){
+						$rootScope.newUser = true;
+					});
+				}
+				//Set $scope variables
+				$rootScope.$apply(function(){
+					$rootScope.user = user;
+					$rootScope.loggedIn = true;
+					$location.path('/dashboard'); //Direct user to scoutingfrc.com/dashboard if user is logged in
 				});
-			}
-			//Set $scope variables
-			$rootScope.$apply(function(){
-				$rootScope.user = user;
-				$rootScope.loggedIn = true;
 			});
 		}
 		else {
-			console.log('error');
+			console.log('error: no user logged in');
 		}
 	});
 
@@ -45,43 +52,98 @@ app.run(function($rootScope){
 			$rootScope.loggedIn = false;
 		});
 	};
+
+	$rootScope.showPrompt = function() {
+    // Appending dialog to document.body to cover sidenav in docs app
+    	var confirm = $mdDialog.prompt()
+		.title('What team are you apart of?')	
+      	.textContent('Put zero if you are unaffiliated')
+      	.placeholder('Team #')
+      	.ariaLabel('Team #')
+      	.initialValue('0')
+//      	.targetEvent(ev)
+      	.required(true)
+	    .ok('Lets Go!')
+	    .cancel('I\'d rather not be affiliated with a team');
+
+		$mdDialog.show(confirm).then(function(result) {
+	    	var ref = db.collection('users').doc($rootScope.user.uid);
+	    	ref.set({
+				team : result
+			}, { merge: true });
+			$rootScope.userTeam = result;
+	    }, function() {
+	    	var ref = db.collection('users').doc($rootScope.user.uid);
+	    	ref.set({
+				team : 0
+			}, { merge: true });
+			$rootScope.userTeam = 0;
+    	});
+	};
+});
+	
+// Angular Routing /////////////////////////////
+app.config(function($routeProvider, $locationProvider){
+	$routeProvider
+	.when('/', {
+		templateUrl: 'views/register.html',
+	})
+	.when('/dashboard', {
+		templateUrl: 'views/dashboard.html'
+	})
+	.when('/matches', {
+		templateUrl:'views/matches.html'
+	})
+	.when('/download', {
+		templateUrl:'views/download.html'
+	})
+	.when('/about', {
+		templateUrl: 'views/about.html'
+	});
+	$locationProvider.html5Mode(true);
 });
 
 
-//Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Directives ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.directive('teamInputCard', function(){
 	return {
 		templateUrl: 'directives/teamInputCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('loadTeamDataCard', function() {
 	return {
 		templateUrl: 'directives/loadTeamDataCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('scoutMatchCard', function(){
 	return {
 		templateUrl: 'directives/scoutMatchCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('teamStatsCard', function(){
 	return {
 		templateUrl: 'directives/teamStatsCard.html',
+		controller: 'inputControl'
 	};
 });
 
 app.directive('sideNav', function(){
 	return {
 		templateUrl: 'directives/sideNav.html',
+		controller: 'navControl'
 	};
 });
 
 app.directive('exportCSVCard', function(){
 	return {
 		templateUrl: 'directives/exportCSVCard.html',
+		controller: 'outputControl'
 	};
 });
 
@@ -93,21 +155,25 @@ app.directive('signInCard', function(){
 app.directive('preMatchCard', function(){
 	return {
 		templateUrl: 'directives/preMatchCard.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('autoCard', function(){
 	return {
 		templateUrl: 'directives/autoCard.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('endGame', function(){
 	return {
 		templateUrl: 'directives/endGame.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('teleop', function(){
 	return {
 		templateUrl: 'directives/teleop.html',
+		controller: 'inputControl'
 	};
 });
 app.directive('counter', function() {
@@ -137,8 +203,7 @@ app.directive('counter', function() {
              */
             var setValue = function( val ) {
                 scope.value = parseInt( val );
-            }
-            
+            };
             // Set the value initially, as an integer.
             setValue( scope.value );
             
@@ -196,6 +261,6 @@ app.directive('counter', function() {
                 // Re-set the value as an integer.
                 setValue( scope.value );
             };
-        }
-    }
+        };
+    };
 });
