@@ -99,16 +99,40 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		});
 	};
 	
+	$scope.pressedStartMatch = function(){
+		$scope.matchStart = moment();
+		console.log('Match Start: '+$scope.matchStart.format("hh:mm:sss"));
+		console.log('Match Start: '+$scope.matchStart.valueOf());
+	}
+	$scope.pressedForce = function(){
+		$scope.force = moment().diff($scope.matchStart, 'seconds');
+		console.log('Force: '+$scope.force);
+	}
+	$scope.pressedBoost = function(){
+		$scope.boost = moment().diff($scope.matchStart, 'seconds');
+		console.log('Boost: '+$scope.boost);
+	}
+	$scope.pressedLevitate = function(){
+		$scope.levitate = moment().diff($scope.matchStart, 'seconds');
+		console.log('Levitate: '+$scope.levitate);
+	}
+	/*
+	 * Shows Pop-Up when match is submitted
+	 */
 	$scope.checkSubmit = function(){
-		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value)
-		rootRef.get()
-		.then(doc => {
-			if(doc.exists){
-				$scope.confirmSubmit();
-			}else{
-				$scope.confirmTeam();
-			}
-		})
+		if($scope.TeamNumber == null || $scope.competition.value == null){
+			console.error('Team or Competition undefined');
+		}else{
+			var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value)
+			rootRef.get()
+			.then(doc => {
+				if(doc.exists){
+					$scope.confirmSubmit();
+				}else{
+					$scope.confirmTeam();
+				}
+			})
+		}
 	}
 	$scope.confirmTeam = function() {
     	// Appending dialog to document.body to cover sidenav in docs app
@@ -158,6 +182,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
 		//create the object of game data to be saved
 		var scoutedData = {
+							matchStart:$scope.matchStart,
 							//TODO Need to add variables from button presses
 							color:$scope.scoutedColor || '',
 							startPos: $scope.startingPos || '',
@@ -168,6 +193,10 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 							quantity1: $scope.quantity1,
 							quantity2: $scope.quantity2,
 							quantity3: $scope.quantity3,
+							quantity4: $scope.quantity4,
+							force:$scope.force || 0,
+							boost:$scope.boost || 0,
+							levitate:$scope.levitate || 0,
 							//////////////////////////////
 							teleWrong: $scope.teleWrongCube || false,
 							endClimb: $scope.endClimb || '',

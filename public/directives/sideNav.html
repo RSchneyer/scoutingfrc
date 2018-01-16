@@ -2,7 +2,7 @@
 	<div layout="column" layout-fill>
 	  <md-toolbar class='md-tall'>
 	  	<div class='md-toolbar-tools' layout='column' layout-align='start' layout-padding>
-	  		<h2>FRC Scout</h2>
+	  		<h2>ScoutingFRC</h2>
 	  		<span flex></span>
 	  		<h2>{{ user.displayName }}</h2>
 	  	</div>
@@ -10,13 +10,20 @@
 
 	  <md-content>
 	    <md-list>
-	      <md-list-item ng-click="null">
-	      	<i class='material-icons' >storage</i>
-			<h3>Item One</h3>	     
+	      <md-list-item ng-click="dashboard()">
+	      	<h3>Dashboard</h3>
 	      </md-list-item>
 
-	      <md-list-item>
-	      	<h3>Item Two</h3>
+	      <md-list-item ng-click="matches()">
+			<h3>Match Scouting</h3>	     
+	      </md-list-item>
+
+	      <md-list-item ng-click="csv()">
+	      	<h3>CSV Download</h3>
+	      </md-list-item>
+
+	      <md-list-item ng-click="about()">
+	      	<h3>About</h3>
 	      </md-list-item>
 
 	    </md-list>

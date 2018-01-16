@@ -1,6 +1,8 @@
-var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv']);
+var app = angular.module('scoutingfrc', ['ngMaterial', 'firebase', 'ngSanitize', 'ngCsv', 'ngRoute']);
+
 app.run(function($rootScope, $location, $mdDialog){
 	$rootScope.loggedIn = false;
+	$rootScope.newUser = false;
 	var db = firebase.firestore();
 
 	firebase.auth().onAuthStateChanged(function(user){
@@ -48,8 +50,11 @@ app.run(function($rootScope, $location, $mdDialog){
 
 	$rootScope.signOut = function(){
 		firebase.auth().signOut().then(function(){
-			$rootScope.user = {};
-			$rootScope.loggedIn = false;
+			$rootScope.$apply(function(){
+				$rootScope.user = {};
+				$rootScope.loggedIn = false;
+				$location.path('/');
+			});
 		});
 	};
 
@@ -180,8 +185,7 @@ app.directive('counter', function() {
     return {
         restrict: 'A',
         scope: { value: '=value' },
-        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a>\
-                  <input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
+        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
                   <a  href="javascript:;" class="counter-plus" ng-click="plus()">+</a>',
         link: function( scope , element , attributes ) {
             // Make sure the value attribute is not missing.

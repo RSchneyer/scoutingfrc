@@ -14,7 +14,7 @@
             </md-select>
         </md-input-container><br>
 		<md-card-actions layout='row' layout-align='start start'>
-			<md-button ng-click=''>Start Match</md-button>
+			<md-button ng-click='pressedStartMatch()'>Start Match</md-button>
 		</md-card-actions>
 		<md-checkbox ng-model="autoCross" class="md-primary" aria-label="Checkbox 1" class="flex-33">
             Crossed Auto Line
@@ -30,6 +30,7 @@
 		<md-checkbox ng-model="autoWrongCube" class="md-primary" aria-label="Checkbox 1" class="flex-33">
             Cube on the Wrong Side of Scale/Switch
         </md-checkbox>
+		<!-- TODO - Need to figure out better label -->
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
         <md-button ng-click='autoBack()'>Back</md-button>
