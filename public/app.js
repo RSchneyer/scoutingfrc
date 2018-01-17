@@ -85,6 +85,16 @@ app.run(function($rootScope, $location, $mdDialog){
 			$rootScope.userTeam = 0;
     	});
 	};
+
+	$rootScope.$on('$routeChangeStart', function (event) {
+        if (!$rootScope.loggedIn) {
+            console.log('DENY: No user logged In');
+            $location.path('/');
+        }
+        else {
+        	//User logged in
+        }
+    });
 });
 	
 // Angular Routing /////////////////////////////
