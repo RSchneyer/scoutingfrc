@@ -38,7 +38,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 						nickname:jsonData.nickname,
 						state_prov:jsonData.state_prov,
 						team_number:jsonData.team_number
-					});
+					}, { merge: true });
 				});
 				console.log("Finished initializing team information!");
 			}
@@ -74,7 +74,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				var teamRef = db.doc("teams/"+teamNum+"/events/"+eventVar.event_code);
 				teamRef.set({
 					name:eventVar.short_name
-				});
+				}, { merge: true });
 				//load team info for each team at the event(possible scoutable teams)
 				for(var j = 0; j < resp.data.length; j++){
 					$scope.loadTeamData(resp.data[j].substr(3));

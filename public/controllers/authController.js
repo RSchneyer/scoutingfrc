@@ -29,7 +29,7 @@ app.controller('authControl', ['$scope', '$rootScope', '$firebaseAuth', function
 				} else {
 					usersDB.doc(authResult.user.uid).set({
 						userDisplayName: authResult.user.displayName
-					})
+					}, { merge: true })
 					.then(function(){
 						console.log('User created!')
 					})

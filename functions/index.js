@@ -84,7 +84,7 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 				datapoints:datapoints,
 				timestamp: FieldValue.serverTimestamp()
 			}
-		});
+		}, { merge: true });
 	})
 	.catch(err => {
 		console.log('Error getting document', err);
@@ -119,7 +119,7 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 			autoShotPercent:autoShotPercent,
 			datapoints:datapoints,
 			timestamp: FieldValue.serverTimestamp()
-		});
+		}, { merge: true });
 	})
 	.catch(err => {
 		console.log('Error getting document', err);
@@ -156,7 +156,7 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 			autoShotPercent:autoShotPercent,
 			datapoints:datapoints,
 			timestamp: FieldValue.serverTimestamp()
-		});
+		}, { merge: true });
 	})
 	.catch(err => {
 		console.log('Error getting document', err);
