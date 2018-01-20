@@ -22,6 +22,37 @@ instead of a custom scouting solution.
 | RoboRecon   | 55                  | 47          | 89            | 81             |
 
 <sup>Scores are out of 100. Last tested on 1/19/2018</sup>
+
+<table>
+  <tr>
+    <th>Site</th>
+    <th>Progressive Web App</th>
+    <th>Performance</th>
+    <th>Accessibility</th>
+    <th>Best Practices</th>
+  </tr>
+  <tr>
+    <td>ScoutingFRC</td>
+    <td>55</td>
+    <td>67</td>
+    <td>94</td>
+    <td>81</td>
+  </tr>
+  <tr>
+    <td>FIRES</td>
+    <td>36</td>
+    <td>20</td>
+    <td>86</td>
+    <td>69</td>
+  </tr>
+  <tr>
+    <td>RoboRecon</td>
+    <td>55</td>
+    <td>47</td>
+    <td>89</td>
+    <td>81</td>
+  </tr>
+</table>
 ## Getting Started
 Visit the site at [https://scoutingfrc.com](https://scoutingfrc.com), and click the sign in button to sign in through Google.
 
