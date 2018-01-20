@@ -26,7 +26,7 @@ instead of a custom scouting solution.
 Visit the site at [https://scoutingfrc.com](https://scoutingfrc.com), and click the sign in button to sign in through Google.
 
 ## Testing the website
-If there are any issues while testing the website, git back to us by putting an
+If there are any issues while testing the website, *git* back to us by putting an
 issue in [Github](https://github.com/RSchneyer/scoutingfrc/issues)
 
 ## Contributing
@@ -34,7 +34,7 @@ We would love to have all the help we can in building and testing this website!
 Let us know at [ScoutingFRCweb@gmail.com](mailto:ScoutingFRCWeb@gmail.com), or join our [Slack Workspace](https://join.slack.com/t/scoutingfrc/shared_invite/enQtMjk0NjUwNTQyMjkzLTNjY2Q4ZDM1MWI3ZWViMzhmM2FkZTlhOGE1OWE0OGFkZWJmNWQ4NzRlOWE1MGU5YjY5YWYxMzk0NGNjODdjZTg)
 
 ## Acknowledgements
-Thank you to The Blue Alliance creators for having an easy to use API.
+Thank you to The Blue Alliance creators for making an easy to use API.
 
 ## Authors
 [Reid Schneyer](https://www.linkedin.com/in/reid-s-532023121/) - "Professional" AngularJS Developer*  
