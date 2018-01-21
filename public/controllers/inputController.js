@@ -1,22 +1,11 @@
 app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', function($scope, $http, $rootScope, $mdDialog){
-//app.controller('inputControl', ['$scope', '$http', 'tbaApi', function($scope, tbaApi, $http){
-    $scope.quantity1 = 0;
-	$scope.quantity2 = 0;
-	$scope.quantity3 = 0;
-	$scope.quantity4 = 0;
+    $scope.allianceScaleCounter = 0;
+	$scope.centerScaleCounter = 0;
+	$scope.opponentScaleCounter = 0;
+	$scope.exchangeCounter = 0;
 	var db = firebase.firestore();
 	var usersDB = db.collection('users');
 
-/*  not needed (never used)
-	$scope.getTeamData = function(){
-		var team = 'frc' + $scope.frcTeam;
-		var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+team+'/simple?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
-//		var info = tbaApi.getTeamSimple($scope.frcTeam)
-		.then(function(response){
-			$scope.teamData = response.data;
-		});
-	};
-*/
 	/*
 	 * loads basic team information from the Blue Alliance If team not in DataBase
 	 */
@@ -135,12 +124,10 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		}
 	}
 	$scope.confirmTeam = function() {
-    	// Appending dialog to document.body to cover sidenav in docs app
     	var confirm = $mdDialog.confirm()
         	.title('Are you sure this the right team number?')
         	.textContent('According to our records, team '+ $scope.TeamNumber + " is not attending the " + $scope.competition.name + " Regional")
           	.ariaLabel('Confirm Team')
-//          	.targetEvent(ev)
           	.ok('I am sure')
           	.cancel('I will change that');
 
@@ -151,16 +138,15 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
     	});
   	};
   	$scope.confirmSubmit = function() {
-  		$scope.myHTML = '<p>Team Number: '+$scope.TeamNumber+'<br>Match Number: '+$scope.MatchNumber+'<br>Competition Name: '+$scope.competition.name+'</p>';
-    	console.log($scope.myHTML);
-    	// Appending dialog to document.body to cover sidenav in docs app
+//  		var message = 'Team Number: '+$scope.TeamNumber+'  Match Number: '+$scope.MatchNumber+'  Competition Name: '+$scope.competition.name+'  Alliance Color: '+$scope.scoutedColor;
+//    	console.log($scope.message);
+    	var message = 'Are you sure you want to submit?';
+
     	var confirm = $mdDialog.confirm()
         	.title('Submission Confirmation')
-        	//TODO make this actually interactive
-        	.htmlContent("<div ng-bind-html='myHTML'></div><p>Soon you will be able review your inputs in this window</p><div [innerHTML]='myHTML'></div>")
-//        	.textContent('Some Text\nnew line')
+        	//TODO make this actually interactive and look ok
+			.textContent(message)
           	.ariaLabel('Confirm Submit')
-//          	.targetEvent(ev)
           	.ok('Submit')
           	.cancel('I need to make a change');
 
@@ -170,6 +156,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
     	}, function() {
       		//cancel
     	});
+
   	};
 
 	/*
@@ -182,7 +169,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
 		//create the object of game data to be saved
 		var scoutedData = {
-							matchStart:$scope.matchStart,
+							matchStart:$scope.matchStart.valueOf(),
 							//TODO Need to add variables from button presses
 							color:$scope.scoutedColor || '',
 							startPos: $scope.startingPos || '',
@@ -190,13 +177,13 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 							autoWrong: $scope.autoWrongCube || false,
 							autoCross: $scope.autoCross || false,
 							//change these///////////////
-							quantity1: $scope.quantity1,
-							quantity2: $scope.quantity2,
-							quantity3: $scope.quantity3,
-							quantity4: $scope.quantity4,
-							force:$scope.force || 0,
-							boost:$scope.boost || 0,
-							levitate:$scope.levitate || 0,
+							allianceScaleCounter: $scope.allianceScaleCounter,
+							centerScaleCounter: $scope.centerScaleCounter,
+							opponentScaleCounter: $scope.opponentScaleCounter,
+							exchangeCounter: $scope.exchangeCounter,
+							force:$scope.force || -1,
+							boost:$scope.boost || -1,
+							levitate:$scope.levitate || -1,
 							//////////////////////////////
 							teleWrong: $scope.teleWrongCube || false,
 							endClimb: $scope.endClimb || '',
@@ -337,6 +324,46 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		})
 	};
 	
+	$scope.checkDB4Data = function(){
+		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
+		rootRef.get()
+		.then(doc => {
+			if(doc.exists){
+				var uid = $rootScope.user.uid;
+				var userData;
+				var jsonData = doc.data();
+				for(p in jsonData){
+					if(p == uid){
+						console.log(jsonData[p]);
+						userData = jsonData[p];
+						console.log("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
+						console.log(jsonData);
+						console.log(uid);
+						console.log(userData);
+						$scope.scoutedColor = userData.color;
+						$scope.startingPos = userData.startPos;
+						$scope.CubeAutoLoca = userData.autoCube;
+						$scope.autoWrongCube = userData.autoWrong;
+						$scope.autoCross = userData.autoCross;
+						$scope.allianceScaleCounter = userData.allianceScaleCounter;
+						$scope.centerScaleCounter = userData.centerScaleCounter;
+						$scope.opponentScaleCounter = userData.opponentScaleCounter;
+						$scope.exchangeCounter = userData.exchangeCounter;
+						$scope.force = userData.force;
+						$scope.boost = userData.boost;
+						$scope.levitate = userData.levitate;
+						$scope.teleWrongCube = userData.teleWrong;
+						$scope.endClimb = userData.endClimb;
+						$scope.climbLoca = userData.climbLoca;
+						$scope.defender = userData.defender;
+						$scope.defended = userData.defended;
+						$scope.$apply();
+					}
+				}
+			}
+		});
+		$scope.preNext();
+	}
 	$scope.preShow = true;
 	$scope.autoShow = false;
 	$scope.teleShow = false;
