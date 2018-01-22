@@ -17,16 +17,6 @@ instead of a custom scouting solution.
     <td>17.68</td>
     <td>3.9</td>
   </tr>
-  <tr>
-    <td>FIRES</td>
-    <td>60+</td>
-    <td>56.02</td>
-  </tr>
-  <tr>
-    <td>RoboRecon</td>
-    <td>25.04</td>
-    <td>5.44</td>
-  </tr>
 </table>
 
 <sup>Speed tested using Chrome Dev Tools' Network tab and the "Slow 3G" speed setting</sup>
@@ -45,20 +35,6 @@ instead of a custom scouting solution.
     <td>55</td>
     <td>67</td>
     <td>94</td>
-    <td>81</td>
-  </tr>
-  <tr>
-    <td>FIRES</td>
-    <td>36</td>
-    <td>20</td>
-    <td>86</td>
-    <td>69</td>
-  </tr>
-  <tr>
-    <td>RoboRecon</td>
-    <td>55</td>
-    <td>47</td>
-    <td>89</td>
     <td>81</td>
   </tr>
 </table>
