@@ -9,8 +9,6 @@ instead of a custom scouting solution.
 | Site        | Load Speed (sec) | Reload Speed (sec) |
 |-------------|------------------|--------------------|
 | ScoutingFRC | 17.68            | 3.90               |
-| FIRES       | 60+              | 56.02              |
-| RoboRecon   | 25.04            | 5.44               |
 
 <sup>Speed tested using Chrome Dev Tools' Network tab and the "Slow 3G" speed setting</sup>
 
@@ -18,8 +16,6 @@ instead of a custom scouting solution.
 | Site        | Progressive Web App | Performance | Accessibility | Best Practices |
 |-------------|---------------------|-------------|---------------|----------------|
 | ScoutingFRC | 55                  | 67          | 94            | 81             |
-| FIRES       | 36                  | 20          | 86            | 69             |
-| RoboRecon   | 55                  | 47          | 89            | 81             |
 
 <sup>Scores are out of 100. Last tested on 1/19/2018</sup>
 ## Getting Started
