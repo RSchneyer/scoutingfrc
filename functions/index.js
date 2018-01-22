@@ -126,7 +126,6 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 		exchangeAv = exchangeCount/numEvents;
 		climbAv = climbCount/numEvents;
 
-		console.log('AutoShotPercent:'+autoShotPercent+' averageTeleScores:'+avgTeleScores+' Datapoints:'+datapoints);
 		var saveRef = db.doc("teams/"+event.params.teamNum);
 		var saveData = saveRef.set({
 			seasonAverage: {
