@@ -326,6 +326,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	
 	$scope.checkDB4Data = function(){
 		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
+		console.log('checking DB');
 		rootRef.get()
 		.then(doc => {
 			if(doc.exists){

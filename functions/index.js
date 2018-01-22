@@ -112,7 +112,7 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 		});
 		autoShotPercent = autoShotPercent/numMatches;
 		avgTeleScores = avgTeleScores/numMatches;
-		console.log('AutoShotPercent:'+autoShotPercent+' averageTeleScores:'+avgTeleScores+' Datapoints:'+datapoints);
+
 		var saveRef = db.doc("teams/"+event.params.teamNum+"/averages/"+event.params.event);
 		var saveData = saveRef.set({
 			avgTeleScores:avgTeleScores, 
@@ -132,28 +132,109 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	console.log('Match Data Changed');
 	console.log('Team#'+event.params.teamNum+' Event:'+event.params.event+' Match#'+event.params.matchNum);
 	var rootRef = db.doc("teams/"+event.params.teamNum+"/events/"+event.params.event+"/matches/"+event.params.matchNum);
-	var autoShotPercent = 0;
-	var avgTeleScores = 0;
+	
 	var datapoints = 0;
-	var trueAutoShot = 0;
-	var totalTeleScores = 0;
+	var boostCount = 0;
+	var boostTimeCount = 0;
+	var boostTimeAv = 0;
+	var forceCount = 0;
+	var forceTimeCount = 0;
+	var forceTimeAv = 0;
+	var levitateCount = 0;
+	var levitateTimeCount = 0;
+	var levitateTimeAv = 0;
+	var autoCrossPercent = 0;
+	var autoCrossCounter = 0;
+	var autoWrongPercent = 0;
+	var autoWrongCounter = 0;
+	var teleWrongPercent = 0;
+	var teleWrongCounter = 0;
+	var defendedPercent = 0;
+	var defendedCounter = 0;
+	var defenderPercent = 0;
+	var defenderCounter = 0;
+	var allianceScaleCounter = 0;
+	var allianceScaleAv = 0;
+	var centerScaleCounter = 0;
+	var centerScaleAv = 0;
+	var opponentScaleCounter = 0;
+	var opponentScaleAv = 0;
+	var exchangeCounter = 0;
+	var exchangeAv = 0;
+	var climbPercent = 0;
+	var climbCounter = 0;
+
 	var matchData = rootRef.get()
 	.then(doc => {
 		jsonData = doc.data();
 		for(var p in jsonData){
-			if(jsonData[p].autoShot){
-				trueAutoShot++;
+			if((jsonData[p].endClimb == "successCarry") || (jsonData[p].endClimb == "successAttach") || (jsonData[p].endClimb == "successSolo")){
+				climbCounter ++;
 			}
-			totalTeleScores += jsonData[p].teleScores;
+			if(jsonData[p].autoWrong){
+				autoWrongCounter++;
+			}
+			if(jsonData[p].autoCross){
+				autoCrossCounter++;
+			}
+			if(jsonData[p].teleWrong){
+				teleWrongCounter++;
+			}
+			if(jsonData[p].defender){
+				defenderCounter++;
+			}
+			if(jsonData[p].defended){
+				defendedCounter++;
+			}
+			if(jsonData[p].force > 0){
+				forceTimeCount += jsonData[p].force;
+				forceCount ++;
+			}
+			if(jsonData[p].boost > 0){
+				boostTimeCount += jsonData[p].boost;
+				boostCount ++;
+			}
+			if(jsonData[p].levitate > 0){
+				levitateTimeCount += jsonData[p].levitate;
+				levitateCount ++;
+			}
+			allianceScaleCounter += jsonData[p].allianceScaleCounter;
+			centerScaleCounter += jsonData[p].centerScaleCounter;
+			opponentScaleCounter += jsonData[p].opponentScaleCounter;
+			exchangeCounter += jsonData[p].exchangeCounter;
 			datapoints ++;
 		}
-		autoShotPercent = (trueAutoShot/datapoints)*100;
-		avgTeleScores = totalTeleScores/datapoints;
-		console.log('AutoShotPercent:'+autoShotPercent+' averageTeleScores:'+avgTeleScores+' Datapoints:'+datapoints);
+		autoWrongPercent = (autoWrongCounter/datapoints)*100;
+		autoCrossPercent = (autoCrossCounter/datapoints)*100;
+		teleWrongPercent = (teleWrongCounter/datapoints)*100;
+		defenderPercent = (defenderCounter/datapoints)*100;
+		defendedPercent = (defendedCounter/datapoints)*100;
+		climbPercent = (climbCounter/datapoints)*100;
+		
+		boostTimeAv = boostTimeCount/boostCount;
+		levitateTimeAv = levitateTimeCount/levitateCount;
+		forceTimeAv = forceTimeCount/forceCount;
+
+		allianceScaleAv = allianceScaleCounter/datapoints;
+		centerScaleAv = centerScaleCounter/datapoints;
+		opponentScaleAv = opponentScaleCounter/datapoints;
+		exchangeAv = exchangeCounter/datapoints;
+		
 		var saveRef = db.doc("teams/"+event.params.teamNum+"/events/"+event.params.event+"/averages/"+event.params.matchNum);
 		var saveData = saveRef.set({
-			avgTeleScores:avgTeleScores, 
-			autoShotPercent:autoShotPercent,
+			endClimb: climbPercent,
+			defended: defendedPercent,
+			defender: defenderPercent,
+			teleWrong: teleWrongPercent,
+			autoWrong: autoWrongPercent,
+			autoCross: autoCrossPercent,
+			centerScaleCounter: centerScaleAv,
+			allianceScaleCounter: allianceScaleAv,
+			exchangeCounter: exchangeAv,
+			opponentScaleCounter: opponentScaleAv,
+			boost: boostTimeAv,
+			force: forceTimeAv,
+			levitate: levitateTimeAv,
 			datapoints:datapoints,
 			timestamp: FieldValue.serverTimestamp()
 		}, { merge: true });
@@ -163,3 +244,21 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	});
 	return 0;
 });
+
+/*
+
+force:$scope.force || -1,
+boost:$scope.boost || -1,
+levitate:$scope.levitate || -1,
+centerScaleCounter: $scope.centerScaleCounter,
+opponentScaleCounter: $scope.opponentScaleCounter,
+exchangeCounter: $scope.exchangeCounter,
+allianceScaleCounter: $scope.allianceScaleCounter,
+autoWrong: $scope.autoWrongCube || false,
+autoCross: $scope.autoCross || false,
+teleWrong: $scope.teleWrongCube || false,
+defender: $scope.defender || false,
+defended: $scope.defended || false,
+endClimb: $scope.endClimb || '',
+
+ */
