@@ -49,7 +49,7 @@ function sendWelcomeEmail(email, displayName) {
 		console.log('Welcome email sent to: ', email);	
 		});
 }
-/*
+/* Maybe someday
 exports.loadTeamData = functions.firestore.document('/users/{user}')
 .onWrite(event => {
 	
@@ -62,25 +62,87 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 	var rootRef = db.collection("teams/"+event.params.teamNum+"/averages/");
 	var numEvents = 0;
 	var datapoints = 0;
-	var autoShotPercent = 0;
-	var avgTeleScores = 0;
+	
+	var boostCount = 0;
+	var boostAv = 0;
+	var forceCount = 0;
+	var forceAv = 0;
+	var levitateCount = 0;
+	var levitateAv = 0;
+	var autoCrossAv = 0;
+	var autoCrossCount = 0;
+	var autoWrongAv = 0;
+	var autoWrongCount = 0;
+	var teleWrongAv = 0;
+	var teleWrongCount = 0;
+	var defendedAv = 0;
+	var defendedCount = 0;
+	var defenderAv = 0;
+	var defenderCount = 0;
+	var allianceScaleCount = 0;
+	var allianceScaleAv = 0;
+	var centerScaleCount = 0;
+	var centerScaleAv = 0;
+	var opponentScaleCount = 0;
+	var opponentScaleAv = 0;
+	var exchangeCount = 0;
+	var exchangeAv = 0;
+	var climbAv = 0;
+	var climbCount = 0;
+
 	var matches = rootRef.get()
 	.then(snapshot => {
 		snapshot.forEach(doc => {
 			jsonData = doc.data();
 			numEvents++;
 			datapoints+=jsonData.datapoints;
-			autoShotPercent+=jsonData.autoShotPercent;
-			avgTeleScores+=jsonData.avgTeleScores;
+
+			boostCount += jsonData.boost;
+			forceCount += jsonData.force;
+			levitateCount += jsonData.levitate;
+			autoCrossCount += jsonData.autoCross;
+			autoWrongCount += jsonData.autoWrong;
+			teleWrongCount += jsonData.teleWrong;
+			defendedCount += jsonData.defended;
+			defenderCount += jsonData.defender;
+			allianceScaleCount += jsonData.allianceScaleCounter;
+			centerScaleCount += jsonData.centerScaleCounter;
+			opponentScaleCount += jsonData.opponentScaleCounter;
+			exchangeCount += jsonData.exchangeCounter;
+			climbCount += jsonData.endClimb;
 		});
-		autoShotPercent = autoShotPercent/numEvents;
-		avgTeleScores = avgTeleScores/numEvents;
+
+		boostAv = boostCount/numEvents;
+		forceAv = forceCount/numEvents;
+		levitateAv = levitateCount/numEvents;
+		autoCrossAv = autoCrossCount/numEvents;
+		autoWrongAv = autoWrongCount/numEvents;
+		teleWrongAv = teleWrongCount/numEvents;
+		defendedAv = defendedCount/numEvents;
+		defenderAv = defenderCount/numEvents;
+		allianceScaleAv = allianceScaleCount/numEvents;
+		centerScaleAv = centerScaleCount/numEvents;
+		opponentScaleAv = opponentScaleCount/numEvents;
+		exchangeAv = exchangeCount/numEvents;
+		climbAv = climbCount/numEvents;
+
 		console.log('AutoShotPercent:'+autoShotPercent+' averageTeleScores:'+avgTeleScores+' Datapoints:'+datapoints);
 		var saveRef = db.doc("teams/"+event.params.teamNum);
 		var saveData = saveRef.set({
 			seasonAverage: {
-				avgTeleScores:avgTeleScores, 
-				autoShotPercent:autoShotPercent,
+				endClimb: climbAv,
+				defended: defendedAv,
+				defender: defenderAv,
+				teleWrong: teleWrongAv,
+				autoWrong: autoWrongAv,
+				autoCross: autoCrossAv,
+				centerScaleCounter: centerScaleAv,
+				allianceScaleCounter: allianceScaleAv,
+				exchangeCounter: exchangeAv,
+				opponentScaleCounter: opponentScaleAv,
+				boost: boostAv,
+				force: forceAv,
+				levitate: levitateAv,
 				datapoints:datapoints,
 				timestamp: FieldValue.serverTimestamp()
 			}
@@ -99,24 +161,85 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 	var rootRef = db.collection("teams/"+event.params.teamNum+"/events/"+event.params.event+"/averages/");
 	var numMatches = 0;
 	var datapoints = 0;
-	var autoShotPercent = 0;
-	var avgTeleScores = 0;
+
+	var boostCount = 0;
+	var boostAv = 0;
+	var forceCount = 0;
+	var forceAv = 0;
+	var levitateCount = 0;
+	var levitateAv = 0;
+	var autoCrossAv = 0;
+	var autoCrossCount = 0;
+	var autoWrongAv = 0;
+	var autoWrongCount = 0;
+	var teleWrongAv = 0;
+	var teleWrongCount = 0;
+	var defendedAv = 0;
+	var defendedCount = 0;
+	var defenderAv = 0;
+	var defenderCount = 0;
+	var allianceScaleCount = 0;
+	var allianceScaleAv = 0;
+	var centerScaleCount = 0;
+	var centerScaleAv = 0;
+	var opponentScaleCount = 0;
+	var opponentScaleAv = 0;
+	var exchangeCount = 0;
+	var exchangeAv = 0;
+	var climbAv = 0;
+	var climbCount = 0;
+
 	var matches = rootRef.get()
 	.then(snapshot => {
 		snapshot.forEach(doc => {
 			jsonData = doc.data();
 			numMatches++;
 			datapoints+=jsonData.datapoints;
-			autoShotPercent+=jsonData.autoShotPercent;
-			avgTeleScores+=jsonData.avgTeleScores;
+
+			boostCount += jsonData.boost;
+			forceCount += jsonData.force;
+			levitateCount += jsonData.levitate;
+			autoCrossCount += jsonData.autoCross;
+			autoWrongCount += jsonData.autoWrong;
+			teleWrongCount += jsonData.teleWrong;
+			defendedCount += jsonData.defended;
+			defenderCount += jsonData.defender;
+			allianceScaleCount += jsonData.allianceScaleCounter;
+			centerScaleCount += jsonData.centerScaleCounter;
+			opponentScaleCount += jsonData.opponentScaleCounter;
+			exchangeCount += jsonData.exchangeCounter;
+			climbCount += jsonData.endClimb;
 		});
-		autoShotPercent = autoShotPercent/numMatches;
-		avgTeleScores = avgTeleScores/numMatches;
+
+		boostAv = boostCount/numMatches;
+		forceAv = forceCount/numMatches;
+		levitateAv = levitateCount/numMatches;
+		autoCrossAv = autoCrossCount/numMatches;
+		autoWrongAv = autoWrongCount/numMatches;
+		teleWrongAv = teleWrongCount/numMatches;
+		defendedAv = defendedCount/numMatches;
+		defenderAv = defenderCount/numMatches;
+		allianceScaleAv = allianceScaleCount/numMatches;
+		centerScaleAv = centerScaleCount/numMatches;
+		opponentScaleAv = opponentScaleCount/numMatches;
+		exchangeAv = exchangeCount/numMatches;
+		climbAv = climbCount/numMatches;
 
 		var saveRef = db.doc("teams/"+event.params.teamNum+"/averages/"+event.params.event);
 		var saveData = saveRef.set({
-			avgTeleScores:avgTeleScores, 
-			autoShotPercent:autoShotPercent,
+			endClimb: climbAv,
+			defended: defendedAv,
+			defender: defenderAv,
+			teleWrong: teleWrongAv,
+			autoWrong: autoWrongAv,
+			autoCross: autoCrossAv,
+			centerScaleCounter: centerScaleAv,
+			allianceScaleCounter: allianceScaleAv,
+			exchangeCounter: exchangeAv,
+			opponentScaleCounter: opponentScaleAv,
+			boost: boostAv,
+			force: forceAv,
+			levitate: levitateAv,
 			datapoints:datapoints,
 			timestamp: FieldValue.serverTimestamp()
 		}, { merge: true });
@@ -244,21 +367,3 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	});
 	return 0;
 });
-
-/*
-
-force:$scope.force || -1,
-boost:$scope.boost || -1,
-levitate:$scope.levitate || -1,
-centerScaleCounter: $scope.centerScaleCounter,
-opponentScaleCounter: $scope.opponentScaleCounter,
-exchangeCounter: $scope.exchangeCounter,
-allianceScaleCounter: $scope.allianceScaleCounter,
-autoWrong: $scope.autoWrongCube || false,
-autoCross: $scope.autoCross || false,
-teleWrong: $scope.teleWrongCube || false,
-defender: $scope.defender || false,
-defended: $scope.defended || false,
-endClimb: $scope.endClimb || '',
-
- */
