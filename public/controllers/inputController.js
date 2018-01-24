@@ -41,14 +41,12 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	 */
 	$scope.loadTeamEventData = function(teamNum){
 		var dbCalls = function(eventVar){
-//			console.log(eventVar.event_code);
 			var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 //			var eventTeams = tbaApi.getEventTeams(eventCode)
 			.then(function(resp){
-				console.warn(resp.data);
+				console.log(resp.data);
 				// TODO edit to also add each match and teams on which alliance for each match
 				var rootRef = db.doc("events/"+eventVar.event_code);
-//				console.log("events/"+eventVar.event_code);
 				rootRef.set({
 					address:eventVar.address,
 					city:eventVar.city,
@@ -64,27 +62,31 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				teamRef.set({
 					name:eventVar.short_name
 				}, { merge: true });
+				console.warn(eventVar.event_code);
 				//load team info for each team at the event(possible scoutable teams)
 				for(var j = 0; j < resp.data.length; j++){
 					$scope.loadTeamData(resp.data[j].substr(3));
-				}
+				};
 			});
 		};
 
-		var checkRef = db.doc("teams/"+teamNum);
+		var checkRef = db.collection("teams/"+teamNum+/events/);
 		checkRef.get()
-		.then(doc => {
-			if(!doc.exists && teamNum != null){
+		.then(snapshot => {
+			if(snapshot.docs.length > 0){
+				console.log(teamNum+" has events loaded");
+			}else{
+				console.log("no events found, loading team events");
 				var teamKey = 'frc' + teamNum;
 				var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
-		//		var info = tbaApi.getTeamEvents($scope.loadTeamNumber, 2018)
 				.then(function(response){
 					$scope.teamDataBlock = response.data;
 					for(var i = 0; i < $scope.teamDataBlock.length; i++){
 						dbCalls($scope.teamDataBlock[i]);
-					}
+						console.log($scope.teamDataBlock[i]);
+					};
 				});
-			}
+			};
 		});
 	};
 	
@@ -138,8 +140,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
     	});
   	};
   	$scope.confirmSubmit = function() {
-//  		var message = 'Team Number: '+$scope.TeamNumber+'  Match Number: '+$scope.MatchNumber+'  Competition Name: '+$scope.competition.name+'  Alliance Color: '+$scope.scoutedColor;
-//    	console.log($scope.message);
     	var message = 'Are you sure you want to submit?';
 
     	var confirm = $mdDialog.confirm()
@@ -170,13 +170,11 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		//create the object of game data to be saved
 		var scoutedData = {
 							matchStart:$scope.matchStart.valueOf(),
-							//TODO Need to add variables from button presses
 							color:$scope.scoutedColor || '',
 							startPos: $scope.startingPos || '',
 							autoCube: $scope.CubeAutoLoca || '',
 							autoWrong: $scope.autoWrongCube || false,
 							autoCross: $scope.autoCross || false,
-							//change these///////////////
 							allianceScaleCounter: $scope.allianceScaleCounter,
 							centerScaleCounter: $scope.centerScaleCounter,
 							opponentScaleCounter: $scope.opponentScaleCounter,
@@ -184,7 +182,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 							force:$scope.force || -1,
 							boost:$scope.boost || -1,
 							levitate:$scope.levitate || -1,
-							//////////////////////////////
 							teleWrong: $scope.teleWrongCube || false,
 							endClimb: $scope.endClimb || '',
 							climbLoca: $scope.climbLoca || '',
@@ -195,8 +192,10 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		console.log(scoutedData);
 		rootRef.set({
 			[$rootScope.user.uid] : scoutedData,
-		}, { merge: true });
-	// TODO catch if team not found, give option for change info(team number or match number)
+		}, { merge: true })
+		.then(function(){
+			$scope.clearFields();
+		});
 	};
 
 	$scope.scoutableComps = [];
@@ -230,11 +229,13 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
   		return $rootScope.userTeam;
 	}, function() {
   		$scope.competitionOptions();
-  		//If new user, cather team and event information
-  		if($rootScope.newUser){
-  			console.log('newUser');
+ // 		console.log('userTeam changed');
+  		//If new user, gather team and event information
+  		if($rootScope.teamChange){
+  			console.log('team Changed');
   			$scope.loadTeamData($rootScope.userTeam);
 	  		$scope.loadTeamEventData($rootScope.userTeam);
+			$rootScope.teamChange = false;
 		}	
 	}, true);
 	
