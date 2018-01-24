@@ -17,6 +17,9 @@ app.run(function($rootScope, $location, $mdDialog){
 					console.log('User exists in Firestore');
 					console.log('userTeam: '+doc.data().team);
 					$rootScope.userTeam = doc.data().team;
+					if(doc.data().team == null){
+						$rootScope.showPrompt();
+					}
 				}else{
 					$rootScope.showPrompt();
 					//Set flag to display team register directive
@@ -65,8 +68,7 @@ app.run(function($rootScope, $location, $mdDialog){
       	.textContent('Put zero if you are unaffiliated')
       	.placeholder('Team #')
       	.ariaLabel('Team #')
-      	.initialValue('0')
-//      	.targetEvent(ev)
+      	.initialValue($rootScope.userTeam ||'0')
       	.required(true)
 	    .ok('Lets Go!')
 	    .cancel('I\'d rather not be affiliated with a team');
