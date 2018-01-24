@@ -4,7 +4,7 @@
 	  	<div class='md-toolbar-tools' layout='column' layout-align='start' layout-padding>
 	  		<h2>ScoutingFRC</h2>
 	  		<span flex></span>
-	  		<h2>{{ user.displayName }}</h2>
+	  		<h2>{{ user.displayName }}: {{ userTeam }}</h2>
 	  	</div>
 	  </md-toolbar>
 
@@ -26,6 +26,9 @@
 	      	<h3>About</h3>
 	      </md-list-item>
 
+	      <md-list-item ng-click="teamChange()">
+	      	<h3>Change Team</h3>
+	      </md-list-item>
 	    </md-list>
 	  </md-content>
 
