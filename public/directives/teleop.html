@@ -1,25 +1,25 @@
 <md-card>
-    <md-card-title>
+    <md-card-title style="padding:15px">
         <md-card-title-text>
-            <span class='md-headline'>Tele-op Scouting</span>
+            <span class='md-title'>Tele-op Scouting</span>
         </md-card-title-text><br>
     </md-card-title>
-    <md-card-content>
+    <md-card-content style="padding-bottom:0px;">
 	    <!--http://embed.plnkr.co/eRWPuEP8LdQBbHksIL3S/-->
 	<div id="wrapper">
-		<h style="font-size: 20px;">Alliance Switch</h>
+		<h>Alliance Switch</h>
 		<div class="counter" counter value="allianceScaleCounter" min="0"></div><br>
 	</div>
 	<div id="wrapper">
-		<h style="font-size: 20px;">Center Scale</h>
+		<h>Center Scale</h>
 		<div class="counter" counter value="centerScaleCounter" min="0"></div><br>
 	</div>	
 	<div id="wrapper">
-		<h style="font-size: 20px;">Opponent Switch</h>
+		<h>Opponent Switch</h>
 		<div class="counter" counter value="opponentScaleCounter" min="0"></div><br>
 	</div>
 	<div id="wrapper">
-		<h style="font-size: 20px;">Exchange</h>
+		<h>Exchange</h>
 		<div class="counter" counter value="exchangeCounter" min="0"></div><br>
 	</div>	
 		<md-card-actions layout='row' layout-align='center center'>
@@ -27,7 +27,7 @@
 			<md-button ng-click='pressedBoost()'>Boost</md-button>
 			<md-button ng-click='pressedLevitate()'>Levitate</md-button>
 		</md-card-actions>
-		<md-checkbox ng-model="teleWrongCube" class="md-primary" aria-label="Checkbox 1" class="flex-33">
+		<md-checkbox ng-model="teleWrongCube" class="md-primary" aria-label="Checkbox 1" class="flex-33" style="margin-bottom:10px;">
             Any Cubes on Wrong Side of Scale/Switch 
         </md-checkbox>
     </md-card-content>

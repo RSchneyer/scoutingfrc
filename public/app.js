@@ -197,7 +197,7 @@ app.directive('counter', function() {
     return {
         restrict: 'A',
         scope: { value: '=value' },
-        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
+        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">&minus;</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
                   <a  href="javascript:;" class="counter-plus" ng-click="plus()">+</a>',
         link: function( scope , element , attributes ) {
             // Make sure the value attribute is not missing.
