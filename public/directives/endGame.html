@@ -5,29 +5,33 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
-		<md-radio-group ng-model="endClimb" class="flex">
-			<label style="font-weight:bold;">End Game</label><!-- should this be a drop-down? -->
-			<md-radio-button value="noTryPark" class="md-primary">Not Parked on Platform</md-radio-button>
-			<md-radio-button value="parked" class="md-primary">Parked on Platform</md-radio-button>
-			<md-radio-button value="atmptHook" class="md-primary">Attempted to Hook onto Bar</md-radio-button>
-			<md-radio-button value="atmptAttach" class="md-primary">Attempted to Attach to a Robot</md-radio-button>
-			<md-radio-button value="atmptCarry" class="md-primary">Attempted to Carry a Robot</md-radio-button>
-			<md-radio-button value="atmptclimb" class="md-primary">Hooked bar and Attempted Climb</md-radio-button>
-			<md-radio-button value="successAttach" class="md-primary">Successful Climb on Another Robot</md-radio-button>
-			<md-radio-button value="successCarry" class="md-primary">Successful Climb with Another Robot Attached</md-radio-button>
-			<md-radio-button value="successSolo" class="md-primary">Successful Climb on Own</md-radio-button>
-		</md-radio-group><br>
-		<md-radio-group ng-model="climbLoca" class="flex">
-			<label style="font-weight:bold;">Climb Location(From Alliance Driver Station)</label>
-			<md-radio-button value="notry" class="md-primary">No Attempt</md-radio-button>
-			<md-radio-button value="left" class="md-primary">Left</md-radio-button>
-			<md-radio-button value="center" class="md-primary">Center</md-radio-button>
-			<md-radio-button value="right" class="md-primary">Right</md-radio-button>
-		</md-radio-group><br>
-		<md-checkbox ng-model="defender" class="md-primary" aria-label="Checkbox 1" class="flex-33">
+		<md-input-container class="md-block">
+			<md-select ng-model="endClimb" class="md-no-underline">
+				<label>End Game</label>
+				<md-option value="noTryPark">Not Parked on Platform</md-option>
+				<md-option value="parked">Parked on Platform</md-option>
+				<md-option value="atmptHook">Attempted to Hook onto Bar</md-option>
+				<md-option value="atmptAttach">Attempted to Attach to a Robot</md-option>
+				<md-option value="atmptCarry">Attempted to Carry a Robot</md-option>
+				<md-option value="atmptclimb">Hooked bar and Attempted Climb</md-option>
+				<md-option value="successAttach">Successful Climb on Another Robot</md-option>
+				<md-option value="successCarry">Successful Climb with Another Robot Attached</md-option>
+				<md-option value="successSolo">Successful Climb on Own</md-option>
+			</md-select><br>
+		</md-input-container>
+		<md-input-container class="md-block">
+			<md-select ng-model="climbLoca" class="md-no-underline">
+				<label>Climb Location(From Alliance Driver Station)</label>
+				<md-option value="notry">No Attempt</md-option>
+				<md-option value="left">Left</md-option>
+				<md-option value="center">Center</md-option>
+				<md-option value="right">Right</md-option>
+			</md-select>
+		</md-input-container><br>
+		<md-checkbox ng-model="defender"  aria-label="Checkbox 1" style="margin-bottom:34px;margin-top:10px;">
             Defended Against Opponents
-        </md-checkbox>
-		<md-checkbox ng-model="defended" class="md-primary" aria-label="Checkbox 1" class="flex-33">
+        </md-checkbox><br>
+		<md-checkbox ng-model="defended"  aria-label="Checkbox 1">
             Defense Played Against Them
         </md-checkbox>
     </md-card-content>

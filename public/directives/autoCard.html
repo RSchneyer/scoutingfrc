@@ -5,28 +5,23 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
-        <md-input-container class="md-block" flex-gt-sm="">
-            <label>Starting Position(From Alliance Driver Station)</label>
-            <md-select ng-model="startingPos" class="md-no-underline">
-                <md-option value="left">Left</md-option>
-                <md-option value="middle">Middle</md-option>
-                <md-option value="right">Right</md-option>
-            </md-select>
-        </md-input-container><br>
+        
 		<md-card-actions layout='row' layout-align='start start'>
 			<md-button ng-click='pressedStartMatch()'>Start Match</md-button>
-		</md-card-actions>
+		</md-card-actions><br>
 		<md-checkbox ng-model="autoCross" class="md-primary" aria-label="Checkbox 1" class="flex-33">
             Crossed Auto Line
         </md-checkbox><br>
-		<md-radio-group ng-model="CubeAutoLoca" class="flex">
-			<label style="font-weight:bold;">Auto Cube Location</label>
-			<md-radio-button value="notry" class="md-primary">No Cube Attempt</md-radio-button>
-			<md-radio-button value="lowtry" class="md-primary">Attempted Switch</md-radio-button>
-			<md-radio-button value="hightry" class="md-primary">Attempted Scale</md-radio-button>
-			<md-radio-button value="lowsuccess" class="md-primary">Successful Switch</md-radio-button>
-			<md-radio-button value="highsuccess" class="md-primary">Successful Scale</md-radio-button>
-		</md-radio-group>
+		<md-input-container class="md-block">
+			<label>Auto Cube Placement</label>
+			<md-select ng-model="CubeAutoLoca" class="md-no-underline">
+				<md-option value="notry">No Cube Attempt</md-option>
+				<md-option value="lowtry">Attempted Switch</md-option>
+				<md-option value="hightry">Attempted Scale</md-option>
+				<md-option value="lowsuccess">Successful Switch</md-option>
+				<md-option value="highsuccess">Successful Scale</md-option>
+			</md-select>
+		</md-input-container>
 		<md-checkbox ng-model="autoWrongCube" class="md-primary" aria-label="Checkbox 1" class="flex-33">
             Cube on the Wrong Side of Scale/Switch
         </md-checkbox>
