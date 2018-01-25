@@ -1,7 +1,7 @@
 <md-card>
-    <md-card-title>
+    <md-card-title style="padding:15px">
         <md-card-title-text>
-            <span class='md-headline'>Pre Match Scouting</span>
+            <span class='md-title'>Pre Match Scouting</span>
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
@@ -9,10 +9,10 @@
 			TODO - make this autoload with js for competitions that match the current week
 			https://material.angularjs.org/latest/demo/input
 		-->
-		<md-input-container class="md-block" flex-gt-sm="">
+		<md-input-container class="md-block" >
             <label style="position:relative;">Competition:</label>
             <select ng-model="competition" class="md-no-underline" ng-options="obj.name for obj in scoutableComps"></select>
-        </md-input-container><br>
+        </md-input-container>
 
         <md-input-container>
             <label>Team Number</label>
@@ -32,13 +32,21 @@
 			<select ng-model="MatchNumber" class="md-no-underline" <!--ng-options="obj.name for obj in MatchNumTeam"- ->></select>
 		</md-input-container><br>
         -->
-        <md-input-container class="md-block" flex-gt-sm="">
+        <md-input-container class="md-block">
             <label>Alliance Color</label>
             <md-select ng-model="scoutedColor" class="md-no-underline"><!-- ng-change="selectChanged()" <= call js when select changes -->
                 <md-option value="red">Red</md-option>
                 <md-option value="blue">Blue</md-option>
             </md-select>
         </md-input-container><br>
+		<md-input-container class="md-block">
+            <label>Starting Position(From Alliance Driver Station)</label>
+            <md-select ng-model="startingPos" class="md-no-underline">
+                <md-option value="left">Left</md-option>
+                <md-option value="middle">Middle</md-option>
+                <md-option value="right">Right</md-option>
+            </md-select>
+        </md-input-container>
     </md-card-content>
     <md-card-actions layout='row' layout-align='end end'>
         <md-button ng-click='checkDB4Data()'>Next</md-button>
