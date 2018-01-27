@@ -187,6 +187,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 							climbLoca: $scope.climbLoca || '',
 							defender: $scope.defender || false,
 							defended: $scope.defended || false,
+							teamScouting: $rootScope.userTeam || 0,
 							timestamp: firebase.firestore.FieldValue.serverTimestamp()
 							};
 		console.log(scoutedData);
@@ -200,7 +201,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 
 	$scope.scoutableComps = [];
 	$scope.competitionOptions = function(){
-		var Comps = [];
+		var Comps = [{name:"Test Event", value:"00aaTest"}];
 		if($rootScope.userTeam != 0){
 			var rootRef = db.collection("teams/"+$rootScope.userTeam+"/events/");
 		}else{
@@ -220,6 +221,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				Comps.push(element);
 			});
 			$scope.scoutableComps = Comps;
+			$scope.competition = $scope.scoutableComps[0];
 			$scope.$apply();
 		})
 	};

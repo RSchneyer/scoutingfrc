@@ -1,6 +1,6 @@
 app.controller('outputControl', ['$scope', '$http', function($scope, $http){
 	var db = firebase.firestore();
-	$scope.options = [];
+	$scope.options = [{name:"Test Event", id:"00aaTest"}];
 	$scope.csvArray = [];
 	$scope.csvHeader = {a:"Scouting Team #", b:"Competition", c:"Team #", d:"Team Name", e:"Alliance Color", f:"Match #", g:"Crossed Auto Line", h:"Cube in Low Switch(auto)", i:"Cube in High Switch(auto)", j:"Cube Wrong side(auto)", k:"Cube Wrong side(tele)", l:"Exchange Cubes", m:"Opposite Switch", n:"High Switch", o:"Alliance Switch", p:"Boost(sec into match)", q:"Force(sec into match)", r:"Levitate(sec into match)", s:"Parked on Platform", t:"Climbed", u:"Played defense", v:"Delt with Defense", w:"Average Time Per Cube(sec)", x:"Alliance Member 1", y:"Alliance Member 2"};
 
