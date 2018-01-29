@@ -79,12 +79,14 @@ app.run(function($rootScope, $location, $mdDialog){
 				team : result
 			}, { merge: true });
 			$rootScope.userTeam = result;
+			$rootScope.teamChange = true;
 	    }, function() {
 	    	var ref = db.collection('users').doc($rootScope.user.uid);
 	    	ref.set({
 				team : 0
 			}, { merge: true });
 			$rootScope.userTeam = 0;
+			$rootScope.teamChange = true;
     	});
 	};
 
