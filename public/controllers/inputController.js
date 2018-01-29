@@ -41,14 +41,12 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	 */
 	$scope.loadTeamEventData = function(teamNum){
 		var dbCalls = function(eventVar){
-			console.log(eventVar.event_code);
 			var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
 //			var eventTeams = tbaApi.getEventTeams(eventCode)
 			.then(function(resp){
-				console.warn(resp.data);
+				console.log(resp.data);
 				// TODO edit to also add each match and teams on which alliance for each match
 				var rootRef = db.doc("events/"+eventVar.event_code);
-				console.log("events/"+eventVar.event_code);
 				rootRef.set({
 					address:eventVar.address,
 					city:eventVar.city,
@@ -64,46 +62,50 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				teamRef.set({
 					name:eventVar.short_name
 				}, { merge: true });
+				console.warn(eventVar.event_code);
 				//load team info for each team at the event(possible scoutable teams)
 				for(var j = 0; j < resp.data.length; j++){
 					$scope.loadTeamData(resp.data[j].substr(3));
-				}
+				};
 			});
 		};
 
-		var checkRef = db.doc("teams/"+teamNum);
+		var checkRef = db.collection("teams/"+teamNum+/events/);
 		checkRef.get()
-		.then(doc => {
-			if(!doc.exists && teamNum != null){
+		.then(snapshot => {
+			if(snapshot.docs.length > 0){
+				console.log(teamNum+" has events loaded");
+			}else{
+				console.log("no events found, loading team events");
 				var teamKey = 'frc' + teamNum;
 				var info = $http.get('https://www.thebluealliance.com/api/v3/team/'+teamKey+'/events/2018?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
-		//		var info = tbaApi.getTeamEvents($scope.loadTeamNumber, 2018)
 				.then(function(response){
 					$scope.teamDataBlock = response.data;
 					for(var i = 0; i < $scope.teamDataBlock.length; i++){
 						dbCalls($scope.teamDataBlock[i]);
-					}
+						console.log($scope.teamDataBlock[i]);
+					};
 				});
-			}
+			};
 		});
 	};
 	
 	$scope.pressedStartMatch = function(){
 		$scope.matchStart = moment();
-		console.log('Match Start: '+$scope.matchStart.format("hh:mm:sss"));
-		console.log('Match Start: '+$scope.matchStart.valueOf());
+//		console.log('Match Start: '+$scope.matchStart.format("hh:mm:sss"));
+//		console.log('Match Start: '+$scope.matchStart.valueOf());
 	}
 	$scope.pressedForce = function(){
 		$scope.force = moment().diff($scope.matchStart, 'seconds');
-		console.log('Force: '+$scope.force);
+//		console.log('Force: '+$scope.force);
 	}
 	$scope.pressedBoost = function(){
 		$scope.boost = moment().diff($scope.matchStart, 'seconds');
-		console.log('Boost: '+$scope.boost);
+//		console.log('Boost: '+$scope.boost);
 	}
 	$scope.pressedLevitate = function(){
 		$scope.levitate = moment().diff($scope.matchStart, 'seconds');
-		console.log('Levitate: '+$scope.levitate);
+//		console.log('Levitate: '+$scope.levitate);
 	}
 	/*
 	 * Shows Pop-Up when match is submitted
@@ -138,8 +140,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
     	});
   	};
   	$scope.confirmSubmit = function() {
-//  		var message = 'Team Number: '+$scope.TeamNumber+'  Match Number: '+$scope.MatchNumber+'  Competition Name: '+$scope.competition.name+'  Alliance Color: '+$scope.scoutedColor;
-//    	console.log($scope.message);
     	var message = 'Are you sure you want to submit?';
 
     	var confirm = $mdDialog.confirm()
@@ -170,13 +170,11 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		//create the object of game data to be saved
 		var scoutedData = {
 							matchStart:$scope.matchStart.valueOf(),
-							//TODO Need to add variables from button presses
 							color:$scope.scoutedColor || '',
 							startPos: $scope.startingPos || '',
 							autoCube: $scope.CubeAutoLoca || '',
 							autoWrong: $scope.autoWrongCube || false,
 							autoCross: $scope.autoCross || false,
-							//change these///////////////
 							allianceScaleCounter: $scope.allianceScaleCounter,
 							centerScaleCounter: $scope.centerScaleCounter,
 							opponentScaleCounter: $scope.opponentScaleCounter,
@@ -184,24 +182,27 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 							force:$scope.force || -1,
 							boost:$scope.boost || -1,
 							levitate:$scope.levitate || -1,
-							//////////////////////////////
 							teleWrong: $scope.teleWrongCube || false,
 							endClimb: $scope.endClimb || '',
 							climbLoca: $scope.climbLoca || '',
 							defender: $scope.defender || false,
 							defended: $scope.defended || false,
+							teamScouting: $rootScope.userTeam || 0,
 							timestamp: firebase.firestore.FieldValue.serverTimestamp()
 							};
 		console.log(scoutedData);
 		rootRef.set({
 			[$rootScope.user.uid] : scoutedData,
-		}, { merge: true });
-	// TODO catch if team not found, give option for change info(team number or match number)
+		}, { merge: true })
+		.then(function(){
+			$scope.clearFields();
+			$scope.autoBack();
+		});
 	};
 
 	$scope.scoutableComps = [];
 	$scope.competitionOptions = function(){
-		var Comps = [];
+		var Comps = [{name:"Test Event", value:"00aaTest"}];
 		if($rootScope.userTeam != 0){
 			var rootRef = db.collection("teams/"+$rootScope.userTeam+"/events/");
 		}else{
@@ -221,6 +222,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				Comps.push(element);
 			});
 			$scope.scoutableComps = Comps;
+			$scope.competition = $scope.scoutableComps[0];
 			$scope.$apply();
 		})
 	};
@@ -230,11 +232,13 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
   		return $rootScope.userTeam;
 	}, function() {
   		$scope.competitionOptions();
-  		//If new user, cather team and event information
-  		if($rootScope.newUser){
-  			console.log('newUser');
+ // 		console.log('userTeam changed');
+  		//If new user, gather team and event information
+  		if($rootScope.teamChange){
+  			console.log('team Changed');
   			$scope.loadTeamData($rootScope.userTeam);
 	  		$scope.loadTeamEventData($rootScope.userTeam);
+			$rootScope.teamChange = false;
 		}	
 	}, true);
 	
@@ -325,8 +329,9 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	};
 	
 	$scope.checkDB4Data = function(){
+		var found = false;
 		var rootRef = db.doc("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
-		console.log('checking DB');
+		console.log('Checking DB for your past entry');
 		rootRef.get()
 		.then(doc => {
 			if(doc.exists){
@@ -335,12 +340,13 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				var jsonData = doc.data();
 				for(p in jsonData){
 					if(p == uid){
-						console.log(jsonData[p]);
+						found = true;
+//						console.log(jsonData[p]);
 						userData = jsonData[p];
-						console.log("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
-						console.log(jsonData);
-						console.log(uid);
-						console.log(userData);
+//						console.log("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
+//						console.log(jsonData);
+//						console.log(uid);
+//						console.log(userData);
 						$scope.scoutedColor = userData.color;
 						$scope.startingPos = userData.startPos;
 						$scope.CubeAutoLoca = userData.autoCube;
@@ -362,8 +368,33 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 					}
 				}
 			}
+//			console.log('found:'+found);
+			if(found == false){
+				$scope.clearFields();
+			}
+			found = false;
 		});
 		$scope.preNext();
+	}
+	$scope.clearFields = function(){
+//		console.log('clearing');
+		$scope.startingPos = null;
+		$scope.CubeAutoLoca = null;
+		$scope.autoWrongCube = false;
+		$scope.autoCross = false;
+		$scope.allianceScaleCounter = 0;
+		$scope.centerScaleCounter = 0;
+		$scope.opponentScaleCounter = 0;
+		$scope.exchangeCounter = 0;
+		$scope.force = -1;
+		$scope.boost = -1;
+		$scope.levitate = -1;
+		$scope.teleWrongCube = false;
+		$scope.endClimb = null;
+		$scope.climbLoca = null;
+		$scope.defender = false;
+		$scope.defended = false;
+		$scope.$apply();
 	}
 	$scope.preShow = true;
 	$scope.autoShow = false;

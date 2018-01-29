@@ -79,12 +79,14 @@ app.run(function($rootScope, $location, $mdDialog){
 				team : result
 			}, { merge: true });
 			$rootScope.userTeam = result;
+			$rootScope.teamChange = true;
 	    }, function() {
 	    	var ref = db.collection('users').doc($rootScope.user.uid);
 	    	ref.set({
 				team : 0
 			}, { merge: true });
 			$rootScope.userTeam = 0;
+			$rootScope.teamChange = true;
     	});
 	};
 
@@ -197,7 +199,7 @@ app.directive('counter', function() {
     return {
         restrict: 'A',
         scope: { value: '=value' },
-        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">-</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
+        template: '<a href="javascript:;" class="counter-minus" ng-click="minus()">&minus;</a><input type="text" class="counter-field" ng-model="value" ng-change="changed()" ng-readonly="readonly">\
                   <a  href="javascript:;" class="counter-plus" ng-click="plus()">+</a>',
         link: function( scope , element , attributes ) {
             // Make sure the value attribute is not missing.
