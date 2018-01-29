@@ -1,7 +1,9 @@
 app.controller('navControl', ['$scope', '$rootScope', '$mdSidenav', '$location',  function($scope, $rootScope, $mdSidenav, $location){
 	$scope.togglesideNav = function(){
-		$mdSidenav('left').toggle();
-		console.log('SideNav toggled');
+		if($rootScope.loggedIn){
+			$mdSidenav('left').toggle();
+			console.log('SideNav toggled');
+		}
 	};
 
 	$scope.dashboard = function(){
@@ -25,6 +27,8 @@ app.controller('navControl', ['$scope', '$rootScope', '$mdSidenav', '$location',
 		$mdSidenav('left').toggle();
 	};	
 	$scope.teamChange = function(){
-		$rootScope.showPrompt();
+		if($rootScope.loggedIn){
+			$rootScope.showPrompt();
+		}
 	}
 }]);
