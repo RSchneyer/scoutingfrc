@@ -196,6 +196,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		}, { merge: true })
 		.then(function(){
 			$scope.clearFields();
+			$scope.autoBack();
 		});
 	};
 

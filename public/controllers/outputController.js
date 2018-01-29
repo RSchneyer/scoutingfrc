@@ -2,6 +2,7 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 	var db = firebase.firestore();
 	$scope.options = [];
 	$scope.csvArray = [];
+	$scope.csvRows = 0;
 	$scope.csvHeader = {a:"Scouting Team #", b:"Competition", c:"Team #", d:"Team Name", e:"Alliance Color", f:"Match #", 
 						g:"Crossed Auto Line", h:"Cube in Low Switch(auto)", i:"Cube in High Switch(auto)", j:"Cube Wrong side(auto)", 
 						k:"Cube Wrong side(tele)", l:"Exchange Cubes", m:"Opposite Switch", n:"High Scale", o:"Alliance Switch", 
@@ -17,13 +18,11 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 		var teamInfo = teamRef.get()
 		.then(doc => {
 			teamName = doc.data().nickname;
-			console.log(doc.data());
 			var rootRef = db.collection('/teams/'+element+'/events/'+$scope.exportCompetition.id+'/matches');
 			var matches = rootRef.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
 					var jsonData = doc.data();
-					console.log(jsonData);
 					for(var p in jsonData){
 						switch (jsonData[p].autoCube){
 							case 'notry':
@@ -98,20 +97,45 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 							allianceMember1:'',
 							allianceMember2:''
 						};
-						$scope.csvArray.push(row);
+						if($scope.teamDataOnly){
+							if(jsonData[p].teamScouting == $rootScope.userTeam){
+								$scope.csvArray.push(row);
+								$scope.csvRows++;
+							}
+						}else{
+							$scope.csvArray.push(row);
+							$scope.csvRows++;
+						}
+						$scope.$apply();
 					};
 				});
 			});
+		})
+		.catch(err => {
+			console.log('Error getting document', err);
 		});
 	};
-	$scope.csvCompChange = function(){
-		var rootRef = db.doc("events/"+$scope.exportCompetition.id);
-		var teams = rootRef.get()
-		.then(doc => {
-			data = doc.data();
-			console.log(data.teams);
-			data.teams.forEach($scope.getTeamCSV);
-		});
+	
+	$scope.getCSV = function(){
+		$scope.csvArray = [];
+		$scope.csvRows = 0;
+		if($scope.teamDataOnly){
+			console.log("TeamOnly");
+			var rootRef = db.doc("events/"+$scope.exportCompetition.id);
+			var teams = rootRef.get()
+			.then(doc => {
+				data = doc.data();
+				data.teams.forEach($scope.getTeamCSV);
+			});
+		}else{
+			console.log("All Data");
+			var rootRef = db.doc("events/"+$scope.exportCompetition.id);
+			var teams = rootRef.get()
+			.then(doc => {
+				data = doc.data();
+				data.teams.forEach($scope.getTeamCSV);
+			});
+		}
 	};
 	//initialiaze the competitions to pick in the dropdown box
 	$scope.init = function(){

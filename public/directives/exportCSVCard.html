@@ -1,15 +1,15 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-            <span class='md-headline'>Download CSV:  {{ exportCompetition.name }}</span>
+            <span class='md-headline'>Download CSV:  {{ exportCompetition.name }} - {{ csvArray.length }}/{{ csvRows }}</span>
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
         <md-input-container  flex-gt-sm="">
             <label style="position:relative;">Competition:</label>
-            <select ng-model="exportCompetition" class="md-no-underline" ng-options="obj.name for obj in options" ng-change="csvCompChange()"></select>
+            <select ng-model="exportCompetition" class="md-no-underline" ng-options="obj.name for obj in options" ng-change='getCSV()'></select>
         </md-input-container><br>
-        <md-checkbox ng-model="teamDataOnly" class="md-primary" aria-label="teamDataCheckbox" ng-change="csvCompChange()">
+        <md-checkbox ng-model="teamDataOnly" class="md-primary" aria-label="teamDataCheckbox" ng-change="getCSV()">
             Team data only
         </md-checkbox><br>
     </md-card-content>
