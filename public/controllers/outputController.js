@@ -98,7 +98,7 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 							allianceMember2:''
 						};
 						if($scope.teamDataOnly){
-							if(jsonData[p].teamScouting == $rootScope.userTeam){
+							if(jsonData[p].teamScouting == $rootScope.userTeam || $rootScope.userTeam == 0){
 								$scope.csvArray.push(row);
 								$scope.csvRows++;
 							}
