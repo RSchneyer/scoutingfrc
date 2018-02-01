@@ -10,6 +10,17 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 						t:"Climbed", u:"Played defense", v:"Delt with Defense", w:"Average Time Per Cube(sec)", x:"Alliance Member 1", 
 						y:"Alliance Member 2"};
 
+
+	$scope.downloadTypeChange = function(){
+		if($scope.downloadType == 'team'){
+			$scope.teamShow = true;
+			$scope.competitionShow = false;
+		}else if($scope.downloadType == 'competition'){
+			$scope.competitionShow = true;
+			$scope.teamShow = false;
+		}
+	}
+
 	$scope.getTeamCSV = function(element){
 		element = element.substr(3);
 		var teamName;
@@ -71,7 +82,7 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 								break;
 						}
 						var row = {
-							scoutingTeam:$rootScope.userTeam,
+							scoutingTeam:jsonData[p].teamScouting,
 							competition:$scope.exportCompetition.id,
 							teamNum:element,
 							teamName:teamName,

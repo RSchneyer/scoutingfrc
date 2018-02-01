@@ -5,6 +5,16 @@
         </md-card-title-text><br>
     </md-card-title>
     <md-card-content>
+        <md-input-container>
+            <label>Download Type</label>
+            <md-select ng-model="downloadType" class="md-no-underline" ng-change="downloadTypeChange()">
+                <md-option value="team">Team</md-option>
+                <md-option value="competition">Competition</md-option>
+            </md-select>
+        </md-input-container>
+    </md-card-content>
+    <!-- Competition download -->
+    <md-card-content ng-show="competitionShow">
         <md-input-container  flex-gt-sm="">
             <label style="position:relative;">Competition:</label>
             <select ng-model="exportCompetition" class="md-no-underline" ng-options="obj.name for obj in options" ng-change='getCSV()'></select>
@@ -13,7 +23,14 @@
             Team data only
         </md-checkbox><br>
     </md-card-content>
-    <md-card-actions layout='row' layout-align='end end'>
+    <md-card-actions layout='row' layout-align='end end' ng-show="competitionShow">
+        <md-button ng-csv="csvArray" csv-header="csvHeader" filename="{{ exportCompetition.id }}.csv">Download</md-button>
+    </md-card-actions>
+    <!-- Team download -->
+    <md-card-content ng-show='teamShow'>
+        <p>Functionality coming soon</p>
+    </md-card-content>
+    <md-card-actions layout='row' layout-align='end end' ng-show="teamShow">
         <md-button ng-csv="csvArray" csv-header="csvHeader" filename="{{ exportCompetition.id }}.csv">Download</md-button>
     </md-card-actions>
 </md-card>

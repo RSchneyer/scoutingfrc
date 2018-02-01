@@ -148,7 +148,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 			.textContent(message)
           	.ariaLabel('Confirm Submit')
           	.ok('Submit')
-          	.cancel('I need to make a change');
+          	.cancel('Make a Change');
 
     	$mdDialog.show(confirm).then(function() {
 			//ok
