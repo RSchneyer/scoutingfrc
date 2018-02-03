@@ -1,5 +1,6 @@
 app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope){
 	var db = firebase.firestore();
+	$scope.TeamNumber = 0;
 	$scope.options = [];
 	$scope.csvArray = [];
 	$scope.csvRows = 0;
@@ -15,21 +16,22 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 		if($scope.downloadType == 'team'){
 			$scope.teamShow = true;
 			$scope.competitionShow = false;
+			$scope.TeamNumber = 0;
 		}else if($scope.downloadType == 'competition'){
 			$scope.competitionShow = true;
 			$scope.teamShow = false;
 		}
 	}
 
-	$scope.getTeamCSV = function(element){
-		element = element.substr(3);
+	$scope.getTeamCSV = function(teamKey, compID){
+		var element = teamKey.substr(3);
 		var teamName;
 		var autoLow = 0, autoHigh = 0, climbed = 0, parked = 0;
 		var teamRef = db.doc('/teams/'+element);
 		var teamInfo = teamRef.get()
 		.then(doc => {
 			teamName = doc.data().nickname;
-			var rootRef = db.collection('/teams/'+element+'/events/'+$scope.exportCompetition.id+'/matches');
+			var rootRef = db.collection('/teams/'+element+'/events/'+compID+'/matches');
 			var matches = rootRef.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
@@ -83,7 +85,7 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 						}
 						var row = {
 							scoutingTeam:jsonData[p].teamScouting,
-							competition:$scope.exportCompetition.id,
+							competition:compID,
 							teamNum:element,
 							teamName:teamName,
 							allianceColor:jsonData[p].color,
@@ -127,27 +129,41 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 		});
 	};
 	
-	$scope.getCSV = function(){
+	$scope.getCompCSV = function(){
 		$scope.csvArray = [];
 		$scope.csvRows = 0;
-		if($scope.teamDataOnly){
-			console.log("TeamOnly");
-			var rootRef = db.doc("events/"+$scope.exportCompetition.id);
-			var teams = rootRef.get()
-			.then(doc => {
-				data = doc.data();
-				data.teams.forEach($scope.getTeamCSV);
-			});
-		}else{
-			console.log("All Data");
-			var rootRef = db.doc("events/"+$scope.exportCompetition.id);
-			var teams = rootRef.get()
-			.then(doc => {
-				data = doc.data();
-				data.teams.forEach($scope.getTeamCSV);
-			});
-		}
+
+		console.log("Competition CSV");
+		var rootRef = db.doc("events/"+$scope.exportCompetition.id);
+		var teams = rootRef.get()
+		.then(doc => {
+			data = doc.data();
+			console.log(data);
+			for(var k in data.teams) {
+				$scope.getTeamCSV(data.teams[k], $scope.exportCompetition.id);
+			}
+//			data.teams.forEach($scope.getTeamCSV, $scope.exportCompetition.id);
+//			
+		});
 	};
+
+	$scope.getTeamSeasonCSV = function(){
+		$scope.csvArray = [];
+		$scope.csvRows = 0;
+
+		console.log("Team CSV");
+		var rootRef = db.collection("/teams/"+$scope.TeamNumber+"/events/");
+		var events = rootRef.get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				console.log(doc.data());
+				console.log(doc.id);
+				var teamKey = "frc"+$scope.TeamNumber;
+				$scope.getTeamCSV(teamKey, doc.id);
+			});
+		});
+	};
+
 	//initialiaze the competitions to pick in the dropdown box
 	$scope.init = function(){
 		var rootRef = db.collection("events/");
