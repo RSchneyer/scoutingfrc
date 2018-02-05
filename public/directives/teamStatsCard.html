@@ -25,8 +25,37 @@
     </md-card-content>
     <md-card-content ng-show="teamStatNum!=null">
         <span class='md-subline'>Selected Competition: {{statTeamCompetition.value}}</span><br>
-        <span class='md-subline'>Auto Shot percentage: {{autoShotPercent}}%</span><br>
-        <span class='md-subline'>Average Tele Scores: {{avgTeleScores}}</span><br>
+        <span class='md-subline'>Cross auto-line percentage: {{autoCrossPercent}}%</span><br>
+        <span class='md-subline'>Average blocks placed in Tele-Op: {{avgTeleBlocks}}</span><br>
         <span class='md-sublime'>Data points averaged: {{datapoints}}</span><br>
+    </md-card-content>
+    <md-card-content>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+<!--                    <th ng-repeat="c in ordered_columns">{{ c.title }}</th> -->
+                    <th>Match #</th>
+                    <th>Auto Cross</th>
+                    <th>Auto Position</th>
+                    <th>Opponent Switch</th>
+                    <th>Center Scale</th>
+                    <th>Alliance Switch</th>
+                    <th>Exchange</th>
+                    <th>Climb</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in rows">
+                    <td>{{ r.match }}</td>
+                    <td>{{ r.autoCross }}</td>
+                    <td>{{ r.autoPosition }}</td>
+                    <td>{{ r.opponent }}</td>
+                    <td>{{ r.center }}</td>
+                    <td>{{ r.alliance }}</td>
+                    <td>{{ r.exchange }}</td>
+                    <td>{{ r.climb }}</td>
+                </tr>
+            </tbody>
+        </table>
     </md-card-content>
 </md-card>

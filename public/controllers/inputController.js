@@ -42,7 +42,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	$scope.loadTeamEventData = function(teamNum){
 		var dbCalls = function(eventVar){
 			var eventTeams = $http.get('https://www.thebluealliance.com/api/v3/event/2018'+eventVar.event_code+'/teams/keys?X-TBA-Auth-Key=sLym63lk04kq6G9IwWsvzNxrSl7DYNoyH09RRHfj7trmskoWE8bTrVTjQ8nByZ8Z')
-//			var eventTeams = tbaApi.getEventTeams(eventCode)
+			//var eventTeams = tbaApi.getEventTeams(eventCode)
 			.then(function(resp){
 				console.log(resp.data);
 				// TODO edit to also add each match and teams on which alliance for each match
@@ -92,20 +92,15 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	
 	$scope.pressedStartMatch = function(){
 		$scope.matchStart = moment();
-//		console.log('Match Start: '+$scope.matchStart.format("hh:mm:sss"));
-//		console.log('Match Start: '+$scope.matchStart.valueOf());
 	}
 	$scope.pressedForce = function(){
 		$scope.force = moment().diff($scope.matchStart, 'seconds');
-//		console.log('Force: '+$scope.force);
 	}
 	$scope.pressedBoost = function(){
 		$scope.boost = moment().diff($scope.matchStart, 'seconds');
-//		console.log('Boost: '+$scope.boost);
 	}
 	$scope.pressedLevitate = function(){
 		$scope.levitate = moment().diff($scope.matchStart, 'seconds');
-//		console.log('Levitate: '+$scope.levitate);
 	}
 	/*
 	 * Shows Pop-Up when match is submitted
@@ -232,7 +227,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
   		return $rootScope.userTeam;
 	}, function() {
   		$scope.competitionOptions();
- // 		console.log('userTeam changed');
   		//If new user, gather team and event information
   		if($rootScope.teamChange){
   			console.log('team Changed');
@@ -250,46 +244,25 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		//all season
 		if($scope.statTeamCompetition.value == 'all' || $scope.statTeamCompetition == null){
 			var rootRef = db.doc("teams/"+$scope.teamStatNum);
-			var data = rootRef.get()
-			.then(doc => {
-				jsonData = doc.data().seasonAverage;
-				$scope.autoShotPercent = jsonData.autoShotPercent;
-				$scope.avgTeleScores = jsonData.avgTeleScores;
-				$scope.datapoints = jsonData.datapoints;
-				$scope.$apply();
-			})
-			.catch(err => {
-				console.log('Error getting document', err);
-			});
 		//all competition
 		}else if($scope.statMatchNum.value == 'all' || $scope.statMatchNums == null){
 			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/averages/"+$scope.statTeamCompetition.value);
-			var data = rootRef.get()
-			.then(doc => {
-				jsonData = doc.data();
-				$scope.autoShotPercent = jsonData.autoShotPercent;
-				$scope.avgTeleScores = jsonData.avgTeleScores;
-				$scope.datapoints = jsonData.datapoints;
-				$scope.$apply();
-			})
-			.catch(err => {
-				console.log('Error getting document', err);
-			});
 		//one match
 		}else{
 			var rootRef = db.doc("teams/"+$scope.teamStatNum+"/events/"+$scope.statTeamCompetition.value+"/averages/"+$scope.statMatchNum.value);
-			var data = rootRef.get()
-			.then(doc => {
-				jsonData = doc.data();
-				$scope.autoShotPercent = jsonData.autoShotPercent;
-				$scope.avgTeleScores = jsonData.avgTeleScores;
-				$scope.datapoints = jsonData.datapoints;
-				$scope.$apply();
-			})
-			.catch(err => {
-				console.log('Error getting document', err);
-			});
 		};
+		var data = rootRef.get()
+		.then(doc => {
+			jsonData = doc.data();
+			$scope.autoCrossPercent = jsonData.autoCross;
+			$scope.avgTeleBlocks = (jsonData.centerScaleCounter + jsonData.exchangeCounter + jsonData.opponentScaleCounter + jsonData.allianceScaleCounter);
+			$scope.datapoints = jsonData.datapoints;
+			$scope.$apply();
+		})
+		.catch(err => {
+			console.log(rootRef);
+			console.log('Error getting document', err);
+		});
 	};
 	$scope.statTeamCompetition = {name:'All Seasons', value:'all'};
 	$scope.statMatchNum = {number:'All Matches', value:'all'};
@@ -325,7 +298,8 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 			$scope.statMatchNums = competitions;
 			$scope.statMatchNum = $scope.statMatchNums[0];
 			$scope.calculateAverage();
-		})
+		});
+		$scope.generateStatTable();
 	};
 	
 	$scope.checkDB4Data = function(){
@@ -341,12 +315,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				for(p in jsonData){
 					if(p == uid){
 						found = true;
-//						console.log(jsonData[p]);
 						userData = jsonData[p];
-//						console.log("teams/"+$scope.TeamNumber+"/events/"+$scope.competition.value+"/matches/"+$scope.MatchNumber);
-//						console.log(jsonData);
-//						console.log(uid);
-//						console.log(userData);
 						$scope.scoutedColor = userData.color;
 						$scope.startingPos = userData.startPos;
 						$scope.CubeAutoLoca = userData.autoCube;
@@ -368,7 +337,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 					}
 				}
 			}
-//			console.log('found:'+found);
 			if(found == false){
 				$scope.clearFields();
 			}
@@ -377,7 +345,6 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		$scope.preNext();
 	}
 	$scope.clearFields = function(){
-//		console.log('clearing');
 		$scope.startingPos = null;
 		$scope.CubeAutoLoca = null;
 		$scope.autoWrongCube = false;
@@ -424,4 +391,70 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		$scope.preShow = false;
 		$scope.autoShow = false;
 	};
+
+	$scope.rows = [];
+	$scope.generateStatTable = function(){
+		$scope.rows = [];
+
+		var checkThroughEvent = function(event){
+			var rootRef = db.collection('/teams/'+$scope.teamStatNum+'/events/'+event+'/averages/');//+compID+'/matches');
+			var matches = rootRef.get()
+			.then(snapshot2 => {
+				snapshot2.forEach(doc2 => {
+					data = doc2.data();
+					console.log(data);
+					var climb;
+					var row = {
+						match: doc2.id,
+						autoCross: data.autoCross,
+						autoPosition: 'soon',
+						opponent: data.opponentScaleCounter,
+						center: data.centerScaleCounter,
+						alliance: data.allianceScaleCounter,
+						exchange: data.exchangeCounter,
+						climb: 'soon'
+					}
+					$scope.rows.push(row);
+				});
+				console.log($scope.rows);
+			});
+		};
+
+		var teamRef = db.collection('/teams/'+$scope.teamStatNum+'/averages/');
+		var teamInfo = teamRef.get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				checkThroughEvent(doc.id);
+			});
+		});
+	}
+//test stuff, not real important to keep
+	$scope.numberOfUsers = function(){
+		var rootRef = db.collection("/users/");
+		var number = rootRef.get()
+		.then(snapshot => {
+			console.log('Users: '+snapshot.size);
+			$rootScope.numberUsers = snapshot.size;
+		})
+	};
+	$scope.numberOfEvents = function(){
+		var rootRef = db.collection("/events/");
+		var number = rootRef.get()
+		.then(snapshot => {
+			console.log('Events: '+snapshot.size);
+			$rootScope.numberEvents = snapshot.size;
+		})
+	};
+	$scope.numberOfTeams = function(){
+		var rootRef = db.collection("/teams/");
+		var number = rootRef.get()
+		.then(snapshot => {
+			console.log('Teams: '+snapshot.size);
+			$rootScope.numberTeams = snapshot.size;
+		})
+	};
+	$scope.numberOfEvents();
+	$scope.numberOfTeams();
+	$scope.numberOfUsers();
+//*****************************************
 }]);
