@@ -281,6 +281,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 			$scope.statTeamComps = competitions;
 			$scope.statTeamCompetition = $scope.statTeamComps[0];
 			$scope.calculateAverage();
+			$scope.generateStatTable();
 		})
 	};
 	$scope.statTeamCompetitionChange = function(){
@@ -315,9 +316,16 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 				for(p in jsonData){
 					if(p == uid){
 						found = true;
+						//not a good fix
+						$scope.pressedStartMatch();
+						//
 						userData = jsonData[p];
-						$scope.scoutedColor = userData.color;
-						$scope.startingPos = userData.startPos;
+						if($scope.scoutedColor == null){
+							$scope.scoutedColor = userData.color;
+						}
+						if($scope.startingPos == null){
+							$scope.startingPos = userData.startPos;
+						}
 						$scope.CubeAutoLoca = userData.autoCube;
 						$scope.autoWrongCube = userData.autoWrong;
 						$scope.autoCross = userData.autoCross;
@@ -406,27 +414,33 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 					var climb;
 					var row = {
 						match: doc2.id,
-						autoCross: data.autoCross,
-						autoPosition: 'soon',
+						autoCross: (data.autoCross + '%'),
+						autoPosition: data.startPos,
 						opponent: data.opponentScaleCounter,
 						center: data.centerScaleCounter,
 						alliance: data.allianceScaleCounter,
 						exchange: data.exchangeCounter,
-						climb: 'soon'
+						climb: (data.endClimb + '%')
 					}
 					$scope.rows.push(row);
 				});
 				console.log($scope.rows);
+				$scope.$apply();
 			});
 		};
 
-		var teamRef = db.collection('/teams/'+$scope.teamStatNum+'/averages/');
-		var teamInfo = teamRef.get()
-		.then(snapshot => {
-			snapshot.forEach(doc => {
-				checkThroughEvent(doc.id);
+		if($scope.statTeamCompetition.value!='all'){
+			checkThroughEvent($scope.statTeamCompetition.value);
+		}else{
+			var teamRef = db.collection('/teams/'+$scope.teamStatNum+'/averages/');
+			var teamInfo = teamRef.get()
+			.then(snapshot => {
+				snapshot.forEach(doc => {
+					checkThroughEvent(doc.id);
+				});
 			});
-		});
+		}
+		
 	}
 //test stuff, not real important to keep
 	$scope.numberOfUsers = function(){

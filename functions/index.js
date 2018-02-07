@@ -63,6 +63,12 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 	var numEvents = 0;
 	var datapoints = 0;
 	
+	var autoSuccess = 0;
+	var autoSuccessAv = 0;
+	var startMiddle = 0;
+	var startRight = 0;
+	var startLeft = 0;
+	var startPos = '';
 	var boostCount = 0;
 	var boostAv = 0;
 	var forceCount = 0;
@@ -97,6 +103,14 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 			numEvents++;
 			datapoints+=jsonData.datapoints;
 
+			autoSuccess += jsonData.autoSuccess;
+			//this part maybe works
+			var startCurr = jsonData.startPos;
+			var startArray = startCurr.split(":");
+			startMiddle += startArray[1];
+			startLeft += startArray[0];
+			startRight += startArray[2];
+			//dont work? ^^
 			boostCount += jsonData.boost;
 			forceCount += jsonData.force;
 			levitateCount += jsonData.levitate;
@@ -112,6 +126,9 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 			climbCount += jsonData.endClimb;
 		});
 
+		startPos = startLeft + ": "+startMiddle+": "+startRight;
+		
+		autoSuccessAv = autoSuccess/numEvents;
 		boostAv = boostCount/numEvents;
 		forceAv = forceCount/numEvents;
 		levitateAv = levitateCount/numEvents;
@@ -129,6 +146,8 @@ exports.updateSeasonAverage = functions.firestore.document('/teams/{teamNum}/ave
 		var saveRef = db.doc("teams/"+event.params.teamNum);
 		var saveData = saveRef.set({
 			seasonAverage: {
+				autoSuccess: autoSuccessAv,
+				startPos: startPos,
 				endClimb: climbAv,
 				defended: defendedAv,
 				defender: defenderAv,
@@ -161,6 +180,12 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 	var numMatches = 0;
 	var datapoints = 0;
 
+	var autoSuccess = 0;
+	var autoSuccessAv = 0;
+	var startMiddle = 0;
+	var startRight = 0;
+	var startLeft = 0;
+	var startPos = '';
 	var boostCount = 0;
 	var boostAv = 0;
 	var forceCount = 0;
@@ -194,7 +219,14 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 			jsonData = doc.data();
 			numMatches++;
 			datapoints+=jsonData.datapoints;
-
+			if(jsonData.startPos == "middle"){
+				startMiddle++;
+			}else if(jsonData.startPos == "right"){
+				startRight++;
+			}else if(jsonData.startPos == "left"){
+				startLeft++;
+			}
+			autoSuccess += jsonData.autoSuccess;
 			boostCount += jsonData.boost;
 			forceCount += jsonData.force;
 			levitateCount += jsonData.levitate;
@@ -210,6 +242,9 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 			climbCount += jsonData.endClimb;
 		});
 
+		startPos = startLeft + ": "+startMiddle+": "+startRight;
+		
+		autoSuccessAv = autoSuccess/numMatches;
 		boostAv = boostCount/numMatches;
 		forceAv = forceCount/numMatches;
 		levitateAv = levitateCount/numMatches;
@@ -226,6 +261,8 @@ exports.updateEventAverage = functions.firestore.document('/teams/{teamNum}/even
 
 		var saveRef = db.doc("teams/"+event.params.teamNum+"/averages/"+event.params.event);
 		var saveData = saveRef.set({
+			startPos: startPos,
+			autoSuccess: autoSuccessAv,
 			endClimb: climbAv,
 			defended: defendedAv,
 			defender: defenderAv,
@@ -256,6 +293,12 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 	var rootRef = db.doc("teams/"+event.params.teamNum+"/events/"+event.params.event+"/matches/"+event.params.matchNum);
 	
 	var datapoints = 0;
+	var startMiddle = 0;
+	var startRight = 0;
+	var startLeft = 0;
+	var startPos = '';
+	var autoCubeCounter = 0;
+	var autoCubePercent = 0;
 	var boostCount = 0;
 	var boostTimeCount = 0;
 	var boostTimeAv = 0;
@@ -293,6 +336,16 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 			if((jsonData[p].endClimb == "successCarry") || (jsonData[p].endClimb == "successAttach") || (jsonData[p].endClimb == "successSolo")){
 				climbCounter ++;
 			}
+			if((jsonData[p].autoCube == "lowsuccess") || (jsonData[p].autoCube == "highsuccess")){
+				autoCubeCounter ++;
+			}
+			if(jsonData[p].startPos == "middle"){
+				startMiddle++;
+			}else if(jsonData[p].startPos == "right"){
+				startRight++;
+			}else if(jsonData[p].startPos == "left"){
+				startLeft++;
+			}
 			if(jsonData[p].autoWrong){
 				autoWrongCounter++;
 			}
@@ -326,6 +379,16 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 			exchangeCounter += jsonData[p].exchangeCounter;
 			datapoints ++;
 		}
+		if((startMiddle > startLeft) && (startMiddle > startRight)){
+			startPos = 'middle';
+		}else if((startLeft > startRight) && (startLeft > startMiddle)){
+			startPos = 'left';
+		}else if((startRight > startLeft) && (startRight > startMiddle)){
+			startPos = 'right';
+		}else{
+			startPos = 'N/A';
+		}
+		autoCubePercent = (autoCubeCounter/datapoints)*100;
 		autoWrongPercent = (autoWrongCounter/datapoints)*100;
 		autoCrossPercent = (autoCrossCounter/datapoints)*100;
 		teleWrongPercent = (teleWrongCounter/datapoints)*100;
@@ -344,6 +407,8 @@ exports.updateMatchAverage = functions.firestore.document('/teams/{teamNum}/even
 		
 		var saveRef = db.doc("teams/"+event.params.teamNum+"/events/"+event.params.event+"/averages/"+event.params.matchNum);
 		var saveData = saveRef.set({
+			startPos: startPos,
+			autoSuccess: autoCubePercent,
 			endClimb: climbPercent,
 			defended: defendedPercent,
 			defender: defenderPercent,
