@@ -443,6 +443,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		
 	}
 //test stuff, not real important to keep
+/*
 	$scope.numberOfUsers = function(){
 		var rootRef = db.collection("/users/");
 		var number = rootRef.get()
@@ -470,5 +471,5 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 	$scope.numberOfEvents();
 	$scope.numberOfTeams();
 	$scope.numberOfUsers();
-//*****************************************
+//*****************************************/
 }]);
