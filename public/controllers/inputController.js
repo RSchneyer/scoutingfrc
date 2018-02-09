@@ -353,7 +353,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		$scope.preNext();
 	}
 	$scope.clearFields = function(){
-		$scope.startingPos = null;
+		// $scope.startingPos = null;
 		$scope.CubeAutoLoca = null;
 		$scope.autoWrongCube = false;
 		$scope.autoCross = false;
