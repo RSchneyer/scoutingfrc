@@ -8,9 +8,8 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 						g:"Crossed Auto Line", h:"Cube in Low Switch(auto)", i:"Cube in High Switch(auto)", j:"Cube Wrong side(auto)", 
 						k:"Cube Wrong side(tele)", l:"Exchange Cubes", m:"Opposite Switch", n:"High Scale", o:"Alliance Switch", 
 						p:"Boost(sec into match)", q:"Force(sec into match)", r:"Levitate(sec into match)", s:"Parked on Platform", 
-						t:"Climbed", u:"Played defense", v:"Delt with Defense", w:"Average Time Per Cube(sec)", x:"Alliance Member 1", 
-						y:"Alliance Member 2"};
-
+						t:"Climbed", u:"Played defense", v:"Delt with Defense"};/* , w:"Average Time Per Cube(sec)", x:"Alliance Member 1", 
+						y:"Alliance Member 2" */
 
 	$scope.downloadTypeChange = function(){
 		if($scope.downloadType == 'team'){
@@ -142,8 +141,6 @@ app.controller('outputControl', ['$scope', '$http', '$rootScope', function($scop
 			for(var k in data.teams) {
 				$scope.getTeamCSV(data.teams[k], $scope.exportCompetition.id);
 			}
-//			data.teams.forEach($scope.getTeamCSV, $scope.exportCompetition.id);
-//			
 		});
 	};
 
