@@ -405,7 +405,7 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 		$scope.rows = [];
 
 		var checkThroughEvent = function(event){
-			var rootRef = db.collection('/teams/'+$scope.teamStatNum+'/events/'+event+'/averages/');//+compID+'/matches');
+			var rootRef = db.collection('/teams/'+$scope.teamStatNum+'/events/'+event+'/averages/');
 			var matches = rootRef.get()
 			.then(snapshot2 => {
 				snapshot2.forEach(doc2 => {
@@ -436,7 +436,9 @@ app.controller('inputControl', ['$scope', '$http', '$rootScope', '$mdDialog', fu
 			var teamInfo = teamRef.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
-					checkThroughEvent(doc.id);
+					if(doc.id != '00aaTest'){
+						checkThroughEvent(doc.id);
+					}
 				});
 			});
 		}

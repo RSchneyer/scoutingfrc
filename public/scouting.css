@@ -54,3 +54,16 @@ body{
 	margin: 0px 5%;
 	border-radius: 4px;
 }
+
+/* CSS for quick stat table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}

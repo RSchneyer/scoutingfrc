@@ -10,7 +10,7 @@
             <input type='number' ng-model='teamStatNum' ng-change="teamStatNumChange()">
         </md-input-container>
         <!-- TODO - work on css********** -->
-		<md-input-container class="md-block" flex-gt-sm="" ng-show="teamStatNum!=null">
+<!--		<md-input-container class="md-block" flex-gt-sm="" ng-show="teamStatNum!=null">
             <label style="position:relative;">Competition:</label>
                 <select ng-model="statTeamCompetition" class="md-no-underline" ng-change="statTeamCompetitionChange()" ng-options="obj.name for obj in statTeamComps">
                 </select>
@@ -29,6 +29,7 @@
         <span class='md-subline'>Average blocks placed in Tele-Op: {{avgTeleBlocks}}</span><br>
         <span class='md-sublime'>Data points averaged: {{datapoints}}</span><br>
     </md-card-content>
+-->
     <md-card-content ng-show="teamStatNum!=null">
         <table class="table table-striped">
             <thead>
